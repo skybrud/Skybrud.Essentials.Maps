@@ -1,0 +1,24 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>net45;net46;net47</TargetFrameworks>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <RootNamespace>Skybrud.Essentials.Maps</RootNamespace>
+    <Version>1.0.0-beta001</Version>
+    <Company>Skybrud.dk a/s</Company>
+    <Product>Skybrud.Essentials.Maps</Product>
+    <Authors>Anders Bjerner</Authors>
+    <Copyright>Copyright © 2019</Copyright>
+    <Description>with common purpose functionality for working with Umbraco..</Description>
+    <RepositoryUrl>https://github.com/skybrud/Skybrud.Essentials.Maps</RepositoryUrl>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Reference Include="System.IO.Compression" />
+    <PackageReference Include="Skybrud.Essentials" Version="1.1.12" />
+    <PackageReference Include="Skybrud.Essentials.Http" Version="1.0.4" />
+  </ItemGroup>
+
+</Project>
