@@ -6,16 +6,16 @@ using Skybrud.Essentials.Maps.Geometry.Shapes;
 namespace Skybrud.Essentials.Maps.Geometry.Lines {
 
     /// <summary>
-    /// Class representing a polyline (closed path).
+    /// Class representing a line string / polyline (closed path).
     /// </summary>
-    public class Polyline : IPolyline {
+    public class LineString : ILineString {
 
         private readonly List<IPoint> _points;
 
         #region Properties
 
         /// <summary>
-        /// Gets the array of points making up the polyline.
+        /// Gets the array of points making up the line string.
         /// </summary>
         public IPoint[] Points => _points.ToArray();
 
@@ -24,18 +24,18 @@ namespace Skybrud.Essentials.Maps.Geometry.Lines {
         #region Constructors
 
         /// <summary>
-        /// Initializes a new polyline from the specified array of <paramref name="points"/>.
+        /// Initializes a new line string from the specified array of <paramref name="points"/>.
         /// </summary>
-        /// <param name="points">The points the polyline should be based on.</param>
-        public Polyline(params IPoint[] points) {
+        /// <param name="points">The points the line string should be based on.</param>
+        public LineString(params IPoint[] points) {
             _points = points?.ToList() ?? throw new ArgumentNullException(nameof(points));
         }
 
         /// <summary>
-        /// Initializes a new polyline from the specified collection of <paramref name="points"/>.
+        /// Initializes a new line string from the specified collection of <paramref name="points"/>.
         /// </summary>
-        /// <param name="points">The points the polyline should be based on.</param>
-        public Polyline(IEnumerable<IPoint> points) {
+        /// <param name="points">The points the line string should be based on.</param>
+        public LineString(IEnumerable<IPoint> points) {
             _points = points?.ToList() ?? throw new ArgumentNullException(nameof(points));
         }
 
@@ -44,7 +44,7 @@ namespace Skybrud.Essentials.Maps.Geometry.Lines {
         #region Member methods
 
         /// <summary>
-        /// Adds <paramref name="point"/> to the polyline.
+        /// Adds <paramref name="point"/> to the line string.
         /// </summary>
         /// <param name="point">The point to be added.</param>
         public void Add(IPoint point) {
@@ -63,7 +63,7 @@ namespace Skybrud.Essentials.Maps.Geometry.Lines {
         }
 
         /// <summary>
-        /// Removes the specified <paramref name="point"/> from the polyline.
+        /// Removes the specified <paramref name="point"/> from the line string.
         /// </summary>
         /// <param name="point">The point to be removed.</param>
         public void Remove(IPoint point) {
@@ -80,34 +80,22 @@ namespace Skybrud.Essentials.Maps.Geometry.Lines {
         }
 
         /// <summary>
-        /// Removes all points from the polyline.
+        /// Removes all points from the line string.
         /// </summary>
         public void Clear() {
             _points.Clear();
         }
 
         /// <summary>
-        /// Gets the total length of polyline.
+        /// Gets the total length of line string.
         /// </summary>
         /// <returns>The total length in metres.</returns>
         public double GetLength() {
             return MapsUtils.GetLength(_points);
         }
 
-        public bool Contains(IPoint point) {
-            throw new NotImplementedException();
-        }
-
         public IPoint GetCenter() {
             return GetBoundingBox().GetCenter();
-        }
-
-        public double GetArea() {
-            throw new NotImplementedException();
-        }
-
-        public double GetCircumference() {
-            throw new NotImplementedException();
         }
 
         public IRectangle GetBoundingBox() {

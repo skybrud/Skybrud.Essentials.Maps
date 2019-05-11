@@ -41,13 +41,13 @@ namespace Skybrud.Essentials.Maps.GeoJson {
 
         }
 
-        public static IPolyline Convert(GeoJsonLineString lineString) {
+        public static ILineString Convert(GeoJsonLineString lineString) {
 
             if (lineString == null) throw new ArgumentNullException(nameof(lineString));
 
             var points = lineString.Coordinates.Select(x => new Point(x[1], x[0]));
 
-            return new Polyline(points);
+            return new LineString(points);
 
         }
 
