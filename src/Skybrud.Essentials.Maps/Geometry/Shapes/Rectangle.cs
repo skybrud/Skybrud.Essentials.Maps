@@ -50,6 +50,18 @@ namespace Skybrud.Essentials.Maps.Geometry.Shapes {
         }
 
         /// <summary>
+        /// Initializes a new rectangle based on the coordinates of the south west and north east corners respectively.
+        /// </summary>
+        /// <param name="lat1">The latitude of the south west corner.</param>
+        /// <param name="lng1">The longitude of the south west corner.</param>
+        /// <param name="lat2">The latitude of the north east corner.</param>
+        /// <param name="lng2">The longitude of the north east corner.</param>
+        public Rectangle(double lat1, double lng1, double lat2, double lng2) {
+            SouthWest = new Point(lat1, lng1);
+            NorthEast = new Point(lat2, lng2);
+        }
+
+        /// <summary>
         /// Initializes a new rectangle based on the specified <paramref name="point1"/> and <paramref name="point1"/>.
         /// </summary>
         /// <param name="point1">The first point.</param>
