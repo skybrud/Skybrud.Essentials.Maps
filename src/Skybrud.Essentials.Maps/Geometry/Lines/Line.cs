@@ -10,8 +10,14 @@ namespace Skybrud.Essentials.Maps.Geometry.Lines {
 
         #region Properties
 
+        /// <summary>
+        /// Gets the start point of the line.
+        /// </summary>
         public IPoint A { get; }
 
+        /// <summary>
+        /// Gets the end point of the line.
+        /// </summary>
         public IPoint B { get; }
 
         #endregion
@@ -24,6 +30,8 @@ namespace Skybrud.Essentials.Maps.Geometry.Lines {
         }
 
         public Line(IPoint point1, IPoint point2) {
+            if (A == null) throw new PropertyNotSetException(nameof(A));
+            if (B == null) throw new PropertyNotSetException(nameof(B));
             A = point1;
             B = point2;
         }
@@ -37,17 +45,20 @@ namespace Skybrud.Essentials.Maps.Geometry.Lines {
         /// </summary>
         /// <returns>The total length in metres.</returns>
         public double GetLength() {
-            if (A == null) throw new PropertyNotSetException(nameof(A));
-            if (B == null) throw new PropertyNotSetException(nameof(B));
             return DistanceUtils.GetDistance(A, B);
         }
         
+        /// <summary>
+        /// Gets the center of the line.
+        /// </summary>
+        /// <returns></returns>
         public IPoint GetCenter() {
+            // TODO: It shouldn't be necessary to calculate the bounding box first
             return GetBoundingBox().GetCenter();
         }
 
         public IRectangle GetBoundingBox() {
-            return new Rectangle(new []{A, B});
+            return new Rectangle(A, B);
         }
 
         #endregion

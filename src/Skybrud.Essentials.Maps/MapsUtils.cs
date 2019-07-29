@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Skybrud.Essentials.Maps.Geometry;
 using Skybrud.Essentials.Maps.Geometry.Shapes;
 
@@ -243,12 +244,36 @@ namespace Skybrud.Essentials.Maps {
 
         }
 
+        /// <summary>
+        /// Returns an instance of <see cref="Rectangle"/> representing the bounding box of the specified <paramref name="points"/>.
+        /// </summary>
+        /// <param name="points">The points.</param>
+        /// <returns>An instance of <see cref="Rectangle"/>.</returns>
+        public static Rectangle GetBoundingBox(IEnumerable<IPoint> points) {
 
+            if (points == null) throw new ArgumentNullException(nameof(points));
 
+            IPoint[] array = points.ToArray();
 
+            double lat1 = array[0].Latitude;
+            double lat2 = array[0].Latitude;
 
+            double lng1 = array[0].Longitude;
+            double lng2 = array[0].Longitude;
 
+            foreach (IPoint point in array) {
 
+                lat1 = Math.Min(lat1, point.Latitude);
+                lat2 = Math.Max(lat2, point.Latitude);
+
+                lng1 = Math.Min(lng1, point.Longitude);
+                lng2 = Math.Max(lng2, point.Longitude);
+
+            }
+
+            return new Rectangle(lat1, lng1, lat2, lng2);
+
+        }
 
     }
 

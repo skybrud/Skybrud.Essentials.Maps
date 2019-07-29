@@ -99,7 +99,7 @@ namespace Skybrud.Essentials.Maps.Geometry.Lines {
         }
 
         public IRectangle GetBoundingBox() {
-            return new Rectangle(Points);
+            return MapsUtils.GetBoundingBox(Points);
         }
 
         #endregion

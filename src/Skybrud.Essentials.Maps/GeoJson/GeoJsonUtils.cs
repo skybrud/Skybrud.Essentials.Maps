@@ -104,7 +104,7 @@ namespace Skybrud.Essentials.Maps.GeoJson {
 
             }
 
-            return points.Count == 0 ? null : new Rectangle(points);
+            return points.Count == 0 ? null : MapsUtils.GetBoundingBox(points);
 
         }
 
@@ -123,7 +123,7 @@ namespace Skybrud.Essentials.Maps.GeoJson {
 
             }
 
-            return points.Count == 0 ? null : new Rectangle(points);
+            return points.Count == 0 ? null : MapsUtils.GetBoundingBox(points);
 
         }
 
@@ -134,7 +134,7 @@ namespace Skybrud.Essentials.Maps.GeoJson {
             switch (geometry) {
 
                 case IPoint point:
-                    return new Rectangle(point);
+                    return new Rectangle(point, point);
 
                 case IShape shape:
                     return shape.GetBoundingBox();

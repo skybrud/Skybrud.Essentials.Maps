@@ -42,14 +42,6 @@ namespace Skybrud.Essentials.Maps.Geometry.Shapes {
         #region Constructors
 
         /// <summary>
-        /// Initializes a new instance with default options.
-        /// </summary>
-        public Rectangle() {
-            SouthWest = new Point();
-            NorthEast = new Point();
-        }
-
-        /// <summary>
         /// Initializes a new rectangle based on the coordinates of the south west and north east corners respectively.
         /// </summary>
         /// <param name="lat1">The latitude of the south west corner.</param>
@@ -62,84 +54,15 @@ namespace Skybrud.Essentials.Maps.Geometry.Shapes {
         }
 
         /// <summary>
-        /// Initializes a new rectangle based on the specified <paramref name="point1"/> and <paramref name="point1"/>.
+        /// Initializes a new rectangle based on the specified <paramref name="southWest"/> and <paramref name="southWest"/>.
         /// </summary>
-        /// <param name="point1">The first point.</param>
-        /// <param name="point2">The second point.</param>
-        public Rectangle(IPoint point1, IPoint point2) {
-
-            if (point1 == null) throw new ArgumentNullException(nameof(point1));
-            if (point2 == null) throw new ArgumentNullException(nameof(point2));
-
-            double lat1 = Math.Min(point1.Latitude, point2.Latitude);
-            double lon1 = Math.Min(point1.Longitude, point2.Longitude);
-
-            double lat2 = Math.Max(point1.Latitude, point2.Latitude);
-            double lon2 = Math.Max(point1.Longitude, point2.Longitude);
-
-            SouthWest = new Point(lat1, lon1);
-            NorthEast = new Point(lat2, lon2);
-
-        }
-
-        /// <summary>
-        /// Initializes a new rectangle representing the bounding box of the specified <paramref name="points"/>.
-        /// </summary>
-        /// <param name="points">The points the rectangle should be based on.</param>
-        public Rectangle(params IPoint[] points) {
-
-            if (points == null) throw new ArgumentNullException(nameof(points));
-
-            double lat1 = points[0].Latitude;
-            double lat2 = points[0].Latitude;
-
-            double lng1 = points[0].Longitude;
-            double lng2 = points[0].Longitude;
-
-            foreach (IPoint point in points) {
-
-                lat1 = Math.Min(lat1, point.Latitude);
-                lat2 = Math.Max(lat2, point.Latitude);
-
-                lng1 = Math.Min(lng1, point.Longitude);
-                lng2 = Math.Max(lng2, point.Longitude);
-
-            }
-
-            SouthWest = new Point(lat1, lng1);
-            NorthEast = new Point(lat2, lng2);
-
-        }
-
-        /// <summary>
-        /// Initializes a new rectangle representing the bounding box of the specified <paramref name="points"/>.
-        /// </summary>
-        /// <param name="points">The points the rectangle should be based on.</param>
-        public Rectangle(IEnumerable<IPoint> points) {
-
-            if (points == null) throw new ArgumentNullException(nameof(points));
-
-            IPoint[] array = points.ToArray();
-
-            double lat1 = array[0].Latitude;
-            double lat2 = array[0].Latitude;
-
-            double lng1 = array[0].Longitude;
-            double lng2 = array[0].Longitude;
-
-            foreach (IPoint point in array) {
-
-                lat1 = Math.Min(lat1, point.Latitude);
-                lat2 = Math.Max(lat2, point.Latitude);
-
-                lng1 = Math.Min(lng1, point.Longitude);
-                lng2 = Math.Max(lng2, point.Longitude);
-
-            }
-
-            SouthWest = new Point(lat1, lng1);
-            NorthEast = new Point(lat2, lng2);
-
+        /// <param name="southWest">The point that defines the south west corner of rectangle.</param>
+        /// <param name="northEast">The point that defines the north east corner of the rectangle.</param>
+        public Rectangle(IPoint southWest, IPoint northEast) {
+            if (southWest == null) throw new ArgumentNullException(nameof(southWest));
+            if (northEast == null) throw new ArgumentNullException(nameof(northEast));
+            SouthWest = new Point(southWest.Latitude, northEast.Longitude);
+            NorthEast = new Point(northEast.Latitude, northEast.Longitude);
         }
 
         #endregion
@@ -226,15 +149,6 @@ namespace Skybrud.Essentials.Maps.Geometry.Shapes {
         /// <returns>An instance of <see cref="IRectangle"/>.</returns>
         public IRectangle GetBoundingBox() {
             return this;
-        }
-
-        #endregion
-
-        #region Static methods
-
-        public static Rectangle GetFromPolygon(Polygon polygon) {
-            if (polygon == null) throw new ArgumentNullException(nameof(polygon));
-            return new Rectangle(polygon.Outer);
         }
 
         #endregion

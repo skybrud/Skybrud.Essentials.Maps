@@ -23,7 +23,6 @@ namespace Skybrud.Essentials.Maps.Geometry.Shapes {
         /// </summary>
         public IPoint[][] Inner => _inner.ToArray();
 
-
         #endregion
 
         #region Constructors
@@ -152,7 +151,7 @@ namespace Skybrud.Essentials.Maps.Geometry.Shapes {
         /// </summary>
         /// <returns>An instance of <see cref="IRectangle"/>.</returns>
         public IRectangle GetBoundingBox() {
-            return new Rectangle(Outer);
+            return MapsUtils.GetBoundingBox(Outer);
         }
 
         ///// <summary>
@@ -178,11 +177,11 @@ namespace Skybrud.Essentials.Maps.Geometry.Shapes {
         public static Polygon Load(string path) {
             return new Polygon(
                 from line in System.IO.File.ReadLines(path)
-                where !String.IsNullOrWhiteSpace(line)
+                where string.IsNullOrWhiteSpace(line) == false
                 let pieces = line.Replace(", ", ",").Split(',')
                 select new Point {
-                    Latitude = Double.Parse(pieces[0], CultureInfo.InvariantCulture),
-                    Longitude = Double.Parse(pieces[1], CultureInfo.InvariantCulture)
+                    Latitude = double.Parse(pieces[0], CultureInfo.InvariantCulture),
+                    Longitude = double.Parse(pieces[1], CultureInfo.InvariantCulture)
                 }
             );
         }
