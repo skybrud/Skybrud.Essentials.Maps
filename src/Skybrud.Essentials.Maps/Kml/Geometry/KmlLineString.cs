@@ -27,6 +27,10 @@ namespace Skybrud.Essentials.Maps.Kml.Geometry {
             _list = new List<KmlPointCoordinates>();
         }
         
+        public KmlLineString(IEnumerable<KmlPointCoordinates> coordinates) {
+            _list = coordinates?.ToList() ?? new List<KmlPointCoordinates>();
+        }
+        
         public KmlLineString(params KmlPointCoordinates[] coordinates) {
             _list = coordinates?.ToList() ?? new List<KmlPointCoordinates>();
         }
@@ -39,6 +43,14 @@ namespace Skybrud.Essentials.Maps.Kml.Geometry {
         #endregion
 
         #region Member methods
+
+        public void Add(double latitude, double longitude) {
+            _list.Add(new KmlPointCoordinates(latitude, longitude));
+        }
+
+        public void Add(double latitude, double longitude, double altitude) {
+            _list.Add(new KmlPointCoordinates(latitude, longitude, altitude));
+        }
 
         public void Add(KmlPointCoordinates coordinates) {
             _list.Add(coordinates);
