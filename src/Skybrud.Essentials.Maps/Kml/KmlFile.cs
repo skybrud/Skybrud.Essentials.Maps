@@ -73,6 +73,10 @@ namespace Skybrud.Essentials.Maps.Kml {
                 ToXElement()
             );
         }
+        
+        public void Save(string path) {
+            ToXDocument().Save(path);
+        }
 
         public void Save(Stream stream) {
             ToXDocument().Save(stream);
