@@ -88,7 +88,7 @@ namespace Skybrud.Essentials.Maps.Kml.Geometry {
             if (Tesselate) xml.Add(NewXElement("tessellate", "1"));
             if (AltitudeMode != default(KmlAltitudeMode)) xml.Add(NewXElement("altitudeMode", AltitudeMode.ToCamelCase()));
 
-            xml.Add(NewXElement("coordinates", Coordinates.ToXElement()));
+            xml.Add(Coordinates.ToXElement());
 
             return xml;
 
