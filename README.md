@@ -2,6 +2,10 @@
 
 [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE.md) <!--[![NuGet](https://img.shields.io/nuget/v/Skybrud.Essentials..Maps.svg)](https://www.nuget.org/packages/Skybrud.Essentials.Maps) [![NuGet](https://img.shields.io/nuget/dt/Skybrud.Essentials.Maps.svg)](https://www.nuget.org/packages/Skybrud.Essentials.Maps)-->
 
+Skybrud.Essentials.Maps is a .NET package for working with maps and geospatial data and geometry.
+
+It also supports working with popular formats such as [**GeoJSON**](https://en.wikipedia.org/wiki/GeoJSON), [**KML**](https://en.wikipedia.org/wiki/Keyhole_Markup_Language) (Keyhole Markup Language) and [**WKT**](https://en.wikipedia.org/wiki/Well-known_text_representation_of_geometry) (Well Known Text).
+
 ### Installation
 
 To install the Skybrud.Essentials.Maps, simply pick one of the methods below:
