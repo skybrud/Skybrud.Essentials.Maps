@@ -1,6 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
+    <TargetFramework>net47</TargetFramework>
     <TargetFrameworks>net45;net46;net47</TargetFrameworks>
   </PropertyGroup>
 
@@ -8,16 +9,32 @@
     <RootNamespace>Skybrud.Essentials.Maps</RootNamespace>
     <Version>1.0.0-beta001</Version>
     <Company>Skybrud.dk a/s</Company>
-    <Product>Skybrud.Essentials.Maps</Product>
+    <Product>Skybrud.Essentials</Product>
     <Authors>Anders Bjerner</Authors>
     <Copyright>Copyright © 2019</Copyright>
     <RepositoryUrl>https://github.com/skybrud/Skybrud.Essentials.Maps</RepositoryUrl>
   </PropertyGroup>
+  
+  <PropertyGroup>
+    <RepositoryType>git</RepositoryType>
+    <RepositoryUrl>https://github.com/skybrud/Skybrud.Essentials.Maps</RepositoryUrl>
+  </PropertyGroup>
+  
+  <PropertyGroup>
+    <PackageTags>Skybrud, Essentials, Maps, Kml, GeoJson, Wkt</PackageTags>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/skybrud/Skybrud.Essentials.Maps</PackageProjectUrl>
+    <PackageIconUrl>https://www.skybrud.dk/img/5431sk/icon/favicon.ico</PackageIconUrl>
+  </PropertyGroup>
 
   <ItemGroup>
     <Reference Include="System.IO.Compression" />
-    <PackageReference Include="Skybrud.Essentials" Version="1.1.12" />
-    <PackageReference Include="Skybrud.Essentials.Http" Version="1.0.4" />
+    <PackageReference Include="Skybrud.Essentials" Version="1.1.13" />
+    <PackageReference Include="Skybrud.Essentials.Http" Version="1.0.5" />
   </ItemGroup>
+
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent" Condition="'$(ConfigurationName)'=='Release'">
+    <Exec Command="&quot;$(ProjectDir)..\build\Skybrud.BuildTools.Tasks.exe&quot; &quot;postBuild&quot; &quot;$(ConfigurationName)&quot; &quot;$(ProjectPath)&quot; &quot;$(TargetPath)&quot;" />
+  </Target>
 
 </Project>
