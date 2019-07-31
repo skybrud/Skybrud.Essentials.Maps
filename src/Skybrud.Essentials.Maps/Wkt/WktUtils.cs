@@ -27,7 +27,7 @@ namespace Skybrud.Essentials.Maps.Wkt {
 
         public static WktPoint[][] ToWktPoints(IPolygon polygon) {
             if (polygon == null) throw new ArgumentNullException(nameof(polygon));
-            return WktUtils.ToWkt(MapsUtils.GetCoordinates(polygon));
+            return ToWkt(MapsUtils.GetCoordinates(polygon));
         }
 
         public static WktPolygon ToWkt(IPolygon polygon) {

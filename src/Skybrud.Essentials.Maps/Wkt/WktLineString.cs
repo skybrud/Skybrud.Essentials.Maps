@@ -1,4 +1,6 @@
 using System;
+using System.Linq;
+using Skybrud.Essentials.Maps.Geometry.Lines;
 
 namespace Skybrud.Essentials.Maps.Wkt {
 
@@ -30,6 +32,15 @@ namespace Skybrud.Essentials.Maps.Wkt {
             Points = points ?? throw new ArgumentNullException(nameof(points));
         }
 
+        /// <summary>
+        /// Initializes a new WKT line string based on the specified <paramref name="lineString"/>.
+        /// </summary>
+        /// <param name="lineString">The shape that should make up the line string.</param>
+        public WktLineString(ILineString lineString) {
+            if (lineString == null) throw new ArgumentNullException(nameof(lineString));
+            Points = lineString.Points.Select(WktUtils.ToWkt).ToArray();
+        }
+
         #endregion
 
         #region Member methods
@@ -57,7 +68,7 @@ namespace Skybrud.Essentials.Maps.Wkt {
 
         public new static WktLineString Parse(string str) {
 
-            if (String.IsNullOrWhiteSpace(str)) throw new ArgumentNullException(nameof(str));
+            if (string.IsNullOrWhiteSpace(str)) throw new ArgumentNullException(nameof(str));
 
             str = str.Trim();
 
