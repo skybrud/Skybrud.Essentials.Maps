@@ -21,8 +21,13 @@ namespace Skybrud.Essentials.Maps.Kml.Geometry {
             InnerBoundaries = new List<KmlPolygonInnerBoundaries>();
         }
         
-        public KmlPolygon(params KmlPointCoordinates[] coordinates) {
-            OuterBoundaries = new KmlPolygonOuterBoundaries(coordinates);
+        public KmlPolygon(params KmlPointCoordinates[] outer) {
+            OuterBoundaries = new KmlPolygonOuterBoundaries(outer);
+            InnerBoundaries = new List<KmlPolygonInnerBoundaries>();
+        }
+        
+        public KmlPolygon(IEnumerable<KmlPointCoordinates> outer) {
+            OuterBoundaries = new KmlPolygonOuterBoundaries(outer);
             InnerBoundaries = new List<KmlPolygonInnerBoundaries>();
         }
         

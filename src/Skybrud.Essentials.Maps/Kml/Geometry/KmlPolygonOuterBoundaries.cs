@@ -1,4 +1,5 @@
-﻿using System.Xml;
+﻿using System.Collections.Generic;
+using System.Xml;
 using System.Xml.Linq;
 using Skybrud.Essentials.Common;
 
@@ -11,6 +12,8 @@ namespace Skybrud.Essentials.Maps.Kml.Geometry {
         public KmlPolygonOuterBoundaries() { }
 
         public KmlPolygonOuterBoundaries(params KmlPointCoordinates[] coordinates) : base(coordinates) { }
+
+        public KmlPolygonOuterBoundaries(IEnumerable<KmlPointCoordinates> coordinates) : base(coordinates) { }
 
         public KmlPolygonOuterBoundaries(double[][] array) : base(array) { }
 

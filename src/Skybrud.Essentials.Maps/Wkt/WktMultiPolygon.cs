@@ -18,7 +18,7 @@ namespace Skybrud.Essentials.Maps.Wkt {
             Polygons = new WktPolygon[0];
         }
 
-        public WktMultiPolygon(WktPolygon[] polygons) {
+        public WktMultiPolygon(params WktPolygon[] polygons) {
             Polygons = polygons ?? new WktPolygon[0];
         }
 

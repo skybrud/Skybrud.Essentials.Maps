@@ -36,6 +36,10 @@ namespace Skybrud.Essentials.Maps.Kml.Geometry {
             _list = coordinates?.ToList() ?? new List<KmlPointCoordinates>();
         }
 
+        public KmlLinearRingCoordinates(IEnumerable<KmlPointCoordinates> coordinates) {
+            _list = coordinates?.ToList() ?? new List<KmlPointCoordinates>();
+        }
+
         public KmlLinearRingCoordinates(XElement xml) {
             string[] value = xml.Value.Split(new []{ " ", "\n", "\r", "\t" }, StringSplitOptions.RemoveEmptyEntries);
             _list = value.Select(x => new KmlPointCoordinates(StringUtils.ParseDoubleArray(x))).ToList();

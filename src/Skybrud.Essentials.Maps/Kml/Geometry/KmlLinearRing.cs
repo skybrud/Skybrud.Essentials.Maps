@@ -1,4 +1,5 @@
-﻿using System.Xml;
+﻿using System.Collections.Generic;
+using System.Xml;
 using System.Xml.Linq;
 using Skybrud.Essentials.Common;
 using Skybrud.Essentials.Strings.Extensions;
@@ -56,6 +57,10 @@ namespace Skybrud.Essentials.Maps.Kml.Geometry {
         }
 
         public KmlLinearRing(params KmlPointCoordinates[] coordinates) {
+            Coordinates = new KmlLinearRingCoordinates(coordinates);
+        }
+
+        public KmlLinearRing(IEnumerable<KmlPointCoordinates> coordinates) {
             Coordinates = new KmlLinearRingCoordinates(coordinates);
         }
 

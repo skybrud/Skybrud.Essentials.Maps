@@ -16,6 +16,10 @@ namespace Skybrud.Essentials.Maps.Kml {
             _children = children?.ToList() ?? new List<T>();
         }
 
+        public void Add(T item) {
+            _children.Add(item);
+        }
+
         public void AddRange(IEnumerable<T> collection) {
             _children.AddRange(collection);
         }

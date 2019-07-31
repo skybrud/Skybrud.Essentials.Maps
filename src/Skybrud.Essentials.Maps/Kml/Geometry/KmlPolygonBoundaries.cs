@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Xml;
 using System.Xml.Linq;
 using Skybrud.Essentials.Xml.Extensions;
@@ -19,6 +20,10 @@ namespace Skybrud.Essentials.Maps.Kml.Geometry {
         }
 
         protected KmlPolygonBoundaries(params KmlPointCoordinates[] coordinates) {
+            LinearRing = new KmlLinearRing(coordinates);
+        }
+
+        protected KmlPolygonBoundaries(IEnumerable<KmlPointCoordinates> coordinates) {
             LinearRing = new KmlLinearRing(coordinates);
         }
 
