@@ -1,6 +1,6 @@
 # Skybrud.Essentials.Maps
 
-[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE.md) [![NuGet](https://img.shields.io/nuget/v/Skybrud.Essentials..Maps.svg)](https://www.nuget.org/packages/Skybrud.Essentials.Maps) [![NuGet](https://img.shields.io/nuget/dt/Skybrud.Essentials.Maps.svg)](https://www.nuget.org/packages/Skybrud.Essentials.Maps)
+[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE.md) [![NuGet]<!--(https://img.shields.io/nuget/v/Skybrud.Essentials..Maps.svg)](https://www.nuget.org/packages/Skybrud.Essentials.Maps) [![NuGet](https://img.shields.io/nuget/dt/Skybrud.Essentials.Maps.svg)](https://www.nuget.org/packages/Skybrud.Essentials.Maps)-->
 
 ### Installation
 
@@ -9,7 +9,7 @@ To install the Skybrud.Essentials.Maps, simply pick one of the methods below:
 1. [**NuGet Package**][NuGetPackage]  
    Install this NuGet package in your Visual Studio project. Makes updating easy.
 2. [**ZIP file**][GitHubRelease]  
-   Grab a ZIP file of the latest release; unzip and move both `Skybrud.Essentials.dll` and `Skybrud.Essentials.Http.dll` matching your target framework to the bin directory of your project.
+   Grab a ZIP file of the latest release; unzip and move the `Skybrud.Essentials.Maps.dll`and other DLLs matching your target framework to the bin directory of your project.
 
 
 
