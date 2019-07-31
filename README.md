@@ -1,6 +1,6 @@
 # Skybrud.Essentials.Maps
 
-[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE.md) [![NuGet]<!--(https://img.shields.io/nuget/v/Skybrud.Essentials..Maps.svg)](https://www.nuget.org/packages/Skybrud.Essentials.Maps) [![NuGet](https://img.shields.io/nuget/dt/Skybrud.Essentials.Maps.svg)](https://www.nuget.org/packages/Skybrud.Essentials.Maps)-->
+[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE.md) <!--[![NuGet](https://img.shields.io/nuget/v/Skybrud.Essentials..Maps.svg)](https://www.nuget.org/packages/Skybrud.Essentials.Maps) [![NuGet](https://img.shields.io/nuget/dt/Skybrud.Essentials.Maps.svg)](https://www.nuget.org/packages/Skybrud.Essentials.Maps)-->
 
 ### Installation
 
