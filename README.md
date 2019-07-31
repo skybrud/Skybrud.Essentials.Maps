@@ -37,12 +37,82 @@ To install the Skybrud.Essentials.Maps, simply pick one of the methods below:
 
 The [**releases page**][GitHubReleases] lists the relevant changes from each release.
 
+### Usage
 
+#### Geometry, lines and shapes
 
+Define a point on a map:
 
+```csharp
+// Initialize a new point by latitude and longitude
+IPoint point = new Point(55.708151, 9.536131);
+```
 
+Calculate the distance between two points:
 
+```csharp
+// Initialize the points by latitude and longitude
+IPoint a = new Point(55.708151, 9.536131);
+IPoint b = new Point(55.708069, 9.536000);
 
+// Calculate the distance in metres
+double distance = DistanceUtils.GetDistance(a, b);
+```
+
+Define a line on a map:
+
+```csharp
+// Initialize the points by latitude and longitude
+IPoint a = new Point(55.708151, 9.536131);
+IPoint b = new Point(55.708069, 9.536000);
+
+// Initialize a new line from the two points
+ILine line = new Line(a, b);
+
+// Get the length of the line
+double length = line.GetLength();
+```
+
+Define a line string (polyline) on a map:
+
+```csharp
+// Initialize the points by latitude and longitude
+IPoint a = new Point(55.708151, 9.536131);
+IPoint b = new Point(55.708069, 9.536000);
+IPoint c = new Point(55.708061, 9.536172);
+
+// Initialize a new line string from the multiple points
+ILineString line = new LineString(a, b, c);
+
+// Get the length of the line string
+double length = line.GetLength();
+```
+Define a polygon on a map:
+
+```csharp
+// Initialize the points by latitude and longitude
+IPoint a = new Point(55.708151, 9.536131);
+IPoint b = new Point(55.708069, 9.536000);
+IPoint c = new Point(55.708061, 9.536172);
+IPoint d = new Point(55.708145, 9.536222);
+
+IPoint f = new Point(55.708113, 9.536086);
+
+// Initialize a new polygon from the multiple points
+IPolygon polygon = new Polygon(a, b, c, d, a);
+
+// Get the circumferences of the polygon
+double circumference = polygon.GetCircumference();
+
+// Get the area of the polygon
+double area = polygon.GetArea();
+
+// Get the bounding of the polygon
+IRectangle bbox = polygon.GetBoundingBox();
+
+// Does the polygon contain point "f"?
+bool contains = polygon.Contains(f);
+```
 
 
 
