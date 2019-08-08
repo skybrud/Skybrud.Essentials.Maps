@@ -29,7 +29,7 @@
 
   <ItemGroup>
     <Reference Include="System.IO.Compression" />
-    <PackageReference Include="Skybrud.Essentials" Version="1.1.13" />
+    <PackageReference Include="Skybrud.Essentials" Version="1.1.15" />
     <PackageReference Include="Skybrud.Essentials.Http" Version="1.0.5" />
   </ItemGroup>
 
