@@ -14,7 +14,7 @@ namespace Skybrud.Essentials.Maps.GeoJson.Geometry {
     public class GeoJsonPolygon : GeoJsonGeometry {
 
         #region Properties
-
+        
         /// <summary>
         /// Gets the three-dimensional array representing the outer polygon as well as any inner polygons.
         /// </summary>

@@ -1,9 +1,10 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text;
+using Newtonsoft.Json;
 
 namespace Skybrud.Essentials.Maps.GeoJson {
 
     //[JsonConverter(typeof(GeoJsonObjectJsonConverter))]
-    public class GeoJsonObject {
+    public abstract class GeoJsonObject {
 
         #region Properties
 
@@ -29,12 +30,38 @@ namespace Skybrud.Essentials.Maps.GeoJson {
 
         #region Member methods
 
+        /// <summary>
+        /// Returns a JSON representation of this instance.
+        /// </summary>
+        /// <returns>The generated JSON string.</returns>
         public string ToJson() {
             return ToJson(Formatting.Indented);
         }
 
+        /// <summary>
+        /// Returns a JSON representation of this instance.
+        /// </summary>
+        /// <param name="formatting">Indicates how the output should be formatted.</param>
+        /// <returns>The generated JSON string.</returns>
         public string ToJson(Formatting formatting) {
             return JsonConvert.SerializeObject(this, formatting);
+        }
+
+        /// <summary>
+        /// Saves a JSON representation of this instance to the specified <paramref name="path"/>.
+        /// </summary>
+        /// <param name="path">The path to which the JSON should be saved.</param>
+        public virtual void Save(string path) {
+            Save(path, Formatting.Indented);
+        }
+
+        /// <summary>
+        /// Saves a JSON representation of this instance to the specified <paramref name="path"/>.
+        /// </summary>
+        /// <param name="path">The path to which the JSON should be saved.</param>
+        /// <param name="formatting">Indicates how the output should be formatted.</param>
+        public virtual void Save(string path, Formatting formatting) {
+            System.IO.File.WriteAllText(path, ToJson(formatting), Encoding.UTF8);
         }
 
         #endregion

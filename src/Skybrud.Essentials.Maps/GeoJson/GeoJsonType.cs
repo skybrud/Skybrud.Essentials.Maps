@@ -11,9 +11,13 @@ namespace Skybrud.Essentials.Maps.GeoJson {
         FeatureCollection,
 
         GeometryCollection,
+
         Point,
         LineString,
         Polygon,
+
+        MultiPoint,
+        MultiLineString,
         MultiPolygon
 
     }

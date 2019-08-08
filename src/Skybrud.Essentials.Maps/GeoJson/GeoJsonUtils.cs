@@ -1,6 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Newtonsoft.Json.Linq;
+using Skybrud.Essentials.Enums;
+using Skybrud.Essentials.Json;
+using Skybrud.Essentials.Json.Extensions;
 using Skybrud.Essentials.Maps.GeoJson.Features;
 using Skybrud.Essentials.Maps.GeoJson.Geometry;
 using Skybrud.Essentials.Maps.Geometry;
@@ -33,52 +37,102 @@ namespace Skybrud.Essentials.Maps.GeoJson {
 
         }
 
-        public static IPoint Convert(GeoJsonPoint point) {
-
-            if (point == null) throw new ArgumentNullException(nameof(point));
-
-            return new Point(point.Y, point.X);
-
+        /// <summary>
+        /// Parses the specified <paramref name="json"/> string into an instance of <typeparamref name="T"/>.
+        /// </summary>
+        /// <typeparam name="T">A type inheriting from <see cref="GeoJsonObject"/>.</typeparam>
+        /// <param name="json">The JSON string to be parsed.</param>
+        /// <returns>An instance of <typeparamref name="T"/>.</returns>
+        public static T Parse<T>(string json) where T : GeoJsonObject {
+            return Parse(json) as T;
         }
 
-        public static ILineString Convert(GeoJsonLineString lineString) {
-
-            if (lineString == null) throw new ArgumentNullException(nameof(lineString));
-
-            var points = lineString.Coordinates.Select(x => new Point(x[1], x[0]));
-
-            return new LineString(points);
-
+        /// <summary>
+        /// Parses the specified <paramref name="json"/> string into an instance inheriting from <see cref="GeoJsonObject"/>.
+        ///
+        /// As the type is specified in the JSON, the returned instance for a GeoJSON <strong>Feature</strong> will be
+        /// <see cref="GeoJsonFeature"/>, a <strong>Point</strong> will be <see cref="GeoJsonPoint"/> and so accordingly.
+        /// </summary>
+        /// <param name="json">The JSON string to be parsed.</param>
+        /// <returns>An instance of <see cref="GeoJsonObject"/>.</returns>
+        public static GeoJsonObject Parse(string json) {
+            if (string.IsNullOrWhiteSpace(json)) throw new ArgumentNullException(nameof(json));
+            return JsonUtils.ParseJsonObject(json, Parse);
         }
 
-        public static IPolygon Convert(GeoJsonPolygon polygon) {
+        /// <summary>
+        /// Loads the JSON string at the specified <paramref name="path"/> and parses it into an instance of <typeparamref name="T"/>.
+        /// 
+        /// As the type is specified in the JSON, the returned instance for a GeoJSON <strong>Feature</strong> will be
+        /// <see cref="GeoJsonFeature"/>, a <strong>Point</strong> will be <see cref="GeoJsonPoint"/> and so accordingly.
+        ///
+        /// If the type specified in the JSON doesn't match that of <typeparamref name="T"/>, this method will return <c>null</c>.
+        /// </summary>
+        /// <typeparam name="T">A type inheriting from <see cref="GeoJsonObject"/>.</typeparam>
+        /// <param name="path">The path to the JSON file on disk.</param>
+        /// <returns>An instance of <typeparamref name="T"/>.</returns>
+        public static T Load<T>(string path) where T : GeoJsonObject {
+            if (string.IsNullOrWhiteSpace(path)) throw new ArgumentNullException(nameof(path));
+            return Load(path) as T;
+        }
 
-            if (polygon == null) throw new ArgumentNullException(nameof(polygon));
+        /// <summary>
+        /// Loads the JSON string at the specified <paramref name="path"/> and parses it into an instance of <see cref="GeoJsonObject"/>.
+        /// 
+        /// As the type is specified in the JSON, the returned instance for a GeoJSON <strong>Feature</strong> will be
+        /// <see cref="GeoJsonFeature"/>, a <strong>Point</strong> will be <see cref="GeoJsonPoint"/> and so accordingly.
+        /// </summary>
+        /// <param name="path">The path to the JSON file on disk.</param>
+        /// <returns>An instance of <see cref="GeoJsonObject"/>.</returns>
+        public static GeoJsonObject Load(string path) {
+            if (string.IsNullOrWhiteSpace(path)) throw new ArgumentNullException(nameof(path));
+            return JsonUtils.LoadJsonObject(path, Parse);
+        }
 
-            IPoint[][] coordinates = new IPoint[polygon.Coordinates.Length][];
+        private static GeoJsonObject Parse(JObject obj) {
 
-            for (int i = 0; i < coordinates.Length; i++) {
+            // Get the value of the "type" property
+            string type = obj.GetString("type");
+            if (string.IsNullOrWhiteSpace(type)) throw new Exception("The JSON object doesn't specify a type");
 
-                coordinates[i] = new IPoint[polygon.Coordinates[i].Length];
+            // Parse the type into an enum
+            if (EnumUtils.TryParseEnum(type, out GeoJsonType result) == false) throw new Exception("Unknown type " + type);
 
-                for (int j = 0; j < coordinates[i].Length; j++) {
+            switch (result) {
 
-                    double x = polygon.Coordinates[i][j][0];
-                    double y = polygon.Coordinates[i][j][1];
+                case GeoJsonType.Feature:
+                    return GeoJsonFeature.Parse(obj);
 
-                    coordinates[i][j] = new Point(y, x);
-                }
+                case GeoJsonType.FeatureCollection:
+                    return GeoJsonFeatureCollection.Parse(obj);
+
+                case GeoJsonType.Point:
+                    return GeoJsonPoint.Parse(obj);
+
+                case GeoJsonType.LineString:
+                    return GeoJsonLineString.Parse(obj);
+
+                case GeoJsonType.Polygon:
+                    return GeoJsonPolygon.Parse(obj);
+
+                case GeoJsonType.MultiPoint:
+                    return GeoJsonMultiPoint.Parse(obj);
+
+                //case GeoJsonType.MultiLineString:
+                //    return GeoJsonMultiLineString.Parse(obj);
+
+                case GeoJsonType.MultiPolygon:
+                    return GeoJsonMultiPolygon.Parse(obj);
+
+                case GeoJsonType.GeometryCollection:
+                    return GeoJsonGeometryCollection.Parse(obj);
+
+                default:
+                    throw new Exception("Unknown type " + type);
 
             }
 
-            return new Polygon(coordinates);
-
         }
-
-
-
-
-
 
 
 

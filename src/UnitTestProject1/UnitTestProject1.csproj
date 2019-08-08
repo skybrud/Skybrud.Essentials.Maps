@@ -56,6 +56,8 @@
     <Reference Include="System.Web" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GeoJson\LineStringTests.cs" />
+    <Compile Include="GeoJson\PointTests.cs" />
     <Compile Include="GooglePolylineAlgoritmTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
