@@ -37,12 +37,31 @@ namespace Skybrud.Essentials.Maps.Geometry.Shapes {
         }
 
         /// <summary>
+        /// Initializes a new polyline from the specified array of <paramref name="points"/>.
+        /// </summary>
+        /// <param name="points">The points the polyline should be based on.</param>
+        public Polygon(params Point[] points) {
+            _outer = points?.Cast<IPoint>().ToList() ?? throw new ArgumentNullException(nameof(points));
+            _inner = new List<IPoint[]>();
+        }
+
+        /// <summary>
         /// Initializes a new polyline from the specified collection of <paramref name="points"/>.
         /// </summary>
         /// <param name="points">The points the polyline should be based on.</param>
         public Polygon(IEnumerable<IPoint> points) {
             _outer = points?.ToList() ?? throw new ArgumentNullException(nameof(points));
             _inner = new List<IPoint[]>();
+        }
+        
+        /// <summary>
+        /// Initializes a new instance from the specified <paramref name="outer"/> and <paramref name="inner"/> coordinates.
+        /// </summary>
+        /// <param name="outer">The outer coordinates.</param>
+        /// <param name="inner">The inner coordinates.</param>
+        public Polygon(IEnumerable<IPoint> outer, params IEnumerable<IPoint>[] inner) {
+            _outer = outer?.ToList() ?? throw new ArgumentNullException(nameof(outer));
+            _inner = inner?.Select(x => x.ToArray()).ToList() ?? new List<IPoint[]>();
         }
 
         /// <summary>
