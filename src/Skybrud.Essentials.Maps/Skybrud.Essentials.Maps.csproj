@@ -7,7 +7,7 @@
 
   <PropertyGroup>
     <RootNamespace>Skybrud.Essentials.Maps</RootNamespace>
-    <Version>1.0.0-beta001</Version>
+    <Version>1.0.0-beta002</Version>
     <Company>Skybrud.dk a/s</Company>
     <Product>Skybrud.Essentials</Product>
     <Authors>Anders Bjerner</Authors>
@@ -37,7 +37,7 @@
     <DocumentationFile>bin\$(ConfigurationName)\$(TargetFramework)\Skybrud.Essentials.Maps.xml</DocumentationFile>
   </PropertyGroup>
 
-  <Target Name="PostBuild" AfterTargets="PostBuildEvent" Condition="'$(ConfigurationName)'=='Release'">
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent" Condition="'$(ConfigurationName)'=='Release' AND '$(BuildTools)'=='1'">
     <Exec Command="&quot;$(ProjectDir)..\build\Skybrud.BuildTools.Tasks.exe&quot; &quot;postBuild&quot; &quot;$(ConfigurationName)&quot; &quot;$(ProjectPath)&quot; &quot;$(TargetPath)&quot;" />
   </Target>
 
