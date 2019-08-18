@@ -6,13 +6,22 @@ using Skybrud.Essentials.Maps.GeoJson.Geometry;
 
 namespace Skybrud.Essentials.Maps.GeoJson.Features {
 
+    /// <summary>
+    /// Class representing a GeoJSON <strong>Feature</strong>.
+    /// </summary>
     public class GeoJsonFeature : GeoJsonObject {
 
         #region Properties
         
+        /// <summary>
+        /// Gets or sets the properties of the feature.
+        /// </summary>
         [JsonProperty("properties")]
         public GeoJsonProperties Properties { get; set; }
 
+        /// <summary>
+        /// Gets or sets the geometry of the feature.
+        /// </summary>
         [JsonProperty("geometry")]
         public GeoJsonGeometry Geometry { get; set; }
 
@@ -20,7 +29,19 @@ namespace Skybrud.Essentials.Maps.GeoJson.Features {
 
         #region Constructors
 
+        /// <summary>
+        /// Initializes a new empty instance.
+        /// </summary>
         public GeoJsonFeature() : base(GeoJsonType.Feature) {
+            Properties = new GeoJsonProperties();
+        }
+
+        /// <summary>
+        /// Initializes a new instance with the specified <paramref name="geometry"/>.
+        /// </summary>
+        /// <param name="geometry">The geometry of the feature.</param>
+        public GeoJsonFeature(GeoJsonGeometry geometry) : base(GeoJsonType.Feature) {
+            Geometry = geometry;
             Properties = new GeoJsonProperties();
         }
 

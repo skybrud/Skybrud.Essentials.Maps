@@ -136,9 +136,9 @@ namespace Skybrud.Essentials.Maps.Geometry.Shapes {
         /// <param name="point">The point.</param>
         /// <returns><c>true</c> if the polygon contains <paramref name="point"/>; otheerwise <c>false</c>.</returns>
         public bool Contains(IPoint point) {
-            bool contains = MapsUtils.IsPointInPolygon(Outer, point);
+            bool contains = PolygonUtils.Contains(Outer, point);
             if (contains == false) return false;
-            return Inner.Length == 0 || Inner.Any(x => MapsUtils.IsPointInPolygon(x, point) == false);
+            return Inner.Length == 0 || Inner.Any(x => PolygonUtils.Contains(x, point) == false);
         }
 
         /// <summary>
@@ -154,7 +154,7 @@ namespace Skybrud.Essentials.Maps.Geometry.Shapes {
         /// </summary>
         /// <returns>The area in square metres.</returns>
         public double GetArea() {
-            return MapsUtils.GetArea(Outer);
+            return PolygonUtils.GetArea(Outer);
         }
 
         /// <summary>
@@ -162,7 +162,7 @@ namespace Skybrud.Essentials.Maps.Geometry.Shapes {
         /// </summary>
         /// <returns>The circumference in metres.</returns>
         public double GetCircumference() {
-            return MapsUtils.GetCircumference(Outer);
+            return PolygonUtils.GetCircumference(Outer);
         }
 
         /// <summary>
@@ -172,17 +172,6 @@ namespace Skybrud.Essentials.Maps.Geometry.Shapes {
         public IRectangle GetBoundingBox() {
             return MapsUtils.GetBoundingBox(Outer);
         }
-
-        ///// <summary>
-        ///// Gets an instance of <see cref="WktPolygon"/> representing the polygon as described by the <strong>Well Known Text</strong> format.
-        ///// </summary>
-        ///// <returns>An instance of <see cref="WktPolygon"/>.</returns>
-        //public WktPolygon ToWellKnownText() {
-        //    return new WktPolygon(
-        //        from point in Outer
-        //        select point.ToWellKnownText()
-        //    );
-        //}
 
         #endregion
 

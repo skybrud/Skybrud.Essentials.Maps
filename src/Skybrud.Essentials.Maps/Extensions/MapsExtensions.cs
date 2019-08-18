@@ -17,6 +17,10 @@ namespace Skybrud.Essentials.Maps.Extensions {
             return temp.ToArray();
         }
 
+        public static bool Contains(this IShape shape, double latitude, double longitude) {
+            return shape.Contains(new Point(latitude, longitude));
+        }
+
     }
 
 }

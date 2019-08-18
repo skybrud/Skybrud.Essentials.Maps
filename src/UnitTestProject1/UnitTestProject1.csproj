@@ -57,7 +57,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="GeoJson\LineStringTests.cs" />
+    <Compile Include="GeoJson\LineUtilsTests.cs" />
     <Compile Include="GeoJson\PointTests.cs" />
+    <Compile Include="UtmTests.cs" />
     <Compile Include="GooglePolylineAlgoritmTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

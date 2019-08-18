@@ -91,7 +91,7 @@ namespace Skybrud.Essentials.Maps.Geometry.Lines {
         /// </summary>
         /// <returns>The total length in metres.</returns>
         public double GetLength() {
-            return MapsUtils.GetLength(_points);
+            return LineUtils.GetLength(_points);
         }
 
         public IPoint GetCenter() {

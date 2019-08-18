@@ -30,10 +30,8 @@ namespace Skybrud.Essentials.Maps.Geometry.Lines {
         }
 
         public Line(IPoint point1, IPoint point2) {
-            if (A == null) throw new PropertyNotSetException(nameof(A));
-            if (B == null) throw new PropertyNotSetException(nameof(B));
-            A = point1;
-            B = point2;
+            A = point1 ?? throw new PropertyNotSetException(nameof(A));
+            B = point2 ?? throw new PropertyNotSetException(nameof(B));
         }
 
         #endregion

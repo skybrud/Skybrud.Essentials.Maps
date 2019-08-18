@@ -116,7 +116,7 @@ namespace Skybrud.Essentials.Maps.Geometry.Shapes {
             Point southEast = new Point(SouthWest.Latitude, NorthEast.Longitude);
             Point northWest = new Point(NorthEast.Latitude, SouthWest.Longitude);
 
-            return MapsUtils.GetArea(new IPoint[] {northEast, northWest, southWest, southEast});
+            return PolygonUtils.GetArea(new IPoint[] {northEast, northWest, southWest, southEast});
 
         }
         public double GetArea(double radius) {
@@ -126,7 +126,7 @@ namespace Skybrud.Essentials.Maps.Geometry.Shapes {
             Point southEast = new Point(SouthWest.Latitude, NorthEast.Longitude);
             Point northWest = new Point(NorthEast.Latitude, SouthWest.Longitude);
 
-            return MapsUtils.GetArea(new IPoint[] {northEast, northWest, southWest, southEast}, radius);
+            return PolygonUtils.GetArea(new IPoint[] {northEast, northWest, southWest, southEast}, radius);
 
         }
 
