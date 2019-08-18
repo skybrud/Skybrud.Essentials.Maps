@@ -9,22 +9,35 @@ using Skybrud.Essentials.Maps.Geometry;
 
 namespace Skybrud.Essentials.Maps.GeoJson.Geometry {
 
+    /// <summary>
+    /// Class representing a GeoJSON <strong>MultiPoint</strong> geometry.
+    /// </summary>
     public class GeoJsonMultiPoint : GeoJsonGeometry, IEnumerable<double[]> {
 
         private readonly List<double[]> _points;
 
         #region Properties
 
+        /// <summary>
+        /// Gets the amount of points in the geometry.
+        /// </summary>
         public int Count => _points.Count;
 
         #endregion
 
         #region Constructors
 
+        /// <summary>
+        /// Initializes a new empty instance.
+        /// </summary>
         public GeoJsonMultiPoint() : base(GeoJsonType.MultiPoint) {
             _points = new List<double[]>();
         }
 
+        /// <summary>
+        /// Initializes a new instance based on the specified <paramref name="obj"/>.
+        /// </summary>
+        /// <param name="obj">An instance of <see cref="JObject"/> representing the <strong>MultiPoint</strong> geometry.</param>
         private GeoJsonMultiPoint(JObject obj) : base(GeoJsonType.MultiPoint) {
             _points = (obj.GetArray("coordinates") ?? new JArray())
                 .Cast<JArray>()
@@ -113,6 +126,11 @@ namespace Skybrud.Essentials.Maps.GeoJson.Geometry {
             return json == null ? null : new GeoJsonMultiPoint(json);
         }
 
+        /// <summary>
+        /// Loads and parses the feature at the specified <paramref name="path"/> into an instance of <see cref="GeoJsonMultiPoint"/>.
+        /// </summary>
+        /// <param name="path">The path to a file on disk.</param>
+        /// <returns>An instance of <see cref="GeoJsonMultiPoint"/>.</returns>
         public static GeoJsonMultiPoint Load(string path) {
             return JsonUtils.LoadJsonObject(path, Parse);
         }

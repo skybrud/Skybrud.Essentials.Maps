@@ -87,19 +87,27 @@ namespace Skybrud.Essentials.Maps.Geometry.Lines {
         }
 
         /// <summary>
-        /// Gets the total length of line string.
+        /// Returns the total length of this line string.
         /// </summary>
         /// <returns>The total length in metres.</returns>
         public double GetLength() {
             return LineUtils.GetLength(_points);
         }
 
+        /// <summary>
+        /// Returns a new point representing the center of this line string.
+        /// </summary>
+        /// <returns>An instance of <see cref="IPoint"/>.</returns>
         public IPoint GetCenter() {
             return GetBoundingBox().GetCenter();
         }
 
+        /// <summary>
+        /// Returns a new rectangle representing the bounding box of this line string.
+        /// </summary>
+        /// <returns>An instance of <see cref="IRectangle"/>.</returns>
         public IRectangle GetBoundingBox() {
-            return MapsUtils.GetBoundingBox(Points);
+            return PolygonUtils.GetBoundingBox(Points);
         }
 
         #endregion

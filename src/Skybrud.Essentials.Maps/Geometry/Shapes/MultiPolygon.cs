@@ -87,24 +87,24 @@ namespace Skybrud.Essentials.Maps.Geometry.Shapes {
         }
 
         /// <summary>
-        /// Gets whether the multi polygon contains the specified <paramref name="point"/>.
+        /// Returns whether this multi polygon contains the specified <paramref name="point"/>.
         /// </summary>
         /// <param name="point">The point.</param>
-        /// <returns><c>true</c> if the multi polygon contains <paramref name="point"/>; otherwise <c>false</c>.</returns>
+        /// <returns><c>true</c> if this multi polygon contains <paramref name="point"/>; otherwise <c>false</c>.</returns>
         public bool Contains(IPoint point) {
             return Polygons.Any(x => x.Contains(point));
         }
 
         /// <summary>
-        /// Gets the center point (centroid) of the multi polygon. There is no guarentee that the center point is inside the multi polygon.
+        /// Returns the center point (centroid) of this multi polygon. There is no guarentee that the center point is inside the multi polygon.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>An instance of <see cref="IPoint"/>.</returns>
         public IPoint GetCenter() {
             return GetBoundingBox().GetCenter();
         }
 
         /// <summary>
-        /// Gets the total area of the multi polygon
+        /// Returns the total area of the multi polygon, calculated in square metres.
         /// </summary>
         /// <returns>The total area.</returns>
         public double GetArea() {
@@ -112,7 +112,7 @@ namespace Skybrud.Essentials.Maps.Geometry.Shapes {
         }
 
         /// <summary>
-        /// Gets the total circumference of the multi polygon.
+        /// Returns the total circumference of the multi polygon, calculated in metres.
         /// </summary>
         /// <returns>The total circumference.</returns>
         public double GetCircumference() {
@@ -120,11 +120,11 @@ namespace Skybrud.Essentials.Maps.Geometry.Shapes {
         }
 
         /// <summary>
-        /// Gets the bounding box of the multi polygon.
+        /// Returns a new rectangle representing the bounding box of this multi polygon.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>An instance of <see cref="IRectangle"/>.</returns>
         public IRectangle GetBoundingBox() {
-            return MapsUtils.GetBoundingBox(Polygons.SelectMany(x => x.Outer));
+            return PolygonUtils.GetBoundingBox(Polygons.SelectMany(x => x.Outer));
         }
 
         /// <summary>

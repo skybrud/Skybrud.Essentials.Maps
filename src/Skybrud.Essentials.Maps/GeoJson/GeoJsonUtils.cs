@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using Newtonsoft.Json.Linq;
 using Skybrud.Essentials.Enums;
 using Skybrud.Essentials.Json;
@@ -8,7 +7,6 @@ using Skybrud.Essentials.Json.Extensions;
 using Skybrud.Essentials.Maps.GeoJson.Features;
 using Skybrud.Essentials.Maps.GeoJson.Geometry;
 using Skybrud.Essentials.Maps.Geometry;
-using Skybrud.Essentials.Maps.Geometry.Lines;
 using Skybrud.Essentials.Maps.Geometry.Shapes;
 
 namespace Skybrud.Essentials.Maps.GeoJson {
@@ -158,7 +156,7 @@ namespace Skybrud.Essentials.Maps.GeoJson {
 
             }
 
-            return points.Count == 0 ? null : MapsUtils.GetBoundingBox(points);
+            return points.Count == 0 ? null : PolygonUtils.GetBoundingBox(points);
 
         }
 
@@ -177,7 +175,7 @@ namespace Skybrud.Essentials.Maps.GeoJson {
 
             }
 
-            return points.Count == 0 ? null : MapsUtils.GetBoundingBox(points);
+            return points.Count == 0 ? null : PolygonUtils.GetBoundingBox(points);
 
         }
 

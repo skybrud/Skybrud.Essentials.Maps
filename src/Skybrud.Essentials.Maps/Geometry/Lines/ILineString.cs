@@ -1,7 +1,7 @@
 ﻿namespace Skybrud.Essentials.Maps.Geometry.Lines {
 
     /// <summary>
-    /// Interface representing a line string / polyline.
+    /// Interface representing a line string (also referred to as a polyline).
     /// </summary>
     /// <see>
     ///     <cref>https://en.wikipedia.org/wiki/Polygonal_chain</cref>

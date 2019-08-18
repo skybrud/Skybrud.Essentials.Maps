@@ -61,6 +61,10 @@ namespace Skybrud.Essentials.Maps.GeoJson.Geometry {
             Coordinates = lineString.Points.Select(x => new GeoJsonCoordinates(x)).ToList();
         }
 
+        /// <summary>
+        /// Initializes a new instance based on the specified <paramref name="obj"/>.
+        /// </summary>
+        /// <param name="obj">An instance of <see cref="JObject"/> representing the line string.</param>
         protected GeoJsonLineString(JObject obj) : base(GeoJsonType.LineString) {
 
             Coordinates = new List<GeoJsonCoordinates>();
@@ -107,6 +111,15 @@ namespace Skybrud.Essentials.Maps.GeoJson.Geometry {
         /// <returns>An instance of <see cref="GeoJsonLineString"/>.</returns>
         public new static GeoJsonLineString Parse(JObject json) {
             return json == null ? null : new GeoJsonLineString(json);
+        }
+
+        /// <summary>
+        /// Loads and parses the feature at the specified <paramref name="path"/> into an instance of <see cref="GeoJsonLineString"/>.
+        /// </summary>
+        /// <param name="path">The path to a file on disk.</param>
+        /// <returns>An instance of <see cref="GeoJsonLineString"/>.</returns>
+        public static GeoJsonLineString Load(string path) {
+            return JsonUtils.LoadJsonObject(path, Parse);
         }
 
         #endregion

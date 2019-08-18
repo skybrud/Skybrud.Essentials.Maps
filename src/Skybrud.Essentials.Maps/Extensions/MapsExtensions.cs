@@ -17,6 +17,13 @@ namespace Skybrud.Essentials.Maps.Extensions {
             return temp.ToArray();
         }
 
+        /// <summary>
+        /// Returns whether the point with the specified <paramref name="latitude"/> and <paramref name="longitude"/> is cointained by <see cref="shape"/>.
+        /// </summary>
+        /// <param name="shape">The shape.</param>
+        /// <param name="latitude">The latitude of the point.</param>
+        /// <param name="longitude">The longitude of the point.</param>
+        /// <returns><c>true</c> if <paramref name="shape"/> contains the point; otherwise <c>false</c>.</returns>
         public static bool Contains(this IShape shape, double latitude, double longitude) {
             return shape.Contains(new Point(latitude, longitude));
         }

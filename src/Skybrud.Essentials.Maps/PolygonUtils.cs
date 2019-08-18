@@ -146,7 +146,7 @@ namespace Skybrud.Essentials.Maps {
         /// Returns a three-dimensional array of X and Y coordinates based on the specified <paramref name="coordinates"/>.
         /// </summary>
         /// <param name="coordinates">A two-dimensional array making up the outer and inner coordinates of a polygon.</param>
-        /// <returns>A three-dimensional array of X and Y coordinates</returns>
+        /// <returns>A three-dimensional array of X and Y coordinates.</returns>
         public static double[][][] ToXyArray(IPoint[][] coordinates) {
 
             if (coordinates == null) throw new ArgumentNullException(nameof(coordinates));

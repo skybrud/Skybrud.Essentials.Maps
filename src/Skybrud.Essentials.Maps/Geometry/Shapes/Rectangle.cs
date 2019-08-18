@@ -1,6 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using Skybrud.Essentials.Common;
 
 namespace Skybrud.Essentials.Maps.Geometry.Shapes {
@@ -70,7 +68,7 @@ namespace Skybrud.Essentials.Maps.Geometry.Shapes {
         #region Member methods
 
         /// <summary>
-        /// Gets whether the rectangle contains the point at the specified <paramref name="latitude"/> and <paramref name="longitude"/>.
+        /// Returns whether the rectangle contains the point at the specified <paramref name="latitude"/> and <paramref name="longitude"/>.
         /// </summary>
         /// <param name="latitude">The latitude of the point.</param>
         /// <param name="longitude">The longitude of the point.</param>
@@ -80,7 +78,7 @@ namespace Skybrud.Essentials.Maps.Geometry.Shapes {
         }
 
         /// <summary>
-        /// Gets whether the rectangle contains <paramref name="point"/>.
+        /// Returns whether the rectangle contains <paramref name="point"/>.
         /// </summary>
         /// <param name="point">The point.</param>
         /// <returns><c>true</c>c> if the rectangle contains the point; otherwise <c>false</c>.</returns>
@@ -96,7 +94,7 @@ namespace Skybrud.Essentials.Maps.Geometry.Shapes {
         }
 
         /// <summary>
-        /// Gets an instance of <see cref="IPoint"/> representing the center of the rectangle.
+        /// Returns an instance of <see cref="IPoint"/> representing the center of the rectangle.
         /// </summary>
         /// <returns>An instance of <see cref="IPoint"/>.</returns>
         public IPoint GetCenter() {
@@ -106,7 +104,7 @@ namespace Skybrud.Essentials.Maps.Geometry.Shapes {
         }
 
         /// <summary>
-        /// Gets the area of the rectangle in square metres. 
+        /// Returns the area of the rectangle in square metres. 
         /// </summary>
         /// <returns>The area in square metres.</returns>
         public double GetArea() {
@@ -119,6 +117,12 @@ namespace Skybrud.Essentials.Maps.Geometry.Shapes {
             return PolygonUtils.GetArea(new IPoint[] {northEast, northWest, southWest, southEast});
 
         }
+
+        /// <summary>
+        /// Returns the area of the rectangle in square metres. 
+        /// </summary>
+        /// <param name="radius">The radius of the spheroid.</param>
+        /// <returns>The area in square metres.</returns>
         public double GetArea(double radius) {
 
             Point southWest = new Point(SouthWest.Latitude, SouthWest.Longitude);
@@ -131,7 +135,7 @@ namespace Skybrud.Essentials.Maps.Geometry.Shapes {
         }
 
         /// <summary>
-        /// Gets the circumference of the rectangle in metres. 
+        /// Returns the circumference of the rectangle in metres. 
         /// </summary>
         /// <returns>The circumference in metres.</returns>
         public double GetCircumference() {
@@ -144,7 +148,7 @@ namespace Skybrud.Essentials.Maps.Geometry.Shapes {
         }
 
         /// <summary>
-        /// Gets an instance of <see cref="IRectangle"/> representing the bounding box of the rectangle.
+        /// Returns an instance of <see cref="IRectangle"/> representing the bounding box of the rectangle.
         /// </summary>
         /// <returns>An instance of <see cref="IRectangle"/>.</returns>
         public IRectangle GetBoundingBox() {

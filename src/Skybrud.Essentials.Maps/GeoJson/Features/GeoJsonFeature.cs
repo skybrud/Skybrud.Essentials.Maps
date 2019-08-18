@@ -45,6 +45,10 @@ namespace Skybrud.Essentials.Maps.GeoJson.Features {
             Properties = new GeoJsonProperties();
         }
 
+        /// <summary>
+        /// Initializes a new instance based on the specified <paramref name="obj"/>.
+        /// </summary>
+        /// <param name="obj">An instance of <see cref="JObject"/> representing the feature.</param>
         protected GeoJsonFeature(JObject obj) : base(GeoJsonType.Feature) {
             Properties = obj.GetObject("properties", GeoJsonProperties.Parse);
             Geometry = obj.GetObject<GeoJsonGeometry>("geometry");
@@ -54,14 +58,29 @@ namespace Skybrud.Essentials.Maps.GeoJson.Features {
 
         #region Static methods
 
+        /// <summary>
+        /// Parses the specified <paramref name="json"/> string into an instance of <see cref="GeoJsonFeature"/>.
+        /// </summary>
+        /// <param name="json">The JSON string to be parsed.</param>
+        /// <returns>An instance of <see cref="GeoJsonFeature"/>.</returns>
         public static GeoJsonFeature Parse(string json) {
             return JsonUtils.ParseJsonObject(json, Parse);
         }
 
+        /// <summary>
+        /// Parses the specified <paramref name="json"/> object into an instance of <see cref="GeoJsonFeature"/>.
+        /// </summary>
+        /// <param name="json">The instance of <see cref="JObject"/> to be parsed.</param>
+        /// <returns>An instance of <see cref="GeoJsonFeature"/>.</returns>
         public static GeoJsonFeature Parse(JObject json) {
             return json == null ? null : new GeoJsonFeature(json);
         }
 
+        /// <summary>
+        /// Loads and parses the feature at the specified <paramref name="path"/> into an instance of <see cref="GeoJsonFeature"/>.
+        /// </summary>
+        /// <param name="path">The path to a file on disk.</param>
+        /// <returns>An instance of <see cref="GeoJsonFeature"/>.</returns>
         public static GeoJsonFeature Load(string path) {
             return JsonUtils.LoadJsonObject(path, Parse);
         }

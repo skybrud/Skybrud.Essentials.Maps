@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Skybrud.Essentials.Maps.Geometry;
-using Skybrud.Essentials.Maps.Geometry.Shapes;
-
-using static System.Math;
+﻿using static System.Math;
 
 namespace Skybrud.Essentials.Maps {
 

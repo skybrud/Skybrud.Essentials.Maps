@@ -121,7 +121,7 @@ namespace Skybrud.Essentials.Maps.Geometry.Shapes {
         }
 
         /// <summary>
-        /// Gets whether the polygon contains the point defined by the specified <paramref name="latitude"/> and <paramref name="longitude"/>.
+        /// Returns whether the polygon contains the point defined by the specified <paramref name="latitude"/> and <paramref name="longitude"/>.
         /// </summary>
         /// <param name="latitude">The langitude of the point.</param>
         /// <param name="longitude">The longitude of the point.</param>
@@ -131,7 +131,7 @@ namespace Skybrud.Essentials.Maps.Geometry.Shapes {
         }
 
         /// <summary>
-        /// Gets whether the polygon contains the specified <paramref name="point"/>.
+        /// Returns whether the polygon contains the specified <paramref name="point"/>.
         /// </summary>
         /// <param name="point">The point.</param>
         /// <returns><c>true</c> if the polygon contains <paramref name="point"/>; otheerwise <c>false</c>.</returns>
@@ -142,7 +142,7 @@ namespace Skybrud.Essentials.Maps.Geometry.Shapes {
         }
 
         /// <summary>
-        /// Gets an instance of <see cref="IPoint"/> representing the center of the polygon.
+        /// Returns an instance of <see cref="IPoint"/> representing the center of the polygon.
         /// </summary>
         /// <returns>An instance of <see cref="IPoint"/>.</returns>
         public IPoint GetCenter() {
@@ -150,7 +150,7 @@ namespace Skybrud.Essentials.Maps.Geometry.Shapes {
         }
 
         /// <summary>
-        /// Gets the area of the polygon in square metres. 
+        /// Returns the area of the polygon in square metres. 
         /// </summary>
         /// <returns>The area in square metres.</returns>
         public double GetArea() {
@@ -158,7 +158,7 @@ namespace Skybrud.Essentials.Maps.Geometry.Shapes {
         }
 
         /// <summary>
-        /// Gets the circumference of the polygon in metres. 
+        /// Returns the circumference of the polygon in metres. 
         /// </summary>
         /// <returns>The circumference in metres.</returns>
         public double GetCircumference() {
@@ -166,11 +166,11 @@ namespace Skybrud.Essentials.Maps.Geometry.Shapes {
         }
 
         /// <summary>
-        /// Gets an instance of <see cref="IRectangle"/> representing the bounding box of the polygon.
+        /// Returns an instance of <see cref="IRectangle"/> representing the bounding box of the polygon.
         /// </summary>
         /// <returns>An instance of <see cref="IRectangle"/>.</returns>
         public IRectangle GetBoundingBox() {
-            return MapsUtils.GetBoundingBox(Outer);
+            return PolygonUtils.GetBoundingBox(Outer);
         }
 
         #endregion
@@ -193,15 +193,6 @@ namespace Skybrud.Essentials.Maps.Geometry.Shapes {
                 }
             );
         }
-
-        ///// <summary>
-        ///// Initializes a new <see cref="Polygon"/> from the specified <paramref name="polygon"/>.
-        ///// </summary>
-        ///// <param name="polygon">The polygon as described by the <strong>Well Known Text</strong> format.</param>
-        ///// <returns>An instance of <see cref="Polygon"/>.</returns>
-        //public static Polygon FromWellKnownText(WktPolygon polygon) {
-        //    return new Polygon(from p in polygon.Outer select HestExtensions.ToPoint(p));
-        //}
         
         #endregion
 

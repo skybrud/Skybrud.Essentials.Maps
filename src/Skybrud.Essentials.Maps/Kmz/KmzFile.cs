@@ -7,14 +7,23 @@ using Skybrud.Essentials.Maps.Kml.Constants;
 
 namespace Skybrud.Essentials.Maps.Kmz {
 
+    /// <summary>
+    /// Class representing A KMZ file.
+    /// </summary>
     public class KmzFile : IDisposable {
 
         #region Properties
 
         protected Stream Stream { get; private set; }
 
+        /// <summary>
+        /// Gets a reference to the underlying <see cref="ZipArchive"/> of the KMZ file.
+        /// </summary>
         public ZipArchive Archive { get; private set; }
 
+        /// <summary>
+        /// Gets the <c>doc.kml</c> KML file of the KMZ file.
+        /// </summary>
         public KmlFile Kml { get; private set; }
 
         #endregion

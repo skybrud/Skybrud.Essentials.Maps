@@ -2,6 +2,9 @@
 
 namespace Skybrud.Essentials.Maps.Geometry.Lines {
 
+    /// <summary>
+    /// Interface describing the properties of methods shared by <see cref="ILine"/> and <see cref="ILineString"/>.
+    /// </summary>
     public interface ILineBase : IGeometry {
 
         /// <summary>

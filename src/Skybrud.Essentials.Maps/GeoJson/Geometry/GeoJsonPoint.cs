@@ -97,6 +97,10 @@ namespace Skybrud.Essentials.Maps.GeoJson.Geometry {
             Coordinates = new GeoJsonCoordinates(point);
         }
 
+        /// <summary>
+        /// Initializes a new instance based on the specified <paramref name="obj"/>.
+        /// </summary>
+        /// <param name="obj">An instance of <see cref="JObject"/> representing the <strong>Point</strong> geometry.</param>
         private GeoJsonPoint(JObject obj) : base(GeoJsonType.Point) {
             if (!(obj.GetValue("coordinates") is JArray array)) return;
             Coordinates = new GeoJsonCoordinates(array.ToObject<double[]>());
@@ -134,6 +138,15 @@ namespace Skybrud.Essentials.Maps.GeoJson.Geometry {
         /// <returns>An instance of <see cref="GeoJsonPoint"/>.</returns>
         public new static GeoJsonPoint Parse(JObject json) {
             return json == null ? null : new GeoJsonPoint(json);
+        }
+
+        /// <summary>
+        /// Loads and parses the feature at the specified <paramref name="path"/> into an instance of <see cref="GeoJsonPoint"/>.
+        /// </summary>
+        /// <param name="path">The path to a file on disk.</param>
+        /// <returns>An instance of <see cref="GeoJsonPoint"/>.</returns>
+        public static GeoJsonPoint Load(string path) {
+            return JsonUtils.LoadJsonObject(path, Parse);
         }
 
         #endregion

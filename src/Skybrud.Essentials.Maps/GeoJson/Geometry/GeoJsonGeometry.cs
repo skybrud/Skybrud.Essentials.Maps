@@ -7,6 +7,9 @@ using Skybrud.Essentials.Maps.GeoJson.Json;
 
 namespace Skybrud.Essentials.Maps.GeoJson.Geometry {
 
+    /// <summary>
+    /// Base class with common logic for the classes representing the geometries defined by the GeoJSON specification.
+    /// </summary>
     [JsonConverter(typeof(GeoJsonShapeJsonConverter))]
     public abstract class GeoJsonGeometry : GeoJsonObject {
 
@@ -54,8 +57,7 @@ namespace Skybrud.Essentials.Maps.GeoJson.Geometry {
                     return GeoJsonPolygon.Parse(obj);
 
                 case "MultiPoint":
-                    throw new NotImplementedException();
-                    //return GeoJsonMultiPoint.Parse(obj);
+                    return GeoJsonMultiPoint.Parse(obj);
 
                 case "MultiLineString":
                     throw new NotImplementedException();

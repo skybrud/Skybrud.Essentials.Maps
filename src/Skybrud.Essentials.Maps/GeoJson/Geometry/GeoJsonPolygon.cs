@@ -9,7 +9,7 @@ using Skybrud.Essentials.Maps.Geometry.Shapes;
 namespace Skybrud.Essentials.Maps.GeoJson.Geometry {
 
     /// <summary>
-    /// Class representing a <strong>GeoJSON</strong> polygon.
+    /// Class representing a GeoJSON <strong>Polygon</strong> geometry.
     /// </summary>
     public class GeoJsonPolygon : GeoJsonGeometry {
 
@@ -48,7 +48,7 @@ namespace Skybrud.Essentials.Maps.GeoJson.Geometry {
         /// <param name="polygon">The polygon.</param>
         public GeoJsonPolygon(IPolygon polygon) : base(GeoJsonType.Polygon) {
             if (polygon == null) throw new ArgumentNullException(nameof(polygon));
-            Coordinates = MapsUtils.ToXyArray(polygon.GetCoordinates());
+            Coordinates = PolygonUtils.ToXyArray(polygon.GetCoordinates());
         }
 
         /// <summary>
@@ -57,7 +57,7 @@ namespace Skybrud.Essentials.Maps.GeoJson.Geometry {
         /// <param name="coordinates">The coordinates.</param>
         public GeoJsonPolygon(IPoint[][] coordinates) : base(GeoJsonType.Polygon) {
             if (coordinates == null) throw new ArgumentNullException(nameof(coordinates));
-            Coordinates = MapsUtils.ToXyArray(coordinates);
+            Coordinates = PolygonUtils.ToXyArray(coordinates);
         }
 
         #endregion
