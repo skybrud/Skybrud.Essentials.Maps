@@ -24,7 +24,7 @@ namespace Skybrud.Essentials.Maps {
             for (int i = 1; i < points.Count; i++) {
 
                 // Calculate the distance between the two points
-                sum += DistanceUtils.GetDistance(points[i - i], points[i]);
+                sum += DistanceUtils.GetDistance(points[i - 1], points[i]);
 
             }
 
@@ -45,7 +45,7 @@ namespace Skybrud.Essentials.Maps {
             for (int i = 1; i < points.Length; i++) {
 
                 // Calculate the distance between the two points
-                sum += DistanceUtils.GetDistance(points[i - i], points[i]);
+                sum += DistanceUtils.GetDistance(points[i - 1], points[i]);
 
             }
 
