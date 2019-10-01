@@ -99,7 +99,7 @@ namespace Skybrud.Essentials.Maps.Geometry.Lines {
         /// </summary>
         /// <returns>An instance of <see cref="IPoint"/>.</returns>
         public IPoint GetCenter() {
-            return GetBoundingBox().GetCenter();
+            return LineUtils.GetCenter(this);
         }
 
         /// <summary>

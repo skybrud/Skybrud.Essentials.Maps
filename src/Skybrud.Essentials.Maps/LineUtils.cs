@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Skybrud.Essentials.Maps.Geometry;
 using Skybrud.Essentials.Maps.Geometry.Lines;
 using static System.Math;
@@ -249,6 +250,44 @@ namespace Skybrud.Essentials.Maps {
         public static bool Intersects(ILine line1, ILine line2, out IPoint result) {
             result = GetIntersection(line1, line2);
             return result != null;
+        }
+
+        /// <summary>
+        /// Returns the center point of the specified <paramref name="line"/>.
+        ///
+        /// The center point is calculated by travelling half of the line's total length.
+        /// </summary>
+        /// <param name="line">The line.</param>
+        /// <returns>An instance of <see cref="IPoint"/> representing the center point.</returns>
+        public static IPoint GetCenter(ILineString line) {
+
+            if (line == null) throw new ArgumentNullException(nameof(line));
+
+            double distance = GetLength(line.Points) / 2d;
+
+            for (int i = 1; i < line.Points.Length; i++) {
+
+                IPoint a = line.Points[i - 1];
+                IPoint b = line.Points[i];
+
+                double d = DistanceUtils.GetDistance(a, b);
+
+                if (d > distance) {
+
+                    // Caculate the heading between "a" and "b" (the center is on that line)
+                    double heading = ComputeHeading(a, b);
+
+                    // Calculate the offset/center based on the remaining distance
+                    return ComputeOffset(a, distance, heading);
+
+                }
+
+                distance -= d;
+
+            }
+
+            return line.GetBoundingBox().GetCenter();
+
         }
 
     }
