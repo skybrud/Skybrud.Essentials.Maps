@@ -59,7 +59,7 @@ namespace Skybrud.Essentials.Maps.Geometry.Shapes {
         public Rectangle(IPoint southWest, IPoint northEast) {
             if (southWest == null) throw new ArgumentNullException(nameof(southWest));
             if (northEast == null) throw new ArgumentNullException(nameof(northEast));
-            SouthWest = new Point(southWest.Latitude, northEast.Longitude);
+            SouthWest = new Point(southWest.Latitude, southWest.Longitude);
             NorthEast = new Point(northEast.Latitude, northEast.Longitude);
         }
 
