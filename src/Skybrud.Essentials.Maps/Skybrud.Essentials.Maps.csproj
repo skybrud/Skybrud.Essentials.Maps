@@ -7,12 +7,11 @@
 
   <PropertyGroup>
     <RootNamespace>Skybrud.Essentials.Maps</RootNamespace>
-    <Version>1.0.0-beta002</Version>
+    <Version>1.0.0-beta003</Version>
     <Company>Skybrud.dk a/s</Company>
     <Product>Skybrud.Essentials</Product>
     <Authors>Anders Bjerner</Authors>
-    <Copyright>Copyright © 2019</Copyright>
-    <RepositoryUrl>https://github.com/skybrud/Skybrud.Essentials.Maps</RepositoryUrl>
+    <Copyright>Copyright © 2020</Copyright>
   </PropertyGroup>
   
   <PropertyGroup>
@@ -23,7 +22,7 @@
   <PropertyGroup>
     <PackageTags>Skybrud, Essentials, Maps, Kml, GeoJson, Wkt</PackageTags>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <PackageProjectUrl>https://github.com/skybrud/Skybrud.Essentials.Maps</PackageProjectUrl>
+    <PackageProjectUrl>https://packages.skybrud.dk/skybrud.essentials.maps/</PackageProjectUrl>
     <PackageIconUrl>https://www.skybrud.dk/img/5431sk/icon/favicon.ico</PackageIconUrl>
   </PropertyGroup>
 
