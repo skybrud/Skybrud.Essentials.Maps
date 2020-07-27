@@ -5,6 +5,9 @@ using System.Linq;
 
 namespace Skybrud.Essentials.Maps.Geometry.Shapes {
 
+    /// <summary>
+    /// Class representing a polygon.
+    /// </summary>
     public class Polygon : IPolygon {
 
         private readonly List<IPoint> _outer;
@@ -136,9 +139,9 @@ namespace Skybrud.Essentials.Maps.Geometry.Shapes {
         /// <param name="point">The point.</param>
         /// <returns><c>true</c> if the polygon contains <paramref name="point"/>; otheerwise <c>false</c>.</returns>
         public bool Contains(IPoint point) {
-            bool contains = PolygonUtils.Contains(Outer, point);
+            bool contains = MapsUtils.Contains(Outer, point);
             if (contains == false) return false;
-            return Inner.Length == 0 || Inner.Any(x => PolygonUtils.Contains(x, point) == false);
+            return Inner.Length == 0 || Inner.Any(x => MapsUtils.Contains(x, point) == false);
         }
 
         /// <summary>
@@ -154,7 +157,7 @@ namespace Skybrud.Essentials.Maps.Geometry.Shapes {
         /// </summary>
         /// <returns>The area in square metres.</returns>
         public double GetArea() {
-            return PolygonUtils.GetArea(Outer);
+            return MapsUtils.GetArea(Outer);
         }
 
         /// <summary>
@@ -162,7 +165,7 @@ namespace Skybrud.Essentials.Maps.Geometry.Shapes {
         /// </summary>
         /// <returns>The circumference in metres.</returns>
         public double GetCircumference() {
-            return PolygonUtils.GetCircumference(Outer);
+            return MapsUtils.GetCircumference(Outer);
         }
 
         /// <summary>
@@ -170,7 +173,7 @@ namespace Skybrud.Essentials.Maps.Geometry.Shapes {
         /// </summary>
         /// <returns>An instance of <see cref="IRectangle"/>.</returns>
         public IRectangle GetBoundingBox() {
-            return PolygonUtils.GetBoundingBox(Outer);
+            return MapsUtils.GetBoundingBox(Outer);
         }
 
         #endregion

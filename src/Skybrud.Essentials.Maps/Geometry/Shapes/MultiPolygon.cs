@@ -124,7 +124,7 @@ namespace Skybrud.Essentials.Maps.Geometry.Shapes {
         /// </summary>
         /// <returns>An instance of <see cref="IRectangle"/>.</returns>
         public IRectangle GetBoundingBox() {
-            return PolygonUtils.GetBoundingBox(Polygons.SelectMany(x => x.Outer));
+            return MapsUtils.GetBoundingBox(Polygons.SelectMany(x => x.Outer));
         }
 
         /// <summary>

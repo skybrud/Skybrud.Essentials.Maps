@@ -12,18 +12,63 @@ using Skybrud.Essentials.Maps.Geometry.Shapes;
 namespace Skybrud.Essentials.Maps.Google {
 
     /// <summary>
-    /// See https://developers.google.com/maps/documentation/utilities/polylinealgorithm
+    /// Static class for encoding and decoding points using Google's Polyline Algorithm.
     /// </summary>
+    /// <see>
+    ///     <cref>https://developers.google.com/maps/documentation/utilities/polylinealgorithm</cref>
+    /// </see>
     /// <see>
     ///     <cref>https://gist.github.com/shinyzhu/4617989</cref>
     /// </see>
     public static class GooglePolylineAlgoritm {
 
         /// <summary>
+        /// Encodes the specified <paramref name="shape"/> using Google's polyline algorithm.
+        /// </summary>
+        /// <param name="shape">The shape to be encoded.</param>
+        /// <returns>The encoded string of coordinates.</returns>
+        /// <remarks>
+        /// As the name suggests, the polyline algorithm is for encoding polylines, so not all types implementing
+        /// <see cref="IShape"/> are supported.
+        ///
+        /// When <paramref name="shape"/> is an instance of <see cref="IPolygon"/>, the outer bounds of the polygon are
+        /// encoded. Any inner bounds defined in the polygon are ignored.
+        ///
+        /// When <paramref name="shape"/> is an instance of <see cref="IMultiPolygon"/>, the outer bounds of each
+        /// polygon are encoded, and each set of coordinates are placed on their own line in the output string. Similar
+        /// to when encoding a single polygon, the inner bounds of the polygons are ignored. Multi polygon shapes are
+        /// not directly supported by the polyline algoritm, so the encoded results for each polygon are placed on
+        /// separate lines.
+        ///
+        /// Other types will throw an exception saying that the type is not supported.
+        /// </remarks>
+        /// <exception cref="ArgumentNullException"><paramref name="shape"/> is <c>null</c>.</exception>
+        /// <exception cref="InvalidOperationException"><paramref name="shape"/> is not a supported type.</exception>
+        public static string Encode(IShape shape) {
+
+            if (shape == null) throw new ArgumentNullException(nameof(shape));
+
+            switch (shape) {
+
+                case IPolygon polygon:
+                    return Encode(polygon);
+
+                case IMultiPolygon multiPolygon:
+                    return Encode(multiPolygon);
+
+                default:
+                    throw new InvalidOperationException("Unsupported type: " + shape.GetType());
+
+            }
+
+        }
+
+        /// <summary>
         /// Encodes the specified <paramref name="point"/> using Google's polyline algorithm.
         /// </summary>
         /// <param name="point">The point to be encoded.</param>
         /// <returns>The encoded string of coordinates.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="point"/> is <c>null</c>.</exception>
         public static string Encode(IPoint point) {
             if (point == null) throw new ArgumentNullException(nameof(point));
             return Encode(new []{ point });
@@ -34,6 +79,7 @@ namespace Skybrud.Essentials.Maps.Google {
         /// </summary>
         /// <param name="polygon">The polygon to be encoded.</param>
         /// <returns>The encoded string of coordinates.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="polygon"/> is <c>null</c>.</exception>
         public static string Encode(IPolygon polygon) {
             if (polygon == null) throw new ArgumentNullException(nameof(polygon));
             return Encode(polygon.Outer);
@@ -41,12 +87,12 @@ namespace Skybrud.Essentials.Maps.Google {
 
         /// <summary>
         /// Encodes the specified <paramref name="multiPolygon"/> using Google's polyline algorithm.
-        ///
-        /// The polyline algorithm doesn't directly support multiple polygons and the encoded strings for each polygons
-        /// are therefor separated by <see cref="Environment.NewLine"/>.
         /// </summary>
         /// <param name="multiPolygon">A collection of polygons to be encoded.</param>
         /// <returns>The encoded string of coordinates.</returns>
+        /// <remarks>The polyline algorithm doesn't directly support multiple polygons and the encoded strings for each polygons
+        /// are therefore separated by <see cref="Environment.NewLine"/>.</remarks>
+        /// <exception cref="ArgumentNullException"><paramref name="multiPolygon"/> is <c>null</c>.</exception>
         public static string Encode(IMultiPolygon multiPolygon) {
             if (multiPolygon == null) throw new ArgumentNullException(nameof(multiPolygon));
             return string.Join(Environment.NewLine, from polygon in multiPolygon.Polygons select Encode(polygon));
@@ -57,16 +103,18 @@ namespace Skybrud.Essentials.Maps.Google {
         /// </summary>
         /// <param name="lineString">The line string to be encoded.</param>
         /// <returns>The encoded string of coordinates.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="lineString"/> is <c>null</c>.</exception>
         public static string Encode(ILineString lineString) {
             if (lineString == null) throw new ArgumentNullException(nameof(lineString));
             return Encode(lineString.Points);
         }
-        
+
         /// <summary>
         /// Encodes the specified <paramref name="points"/> using Google's polyline algorithm.
         /// </summary>
         /// <param name="points">The points to be encoded.</param>
         /// <returns>The encoded string of coordinates.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="points"/> is <c>null</c>.</exception>
         public static string Encode(IEnumerable<IPoint> points) {
 
             StringBuilder str = new StringBuilder();
@@ -107,7 +155,15 @@ namespace Skybrud.Essentials.Maps.Google {
 
         }
 
-        public static T Decode<T>(string encodedPoints) {
+        /// <summary>
+        /// Decodes the specified string of <paramref name="encodedPoints"/> into an instance of <typeparamref name="T"/>.
+        /// </summary>
+        /// <typeparam name="T">The type to be returned.</typeparam>
+        /// <param name="encodedPoints">The encoded string to be decoded.</param>
+        /// <returns>An instance of <typeparamref name="T"/>.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="encodedPoints"/> is <c>null</c>.</exception>
+        /// <exception cref="InvalidOperationException"><typeparamref name="T"/> is not a supported type.</exception>
+        public static T Decode<T>(string encodedPoints) where T : IGeometry {
 
             if (string.IsNullOrWhiteSpace(encodedPoints)) throw new ArgumentNullException(nameof(encodedPoints));
 
@@ -135,7 +191,7 @@ namespace Skybrud.Essentials.Maps.Google {
                     );
 
                 default:
-                    throw new Exception("Unsupported type " + type.FullName);
+                    throw new InvalidOperationException("Unsupported type " + type.FullName);
 
             }
 
@@ -146,6 +202,7 @@ namespace Skybrud.Essentials.Maps.Google {
         /// </summary>
         /// <param name="encodedPoints">The encoded string.</param>
         /// <returns>A collection of <see cref="IPoint"/>.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="encodedPoints"/> is <c>null</c>.</exception>
         public static IEnumerable<IPoint> Decode(string encodedPoints) {
 
             if (string.IsNullOrEmpty(encodedPoints)) throw new ArgumentNullException(nameof(encodedPoints));

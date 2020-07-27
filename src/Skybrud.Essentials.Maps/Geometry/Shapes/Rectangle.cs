@@ -14,25 +14,43 @@ namespace Skybrud.Essentials.Maps.Geometry.Shapes {
         #region Properties
 
         /// <summary>
-        /// Gets or sets the south west point.
+        /// Gets the south west point.
         /// </summary>
         public IPoint SouthWest { get; }
 
         /// <summary>
-        /// Gets or sets the north east point.
+        /// Gets the north east point.
         /// </summary>
         public IPoint NorthEast { get; }
 
+        /// <summary>
+        /// Gets the latitude of the northern side of the rectangle.
+        /// </summary>
         public double North => NorthEast.Latitude;
 
+        /// <summary>
+        /// Gets the longitude of the eastern side of the rectangle.
+        /// </summary>
         public double East => NorthEast.Longitude;
 
+        /// <summary>
+        /// Gets the latitude of the southern side of the rectangle.
+        /// </summary>
         public double South => SouthWest.Latitude;
 
+        /// <summary>
+        /// Gets the longitude of the west side of the rectangle.
+        /// </summary>
         public double West => SouthWest.Longitude;
 
+        /// <summary>
+        /// Gets the south east point.
+        /// </summary>
         public IPoint SouthEast => new Point(South, East);
 
+        /// <summary>
+        /// Gets the north west point.
+        /// </summary>
         public IPoint NorthWest => new Point(North, West);
 
         #endregion
@@ -114,7 +132,7 @@ namespace Skybrud.Essentials.Maps.Geometry.Shapes {
             Point southEast = new Point(SouthWest.Latitude, NorthEast.Longitude);
             Point northWest = new Point(NorthEast.Latitude, SouthWest.Longitude);
 
-            return PolygonUtils.GetArea(new IPoint[] {northEast, northWest, southWest, southEast});
+            return MapsUtils.GetArea(new IPoint[] {northEast, northWest, southWest, southEast});
 
         }
 
@@ -130,7 +148,7 @@ namespace Skybrud.Essentials.Maps.Geometry.Shapes {
             Point southEast = new Point(SouthWest.Latitude, NorthEast.Longitude);
             Point northWest = new Point(NorthEast.Latitude, SouthWest.Longitude);
 
-            return PolygonUtils.GetArea(new IPoint[] {northEast, northWest, southWest, southEast}, radius);
+            return MapsUtils.GetArea(new IPoint[] {northEast, northWest, southWest, southEast}, radius);
 
         }
 

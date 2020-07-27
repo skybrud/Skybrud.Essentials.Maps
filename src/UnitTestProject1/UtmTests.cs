@@ -9,7 +9,7 @@ namespace UnitTestProject1 {
         [TestMethod]
         public void ToLatLng() {
 
-            UtmUtils.ToLatLng(716908.1, 6168607, "32N", out double latitude, out double longitude);
+            MapsUtils.Utm.ToLatLng(716908.1, 6168607, "32N", out double latitude, out double longitude);
 
             //Assert.AreEqual("55.6149297077", latitude.ToString("N10"));
             //Assert.AreEqual("12.4444743511", longitude.ToString("N10"));

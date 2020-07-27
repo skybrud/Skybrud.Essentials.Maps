@@ -91,7 +91,7 @@ namespace Skybrud.Essentials.Maps.Geometry.Lines {
         /// </summary>
         /// <returns>The total length in metres.</returns>
         public double GetLength() {
-            return LineUtils.GetLength(_points);
+            return MapsUtils.GetLength(_points);
         }
 
         /// <summary>
@@ -99,7 +99,7 @@ namespace Skybrud.Essentials.Maps.Geometry.Lines {
         /// </summary>
         /// <returns>An instance of <see cref="IPoint"/>.</returns>
         public IPoint GetCenter() {
-            return LineUtils.GetCenter(this);
+            return MapsUtils.GetCenter(this);
         }
 
         /// <summary>
@@ -107,7 +107,7 @@ namespace Skybrud.Essentials.Maps.Geometry.Lines {
         /// </summary>
         /// <returns>An instance of <see cref="IRectangle"/>.</returns>
         public IRectangle GetBoundingBox() {
-            return PolygonUtils.GetBoundingBox(Points);
+            return MapsUtils.GetBoundingBox(Points);
         }
 
         #endregion

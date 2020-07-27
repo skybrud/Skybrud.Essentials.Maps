@@ -1,5 +1,9 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using System;
+using System.Text;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
+using Skybrud.Essentials.Maps.GeoJson;
+using Skybrud.Essentials.Maps.GeoJson.Features;
 using Skybrud.Essentials.Maps.GeoJson.Geometry;
 using Skybrud.Essentials.Maps.Geometry;
 
@@ -129,6 +133,19 @@ namespace UnitTestProject1.GeoJson {
         public void Parse2() {
 
             GeoJsonPoint point = GeoJsonPoint.Parse("{\"type\":\"Point\",\"coordinates\":[9.536067,55.708116,100]}");
+
+            Assert.AreEqual(9.536067, point.X, "X");
+            Assert.AreEqual(55.708116, point.Y, "Y");
+            Assert.AreEqual(100, point.Altitude, "Altitude");
+
+        }
+        
+        [TestMethod]
+        public void Parse3() {
+
+            GeoJsonPoint point = GeoJsonUtils.Parse("{\"type\":\"Point\",\"coordinates\":[9.536067,55.708116,100]}") as GeoJsonPoint;
+
+            Assert.IsNotNull(point);
 
             Assert.AreEqual(9.536067, point.X, "X");
             Assert.AreEqual(55.708116, point.Y, "Y");
