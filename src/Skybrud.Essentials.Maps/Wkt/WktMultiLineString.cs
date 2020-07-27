@@ -1,66 +1,146 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using Skybrud.Essentials.Maps.Wkt.Exceptions;
 
 namespace Skybrud.Essentials.Maps.Wkt {
 
-    public class WktMultiLineString : WktShape {
+    /// <summary>
+    /// Class representing a <strong>Well Known Text</strong> multi line string.
+    /// </summary>
+    /// <see>
+    ///     <cref>https://en.wikipedia.org/wiki/Well-known_text_representation_of_geometry</cref>
+    /// </see>
+    public class WktMultiLineString : WktGeometry, IEnumerable<WktLineString> {
+
+        private readonly List<WktLineString> _lines;
 
         #region Properties
 
-        public WktLineString[] Lines { get; }
+        /// <summary>
+        /// Gets the number of line string in this multi line string.
+        /// </summary>
+        public int Count => _lines.Count;
 
         #endregion
 
         #region Constructors
 
+        /// <summary>
+        /// Initializes an empty multi line string.
+        /// </summary>
         public WktMultiLineString() {
-            Lines = new WktLineString[0];
+            _lines = new List<WktLineString>();
         }
 
+        /// <summary>
+        /// Initializes a new multi line string based on the specified <paramref name="lines"/>.
+        /// </summary>
+        /// <param name="lines">The lines that should make up the multi line string.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="lines"/> is <c>null</c>.</exception>
         public WktMultiLineString(WktLineString[] lines) {
-            Lines = lines ?? new WktLineString[0];
+            if (lines == null) throw new ArgumentNullException(nameof(lines));
+            _lines = new List<WktLineString>(lines);
         }
 
+        /// <summary>
+        /// Initializes a new multi line string based on the specified <paramref name="lines"/>.
+        /// </summary>
+        /// <param name="lines">The lines that should make up the multi line string.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="lines"/> is <c>null</c>.</exception>
         public WktMultiLineString(List<WktLineString> lines) {
-            Lines = lines?.ToArray() ?? new WktLineString[0];
+            if (lines == null) throw new ArgumentNullException(nameof(lines));
+            _lines = new List<WktLineString>(lines);
         }
 
+        /// <summary>
+        /// Initializes a new multi line string based on the specified <paramref name="lines"/>.
+        /// </summary>
+        /// <param name="lines">The lines that should make up the multi line string.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="lines"/> is <c>null</c>.</exception>
         public WktMultiLineString(IEnumerable<WktLineString> lines) {
-            Lines = lines?.ToArray() ?? new WktLineString[0];
+            if (lines == null) throw new ArgumentNullException(nameof(lines));
+            _lines = new List<WktLineString>(lines);
         }
 
         #endregion
 
         #region Member methods
 
+        /// <summary>
+        /// Adds the specified <paramref name="line"/> to this multi line string.
+        /// </summary>
+        /// <param name="line">The line string to be added.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="line"/> is <c>null</c>.</exception>
+        public void Add(WktLineString line) {
+            if (line == null) throw new ArgumentNullException(nameof(line));
+            _lines.Add(line);
+        }
+
+        /// <summary>
+        /// Removes the specified <paramref name="line"/> from this line string.
+        /// </summary>
+        /// <param name="line">The line string to be removed.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="line"/> is <c>null</c>.</exception>
+        /// <returns><c>true</c> if <paramref name="line"/> is successfully removed; otherwise, <c>false</c>.</returns>
+        public bool Remove(WktLineString line) {
+            if (line == null) throw new ArgumentNullException(nameof(line));
+            return _lines.Remove(line);
+        }
+
+        /// <inheritdoc />
+        public IEnumerator<WktLineString> GetEnumerator() {
+            return _lines.GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator() {
+            return GetEnumerator();
+        }
+
+        /// <summary>
+        /// Returns the <strong>Well Known Text</strong> string representation of the multi line string.
+        /// </summary>
+        /// <returns>The multi line string formatted as a <strong>Well Known Text</strong> string.</returns>
         public override string ToString() {
             return ToString(WktFormatting.Default);
         }
 
+        /// <summary>
+        /// Returns the <strong>Well Known Text</strong> string representation of the multi line string.
+        /// </summary>
+        /// <param name="formatting">The formatting to be used.</param>
+        /// <returns>The multi line string formatted as a <strong>Well Known Text</strong> string.</returns>
         public string ToString(WktFormatting formatting) {
-            return "MULTILINESTRING " + (Lines.Length == 0 ? "EMPTY" : "(" + String.Join(", ", from line in Lines select ToString(line, formatting, 0)) + ")");
+            return "MULTILINESTRING " + (_lines.Count == 0 ? "EMPTY" : "(" + string.Join(", ", from line in _lines select ToString(line, formatting, 0)) + ")");
         }
 
         #endregion
 
         #region Static methods
 
-        public new static WktMultiLineString Parse(string str) {
+        /// <summary>
+        /// Parses the specified <paramref name="input"/> string to an instance of <see cref="WktLineString"/>.
+        /// </summary>
+        /// <param name="input">The input string to parse.</param>
+        /// <returns>An instance of <seealso cref="WktLineString"/>.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="input"/> is <c>null</c>.</exception>
+        /// <exception cref="WktInvalidFormatException"><paramref name="input"/> is not in a known format.</exception>
+        public new static WktMultiLineString Parse(string input) {
 
-            if (String.IsNullOrWhiteSpace(str)) throw new ArgumentNullException(nameof(str));
+            if (string.IsNullOrWhiteSpace(input)) throw new ArgumentNullException(nameof(input));
 
-            str = str.Trim();
+            input = input.Trim();
 
-            if (!str.StartsWith("MULTILINESTRING")) throw new Exception("Input string is in an invalid format");
+            if (!input.StartsWith("MULTILINESTRING")) throw new WktInvalidFormatException(input);
 
-            if (str.Equals("MULTILINESTRING EMPTY")) return new WktMultiLineString();
+            if (input.Equals("MULTILINESTRING EMPTY")) return new WktMultiLineString();
 
-            str = str.Substring(15).Trim().Replace("\n", " ");
+            input = input.Substring(15).Trim().Replace("\n", " ");
 
-            MatchCollection matches = Regex.Matches(str, "\\(([0-9\\., ]+)\\)");
-            if (matches.Count == 0) throw new Exception("Input string is in an invalid format");
+            MatchCollection matches = Regex.Matches(input, "\\(([0-9\\., ]+)\\)");
+            if (matches.Count == 0) throw new WktInvalidFormatException(input);
 
             return new WktMultiLineString(
                 from Match match in matches

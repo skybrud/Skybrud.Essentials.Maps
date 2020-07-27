@@ -5,13 +5,17 @@ using System.Text;
 using System.Text.RegularExpressions;
 using Skybrud.Essentials.Maps.Geometry;
 using Skybrud.Essentials.Maps.Geometry.Shapes;
+using Skybrud.Essentials.Maps.Wkt.Exceptions;
 
 namespace Skybrud.Essentials.Maps.Wkt {
 
     /// <summary>
     /// Class representing a <strong>Well Known Text</strong> polygon.
     /// </summary>
-    public class WktPolygon : WktShape {
+    /// <see>
+    ///     <cref>https://en.wikipedia.org/wiki/Well-known_text_representation_of_geometry</cref>
+    /// </see>
+    public class WktPolygon : WktGeometry {
 
         #region Properties
 
@@ -112,13 +116,18 @@ namespace Skybrud.Essentials.Maps.Wkt {
         #region Member methods
 
         /// <summary>
-        /// Returns a string that represents the polygon.
+        /// Returns the <strong>Well Known Text</strong> string representation of this polygon.
         /// </summary>
-        /// <returns>A string that represents the polygon.</returns>
+        /// <returns>The polygon formatted as a <strong>Well Known Text</strong> string.</returns>
         public override string ToString() {
             return ToString(WktFormatting.Default);
         }
 
+        /// <summary>
+        /// Returns the <strong>Well Known Text</strong> string representation of this polygon.
+        /// </summary>
+        /// <param name="formatting">The formatting to be used.</param>
+        /// <returns>The polygon formatted as a <strong>Well Known Text</strong> string.</returns>
         public string ToString(WktFormatting formatting) {
 
             StringBuilder sb = new StringBuilder();
@@ -140,20 +149,21 @@ namespace Skybrud.Essentials.Maps.Wkt {
         #region Static methods
 
         /// <summary>
-        /// Gets a new isnstance from the specified Well Known Text <paramref name="str"/>.
+        /// Gets a new isnstance from the specified Well Known Text <paramref name="input"/>.
         /// </summary>
-        /// <param name="str">The string to be parsed.</param>
+        /// <param name="input">The string to be parsed.</param>
         /// <returns>An instacne of <see cref="WktPolygon"/>.</returns>
-        public new static WktPolygon Parse(string str) {
+        /// <exception cref="WktInvalidFormatException"><paramref name="input"/> is not in a known format.</exception>
+        public new static WktPolygon Parse(string input) {
             
-            if (String.IsNullOrWhiteSpace(str)) throw new ArgumentNullException(nameof(str));
+            if (string.IsNullOrWhiteSpace(input)) throw new ArgumentNullException(nameof(input));
 
-            str = str.Trim();
-            if (str.Equals("POLYGON EMPTY")) return new WktPolygon();
-            if (str.StartsWith("POLYGON")) str = str.Substring(7).Trim();
+            input = input.Trim();
+            if (input.Equals("POLYGON EMPTY")) return new WktPolygon();
+            if (input.StartsWith("POLYGON")) input = input.Substring(7).Trim();
 
-            MatchCollection matches = Regex.Matches(str, "\\(([0-9\\., ]+)\\)");
-            if (matches.Count == 0) throw new Exception("Input string is in an invalid format");
+            MatchCollection matches = Regex.Matches(input, "\\(([0-9\\., ]+)\\)");
+            if (matches.Count == 0) throw new WktInvalidFormatException(input);
 
             List<WktPoint[]> inner = new List<WktPoint[]>();
 
