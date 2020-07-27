@@ -1,7 +1,7 @@
 ﻿using System;
+using System.Linq;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using Skybrud.Essentials.Json;
 using Skybrud.Essentials.Maps.Extensions;
 using Skybrud.Essentials.Maps.Geometry;
 using Skybrud.Essentials.Maps.Geometry.Shapes;
@@ -34,11 +34,11 @@ namespace Skybrud.Essentials.Maps.GeoJson.Geometry {
         }
 
         /// <summary>
-        /// Initislizes a new instance from the specified JSON object.
+        /// Initializes a new instance based on the specified <paramref name="json"/> object.
         /// </summary>
-        /// <param name="obj">The JSON object.</param>
-        public GeoJsonPolygon(JObject obj) : base(GeoJsonType.Polygon) {
-            JArray coordinates = obj.GetValue("coordinates") as JArray;
+        /// <param name="json">The JSON object.</param>
+        public GeoJsonPolygon(JObject json) : base(GeoJsonType.Polygon) {
+            JArray coordinates = json.GetValue("coordinates") as JArray;
             Coordinates = coordinates == null ? new double[0][][] : coordinates.ToObject<double[][][]>();
         }
         
@@ -48,7 +48,7 @@ namespace Skybrud.Essentials.Maps.GeoJson.Geometry {
         /// <param name="polygon">The polygon.</param>
         public GeoJsonPolygon(IPolygon polygon) : base(GeoJsonType.Polygon) {
             if (polygon == null) throw new ArgumentNullException(nameof(polygon));
-            Coordinates = PolygonUtils.ToXyArray(polygon.GetCoordinates());
+            Coordinates = MapsUtils.ToXyArray(polygon.GetCoordinates());
         }
 
         /// <summary>
@@ -57,7 +57,26 @@ namespace Skybrud.Essentials.Maps.GeoJson.Geometry {
         /// <param name="coordinates">The coordinates.</param>
         public GeoJsonPolygon(IPoint[][] coordinates) : base(GeoJsonType.Polygon) {
             if (coordinates == null) throw new ArgumentNullException(nameof(coordinates));
-            Coordinates = PolygonUtils.ToXyArray(coordinates);
+            Coordinates = MapsUtils.ToXyArray(coordinates);
+        }
+
+        #endregion
+
+        #region Member methods
+
+        /// <summary>
+        /// Returns an instance of <see cref="IPolygon"/> representing this GeoJSON polygon.
+        /// </summary>
+        /// <returns>An instance of <see cref="IPolygon"/>.</returns>
+        public IPolygon ToPolygon() {
+            return new Polygon(Coordinates
+                .Select(x => x.Select(y => (IPoint)new Point(y[1], y[0])).ToArray())
+                .ToArray());
+        }
+
+        /// <inheritdoc />
+        public override IGeometry ToGeometry() {
+            return ToPolygon();
         }
 
         #endregion
@@ -70,7 +89,7 @@ namespace Skybrud.Essentials.Maps.GeoJson.Geometry {
         /// <param name="json">The raw JSON string.</param>
         /// <returns>An instance of <see cref="GeoJsonPolygon"/>.</returns>
         public new static GeoJsonPolygon Parse(string json) {
-            return JsonUtils.ParseJsonObject(json, Parse);
+            return ParseJsonObject(json, Parse);
         }
 
         /// <summary>
@@ -80,6 +99,15 @@ namespace Skybrud.Essentials.Maps.GeoJson.Geometry {
         /// <returns>An instance of <see cref="GeoJsonPolygon"/>.</returns>
         public new static GeoJsonPolygon Parse(JObject json) {
             return json == null ? null : new GeoJsonPolygon(json);
+        }
+
+        /// <summary>
+        /// Loads and parses the polygon at the specified <paramref name="path"/> into an instance of <see cref="GeoJsonPolygon"/>.
+        /// </summary>
+        /// <param name="path">The path to a file on disk.</param>
+        /// <returns>An instance of <see cref="GeoJsonPolygon"/>.</returns>
+        public new static GeoJsonPolygon Load(string path) {
+            return LoadJsonObject(path, Parse);
         }
 
         #endregion

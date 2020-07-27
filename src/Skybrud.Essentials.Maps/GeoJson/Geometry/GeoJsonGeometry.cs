@@ -1,17 +1,17 @@
 using System;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using Skybrud.Essentials.Json;
 using Skybrud.Essentials.Json.Extensions;
 using Skybrud.Essentials.Maps.GeoJson.Json;
+using Skybrud.Essentials.Maps.Geometry;
 
 namespace Skybrud.Essentials.Maps.GeoJson.Geometry {
 
     /// <summary>
     /// Base class with common logic for the classes representing the geometries defined by the GeoJSON specification.
     /// </summary>
-    [JsonConverter(typeof(GeoJsonShapeJsonConverter))]
-    public abstract class GeoJsonGeometry : GeoJsonObject {
+    [JsonConverter(typeof(GeoJsonReadConverter))]
+    public abstract class GeoJsonGeometry : GeoJsonObject, IGeoJsonGeometry {
 
         #region Constructors
 
@@ -23,6 +23,13 @@ namespace Skybrud.Essentials.Maps.GeoJson.Geometry {
 
         #endregion
 
+        #region Member methods
+
+        /// <inheritdoc />
+        public abstract IGeometry ToGeometry();
+
+        #endregion
+
         #region Static methods
 
         /// <summary>
@@ -31,50 +38,58 @@ namespace Skybrud.Essentials.Maps.GeoJson.Geometry {
         /// <param name="json">The raw JSON string.</param>
         /// <returns>An instance of <see cref="GeoJsonGeometry"/>.</returns>
         public static GeoJsonGeometry Parse(string json) {
-            return JsonUtils.ParseJsonObject(json, Parse);
+            return ParseJsonObject(json, Parse);
         }
 
         /// <summary>
-        /// Parses the specified <paramref name="obj"/> object into an instance of <see cref="GeoJsonGeometry"/>.
+        /// Parses the specified <paramref name="json"/> object into an instance of <see cref="GeoJsonGeometry"/>.
         /// </summary>
-        /// <param name="obj">The JSON object.</param>
+        /// <param name="json">The JSON object.</param>
         /// <returns>An instance of <see cref="GeoJsonGeometry"/>.</returns>
-        public static GeoJsonGeometry Parse(JObject obj) {
+        public static GeoJsonGeometry Parse(JObject json) {
 
-            if (obj == null) return null;
+            if (json == null) return null;
 
-            string type = obj.GetString("type");
+            string type = json.GetString("type");
 
             switch (type) {
 
                 case "Point":
-                    return GeoJsonPoint.Parse(obj);
+                    return GeoJsonPoint.Parse(json);
 
                 case "LineString":
-                    return GeoJsonLineString.Parse(obj);
+                    return GeoJsonLineString.Parse(json);
 
                 case "Polygon":
-                    return GeoJsonPolygon.Parse(obj);
+                    return GeoJsonPolygon.Parse(json);
 
                 case "MultiPoint":
-                    return GeoJsonMultiPoint.Parse(obj);
+                    return GeoJsonMultiPoint.Parse(json);
 
                 case "MultiLineString":
                     throw new NotImplementedException();
                 //return GeoJsonMultiLineString.Parse(obj);
 
                 case "MultiPolygon":
-                    return GeoJsonMultiPolygon.Parse(obj);
+                    return GeoJsonMultiPolygon.Parse(json);
 
                 case "GeometryCollection":
-                    return GeoJsonGeometryCollection.Parse(obj);
+                    return GeoJsonGeometryCollection.Parse(json);
 
                 default:
                     throw new Exception("Unsupported type " + type);
 
-
             }
 
+        }
+
+        /// <summary>
+        /// Loads and parses the geometry at the specified <paramref name="path"/> into an instance of <see cref="GeoJsonGeometry"/>.
+        /// </summary>
+        /// <param name="path">The path to a file on disk.</param>
+        /// <returns>An instance of <see cref="GeoJsonGeometry"/>.</returns>
+        public static GeoJsonGeometry Load(string path) {
+            return LoadJsonObject(path, Parse);
         }
 
         #endregion

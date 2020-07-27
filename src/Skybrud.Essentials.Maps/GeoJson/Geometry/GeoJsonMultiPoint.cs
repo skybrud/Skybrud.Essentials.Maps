@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json.Linq;
-using Skybrud.Essentials.Json;
 using Skybrud.Essentials.Json.Extensions;
 using Skybrud.Essentials.Maps.Geometry;
 
@@ -35,11 +34,11 @@ namespace Skybrud.Essentials.Maps.GeoJson.Geometry {
         }
 
         /// <summary>
-        /// Initializes a new instance based on the specified <paramref name="obj"/>.
+        /// Initializes a new instance based on the specified <paramref name="json"/> object.
         /// </summary>
-        /// <param name="obj">An instance of <see cref="JObject"/> representing the <strong>MultiPoint</strong> geometry.</param>
-        private GeoJsonMultiPoint(JObject obj) : base(GeoJsonType.MultiPoint) {
-            _points = (obj.GetArray("coordinates") ?? new JArray())
+        /// <param name="json">An instance of <see cref="JObject"/> representing the <strong>MultiPoint</strong> geometry.</param>
+        protected GeoJsonMultiPoint(JObject json) : base(GeoJsonType.MultiPoint) {
+            _points = (json.GetArray("coordinates") ?? new JArray())
                 .Cast<JArray>()
                 .Select(x => new [] {x.GetDouble(0), x.GetDouble(1)})
                 .ToList();
@@ -91,7 +90,12 @@ namespace Skybrud.Essentials.Maps.GeoJson.Geometry {
         public void Clear() {
             _points.Clear();
         }
-        
+
+        /// <inheritdoc />
+        public override IGeometry ToGeometry() {
+            throw new Exception($"The Geometry namespace does not have an equivalent for {nameof(GeoJsonMultiPoint)}.");
+        }
+
         /// <summary>
         /// Returns an enumerator that iterates through the underlying <see cref="List{Double}"/>.
         /// </summary>
@@ -114,7 +118,7 @@ namespace Skybrud.Essentials.Maps.GeoJson.Geometry {
         /// <param name="json">The raw JSON string.</param>
         /// <returns>An instance of <see cref="GeoJsonMultiPoint"/>.</returns>
         public new static GeoJsonMultiPoint Parse(string json) {
-            return JsonUtils.ParseJsonObject(json, Parse);
+            return ParseJsonObject(json, Parse);
         }
 
         /// <summary>
@@ -131,8 +135,8 @@ namespace Skybrud.Essentials.Maps.GeoJson.Geometry {
         /// </summary>
         /// <param name="path">The path to a file on disk.</param>
         /// <returns>An instance of <see cref="GeoJsonMultiPoint"/>.</returns>
-        public static GeoJsonMultiPoint Load(string path) {
-            return JsonUtils.LoadJsonObject(path, Parse);
+        public new static GeoJsonMultiPoint Load(string path) {
+            return LoadJsonObject(path, Parse);
         }
 
         #endregion

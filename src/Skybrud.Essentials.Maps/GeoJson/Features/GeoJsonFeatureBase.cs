@@ -7,10 +7,13 @@ namespace Skybrud.Essentials.Maps.GeoJson.Features {
     /// <summary>
     /// Base class with common properties for <see cref="GeoJsonFeature"/> and <see cref="GeoJsonFeatureCollection"/>.
     /// </summary>
-    public abstract class GeoJsonFeatureBase : GeoJsonObject {
+    public abstract class GeoJsonFeatureBase : GeoJsonObject, IGeoJsonFeature {
 
         #region Properties
         
+        /// <summary>
+        /// Gets or sets the properties object of this feature.
+        /// </summary>
         [JsonProperty("properties", NullValueHandling = NullValueHandling.Ignore)]
         public GeoJsonProperties Properties { get; set; }
 
@@ -27,20 +30,12 @@ namespace Skybrud.Essentials.Maps.GeoJson.Features {
         }
 
         /// <summary>
-        /// Initializes a new instance based on the specified <paramref name="type"/> and <paramref name="obj"/>.
+        /// Initializes a new instance based on the specified <paramref name="type"/> and <paramref name="json"/>.
         /// </summary>
         /// <param name="type">The type of the feature.</param>
-        /// <param name="obj">An instance of <see cref="JObject"/> representing the feature.</param>
-        protected GeoJsonFeatureBase(GeoJsonType type, JObject obj) : base(type) {
-            Properties = obj.GetObject<GeoJsonProperties>("properties");
-        }
-
-        #endregion
-
-        #region Member methods
-
-        public bool ShouldSerializeProperties() {
-            return Properties?.Count > 0;
+        /// <param name="json">An instance of <see cref="JObject"/> representing the feature.</param>
+        protected GeoJsonFeatureBase(GeoJsonType type, JObject json) : base(type) {
+            Properties = json.GetObject<GeoJsonProperties>("properties");
         }
 
         #endregion

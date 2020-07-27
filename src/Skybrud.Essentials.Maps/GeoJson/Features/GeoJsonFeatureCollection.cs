@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using Skybrud.Essentials.Json;
 using Skybrud.Essentials.Json.Extensions;
 
 namespace Skybrud.Essentials.Maps.GeoJson.Features {
@@ -11,7 +10,7 @@ namespace Skybrud.Essentials.Maps.GeoJson.Features {
     /// <summary>
     /// Class representing a GeoJSON <strong>FeatureCollection</strong>.
     /// </summary>
-    public class GeoJsonFeatureCollection : GeoJsonObject {
+    public class GeoJsonFeatureCollection : GeoJsonObject, IGeoJsonFeature {
 
         #region Properties
         
@@ -55,12 +54,12 @@ namespace Skybrud.Essentials.Maps.GeoJson.Features {
         }
 
         /// <summary>
-        /// Initializes a new instance based on the specified <paramref name="obj"/>.
+        /// Initializes a new instance based on the specified <paramref name="json"/>.
         /// </summary>
-        /// <param name="obj">An instance of <see cref="JObject"/> representing the <strong>FeatureCollection</strong>.</param>
-        public GeoJsonFeatureCollection(JObject obj) : base(GeoJsonType.FeatureCollection) {
-            Name = obj.GetString("name");
-            Features = obj.GetArrayItems("features", GeoJsonFeature.Parse).ToList();
+        /// <param name="json">An instance of <see cref="JObject"/> representing the <strong>FeatureCollection</strong>.</param>
+        protected GeoJsonFeatureCollection(JObject json) : base(GeoJsonType.FeatureCollection) {
+            Name = json.GetString("name");
+            Features = json.GetArrayItems("features", GeoJsonFeature.Parse).ToList();
         }
 
         #endregion
@@ -115,7 +114,7 @@ namespace Skybrud.Essentials.Maps.GeoJson.Features {
         /// <param name="json">The JSON string to be parsed.</param>
         /// <returns>An instance of <see cref="GeoJsonFeatureCollection"/>.</returns>
         public static GeoJsonFeatureCollection Parse(string json) {
-            return JsonUtils.ParseJsonObject(json, Parse);
+            return ParseJsonObject(json, Parse);
         }
 
         /// <summary>
@@ -133,7 +132,7 @@ namespace Skybrud.Essentials.Maps.GeoJson.Features {
         /// <param name="path">The path to a file on disk.</param>
         /// <returns>An instance of <see cref="GeoJsonFeatureCollection"/>.</returns>
         public static GeoJsonFeatureCollection Load(string path) {
-            return JsonUtils.LoadJsonObject(path, Parse);
+            return LoadJsonObject(path, Parse);
         }
 
         #endregion

@@ -1,9 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Skybrud.Essentials.Json;
 using Skybrud.Essentials.Json.Extensions;
+using Skybrud.Essentials.Maps.Geometry;
 
 namespace Skybrud.Essentials.Maps.GeoJson.Geometry {
 
@@ -40,11 +42,20 @@ namespace Skybrud.Essentials.Maps.GeoJson.Geometry {
         }
 
         /// <summary>
-        /// Initializes a new instance based on the specified <paramref name="obj"/>.
+        /// Initializes a new instance based on the specified <paramref name="json"/>.
         /// </summary>
-        /// <param name="obj">An instance of <see cref="JObject"/> representing the geometry collection.</param>
-        protected GeoJsonGeometryCollection(JObject obj) : base(GeoJsonType.GeometryCollection) {
-            Geometries = obj.GetArrayItems("geometries", GeoJsonGeometry.Parse).ToList();
+        /// <param name="json">An instance of <see cref="JObject"/> representing the geometry collection.</param>
+        protected GeoJsonGeometryCollection(JObject json) : base(GeoJsonType.GeometryCollection) {
+            Geometries = json.GetArrayItems("geometries", GeoJsonGeometry.Parse).ToList();
+        }
+
+        #endregion
+
+        #region Member methods
+
+        /// <inheritdoc />
+        public override IGeometry ToGeometry() {
+            throw new Exception($"The Geometry namespace does not have an equivalent for {nameof(GeoJsonGeometryCollection)}.");
         }
 
         #endregion

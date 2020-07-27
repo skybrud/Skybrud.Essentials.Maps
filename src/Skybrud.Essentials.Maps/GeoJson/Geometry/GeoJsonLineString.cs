@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using Skybrud.Essentials.Json;
 using Skybrud.Essentials.Maps.GeoJson.Json;
+using Skybrud.Essentials.Maps.Geometry;
 using Skybrud.Essentials.Maps.Geometry.Lines;
 
 namespace Skybrud.Essentials.Maps.GeoJson.Geometry {
@@ -12,7 +12,7 @@ namespace Skybrud.Essentials.Maps.GeoJson.Geometry {
     /// <summary>
     /// Class representing a GeoJSON <strong>LineString</strong> geometry.
     /// </summary>
-    public class GeoJsonLineString : GeoJsonGeometry {
+    public class GeoJsonLineString : GeoJsonGeometry, IGeoJsonLine {
 
         #region Properties
 
@@ -20,7 +20,7 @@ namespace Skybrud.Essentials.Maps.GeoJson.Geometry {
         /// Gets or sets the coordinates making up the line string.
         /// </summary>
         [JsonProperty("coordinates", Order = 100)]
-        [JsonConverter(typeof(GeoJsonConverter))]
+        [JsonConverter(typeof(GeoJsonReadConverter))]
         public List<GeoJsonCoordinates> Coordinates { get; set; }
 
         #endregion
@@ -62,14 +62,14 @@ namespace Skybrud.Essentials.Maps.GeoJson.Geometry {
         }
 
         /// <summary>
-        /// Initializes a new instance based on the specified <paramref name="obj"/>.
+        /// Initializes a new instance based on the specified <paramref name="json"/> object.
         /// </summary>
-        /// <param name="obj">An instance of <see cref="JObject"/> representing the line string.</param>
-        protected GeoJsonLineString(JObject obj) : base(GeoJsonType.LineString) {
+        /// <param name="json">An instance of <see cref="JObject"/> representing the line string.</param>
+        protected GeoJsonLineString(JObject json) : base(GeoJsonType.LineString) {
 
             Coordinates = new List<GeoJsonCoordinates>();
 
-            if (!(obj.GetValue("coordinates") is JArray array)) {
+            if (!(json.GetValue("coordinates") is JArray array)) {
                 return;
             }
 
@@ -91,6 +91,16 @@ namespace Skybrud.Essentials.Maps.GeoJson.Geometry {
             return new LineString(Coordinates.Select(x => x.ToPoint()));
         }
 
+        /// <inheritdoc />
+        public ILineBase ToLine() {
+            return ToLineString();
+        }
+
+        /// <inheritdoc />
+        public override IGeometry ToGeometry() {
+            return ToLineString();
+        }
+
         #endregion
 
         #region Static methods
@@ -101,7 +111,7 @@ namespace Skybrud.Essentials.Maps.GeoJson.Geometry {
         /// <param name="json">The raw JSON string.</param>
         /// <returns>An instance of <see cref="GeoJsonLineString"/>.</returns>
         public new static GeoJsonLineString Parse(string json) {
-            return JsonUtils.ParseJsonObject(json, Parse);
+            return ParseJsonObject(json, Parse);
         }
 
         /// <summary>
@@ -118,8 +128,8 @@ namespace Skybrud.Essentials.Maps.GeoJson.Geometry {
         /// </summary>
         /// <param name="path">The path to a file on disk.</param>
         /// <returns>An instance of <see cref="GeoJsonLineString"/>.</returns>
-        public static GeoJsonLineString Load(string path) {
-            return JsonUtils.LoadJsonObject(path, Parse);
+        public new static GeoJsonLineString Load(string path) {
+            return LoadJsonObject(path, Parse);
         }
 
         #endregion

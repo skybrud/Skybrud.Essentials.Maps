@@ -1,6 +1,5 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using Skybrud.Essentials.Json;
 using Skybrud.Essentials.Json.Extensions;
 using Skybrud.Essentials.Maps.GeoJson.Geometry;
 
@@ -9,14 +8,14 @@ namespace Skybrud.Essentials.Maps.GeoJson.Features {
     /// <summary>
     /// Class representing a GeoJSON <strong>Feature</strong>.
     /// </summary>
-    public class GeoJsonFeature : GeoJsonObject {
+    public class GeoJsonFeature : GeoJsonObject, IGeoJsonFeature {
 
         #region Properties
         
         /// <summary>
         /// Gets or sets the properties of the feature.
         /// </summary>
-        [JsonProperty("properties")]
+        [JsonProperty("properties", NullValueHandling = NullValueHandling.Ignore)]
         public GeoJsonProperties Properties { get; set; }
 
         /// <summary>
@@ -46,12 +45,22 @@ namespace Skybrud.Essentials.Maps.GeoJson.Features {
         }
 
         /// <summary>
-        /// Initializes a new instance based on the specified <paramref name="obj"/>.
+        /// Initializes a new instance with the specified <paramref name="geometry"/>.
         /// </summary>
-        /// <param name="obj">An instance of <see cref="JObject"/> representing the feature.</param>
-        protected GeoJsonFeature(JObject obj) : base(GeoJsonType.Feature) {
-            Properties = obj.GetObject("properties", GeoJsonProperties.Parse);
-            Geometry = obj.GetObject<GeoJsonGeometry>("geometry");
+        /// <param name="geometry">The geometry of the feature.</param>
+        /// <param name="properties">The properties of the feature.</param>
+        public GeoJsonFeature(GeoJsonGeometry geometry, GeoJsonProperties properties) : base(GeoJsonType.Feature) {
+            Geometry = geometry;
+            Properties = properties ?? new GeoJsonProperties();
+        }
+
+        /// <summary>
+        /// Initializes a new instance based on the specified <paramref name="json"/> object.
+        /// </summary>
+        /// <param name="json">An instance of <see cref="JObject"/> representing the feature.</param>
+        protected GeoJsonFeature(JObject json) : base(GeoJsonType.Feature) {
+            Properties = json.GetObject("properties", GeoJsonProperties.Parse);
+            Geometry = json.GetObject<GeoJsonGeometry>("geometry");
         }
 
         #endregion
@@ -64,7 +73,7 @@ namespace Skybrud.Essentials.Maps.GeoJson.Features {
         /// <param name="json">The JSON string to be parsed.</param>
         /// <returns>An instance of <see cref="GeoJsonFeature"/>.</returns>
         public static GeoJsonFeature Parse(string json) {
-            return JsonUtils.ParseJsonObject(json, Parse);
+            return ParseJsonObject(json, Parse);
         }
 
         /// <summary>
@@ -82,7 +91,7 @@ namespace Skybrud.Essentials.Maps.GeoJson.Features {
         /// <param name="path">The path to a file on disk.</param>
         /// <returns>An instance of <see cref="GeoJsonFeature"/>.</returns>
         public static GeoJsonFeature Load(string path) {
-            return JsonUtils.LoadJsonObject(path, Parse);
+            return LoadJsonObject(path, Parse);
         }
 
         #endregion

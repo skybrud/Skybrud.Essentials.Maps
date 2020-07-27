@@ -1,14 +1,16 @@
-﻿using Newtonsoft.Json;
+﻿using System.Collections.Generic;
+using System.Linq;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using Skybrud.Essentials.Json;
+using Skybrud.Essentials.Maps.Geometry;
+using Skybrud.Essentials.Maps.Geometry.Shapes;
 
 namespace Skybrud.Essentials.Maps.GeoJson.Geometry {
-
 
     /// <summary>
     /// Class representing a GeoJSON <strong>MultiPolygon</strong> geometry.
     /// </summary>
-    public class GeoJsonMultiPolygon : GeoJsonGeometry {
+    public class GeoJsonMultiPolygon : GeoJsonGeometry, IGeoJsonShape {
 
         #region Properties
 
@@ -38,12 +40,43 @@ namespace Skybrud.Essentials.Maps.GeoJson.Geometry {
         }
 
         /// <summary>
-        /// Initializes a new instance based on the specified <paramref name="obj"/>.
+        /// Initializes a new instance based on the specified <paramref name="json"/> object.
         /// </summary>
-        /// <param name="obj">An instance of <see cref="JObject"/> representing the <strong>MultiPolygon</strong> geometry.</param>
-        public GeoJsonMultiPolygon(JObject obj) : base(GeoJsonType.MultiPolygon) {
-            JArray coordinates = obj.GetValue("coordinates") as JArray;
+        /// <param name="json">An instance of <see cref="JObject"/> representing the <strong>MultiPolygon</strong> geometry.</param>
+        public GeoJsonMultiPolygon(JObject json) : base(GeoJsonType.MultiPolygon) {
+            JArray coordinates = json.GetValue("coordinates") as JArray;
             Coordinates = coordinates == null ? new double[0][][][] : coordinates.ToObject<double[][][][]>();
+        }
+
+        #endregion
+
+        #region Member methods
+
+        /// <summary>
+        /// Returns an instance of <see cref="IMultiPolygon"/> representing this GeoJSON multi polygon.
+        /// </summary>
+        /// <returns>An instance of <see cref="IMultiPolygon"/>.</returns>
+        public IMultiPolygon ToMultiPolygon() {
+
+            IEnumerable<Polygon> polygons = (
+                from array in Coordinates
+                select new Polygon(array
+                    .Select(x => x.Select(y => (IPoint) new Point(y[1], y[0])).ToArray())
+                    .ToArray())
+            );
+
+            return new MultiPolygon(polygons);
+
+        }
+
+        /// <inheritdoc />
+        public IShape ToShape() {
+            return ToMultiPolygon();
+        }
+
+        /// <inheritdoc />
+        public override IGeometry ToGeometry() {
+            return ToMultiPolygon();
         }
 
         #endregion
@@ -56,7 +89,7 @@ namespace Skybrud.Essentials.Maps.GeoJson.Geometry {
         /// <param name="json">The raw JSON string.</param>
         /// <returns>An instance of <see cref="GeoJsonPolygon"/>.</returns>
         public new static GeoJsonMultiPolygon Parse(string json) {
-            return JsonUtils.ParseJsonObject(json, Parse);
+            return ParseJsonObject(json, Parse);
         }
 
         /// <summary>
@@ -73,8 +106,8 @@ namespace Skybrud.Essentials.Maps.GeoJson.Geometry {
         /// </summary>
         /// <param name="path">The path to a file on disk.</param>
         /// <returns>An instance of <see cref="GeoJsonMultiPolygon"/>.</returns>
-        public static GeoJsonMultiPolygon Load(string path) {
-            return JsonUtils.LoadJsonObject(path, Parse);
+        public new static GeoJsonMultiPolygon Load(string path) {
+            return LoadJsonObject(path, Parse);
         }
 
         #endregion

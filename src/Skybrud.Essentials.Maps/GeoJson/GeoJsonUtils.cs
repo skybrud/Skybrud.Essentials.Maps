@@ -11,28 +11,19 @@ using Skybrud.Essentials.Maps.Geometry.Shapes;
 
 namespace Skybrud.Essentials.Maps.GeoJson {
 
+    /// <summary>
+    /// Class with with various statuc methods for working with <strong>GeoJSON</strong>.
+    /// </summary>
     public static class GeoJsonUtils {
 
-        public static IGeometry Convert(GeoJsonGeometry geometry) {
-
+        /// <summary>
+        /// Converts the specified GeoJSON <paramref name="geometry"/> into an instance of <see cref="IGeometry"/>.
+        /// </summary>
+        /// <param name="geometry">The GeoJSON geometry to be converted.</param>
+        /// <returns>An instance of <see cref="IGeometry"/>.</returns>
+        public static IGeometry Convert(IGeoJsonGeometry geometry) {
             if (geometry == null) throw new ArgumentNullException(nameof(geometry));
-
-            switch (geometry) {
-
-                case GeoJsonPoint point:
-                    return Convert(point);
-
-                case GeoJsonLineString lineString:
-                    return Convert(lineString);
-
-                case GeoJsonPolygon polygon:
-                    return Convert(polygon);
-
-                default:
-                    throw new Exception("Unsupported type " + geometry);
-
-            }
-
+            return geometry.ToGeometry();
         }
 
         /// <summary>
@@ -87,10 +78,19 @@ namespace Skybrud.Essentials.Maps.GeoJson {
             return JsonUtils.LoadJsonObject(path, Parse);
         }
 
-        private static GeoJsonObject Parse(JObject obj) {
+        /// <summary>
+        /// Parses the specified <paramref name="json"/> object into an instance deriving from <see cref="GeoJsonObject"/>.
+        ///
+        /// As the GeoJSON format specified the type of a
+        /// </summary>
+        /// <param name="json">The JSON object.</param>
+        /// <returns>An instance that derives from <see cref="GeoJsonObject"/>.</returns>
+        private static GeoJsonObject Parse(JObject json) {
+
+            if (json == null) return null;
 
             // Get the value of the "type" property
-            string type = obj.GetString("type");
+            string type = json.GetString("type");
             if (string.IsNullOrWhiteSpace(type)) throw new Exception("The JSON object doesn't specify a type");
 
             // Parse the type into an enum
@@ -99,31 +99,31 @@ namespace Skybrud.Essentials.Maps.GeoJson {
             switch (result) {
 
                 case GeoJsonType.Feature:
-                    return GeoJsonFeature.Parse(obj);
+                    return GeoJsonFeature.Parse(json);
 
                 case GeoJsonType.FeatureCollection:
-                    return GeoJsonFeatureCollection.Parse(obj);
+                    return GeoJsonFeatureCollection.Parse(json);
 
                 case GeoJsonType.Point:
-                    return GeoJsonPoint.Parse(obj);
+                    return GeoJsonPoint.Parse(json);
 
                 case GeoJsonType.LineString:
-                    return GeoJsonLineString.Parse(obj);
+                    return GeoJsonLineString.Parse(json);
 
                 case GeoJsonType.Polygon:
-                    return GeoJsonPolygon.Parse(obj);
+                    return GeoJsonPolygon.Parse(json);
 
                 case GeoJsonType.MultiPoint:
-                    return GeoJsonMultiPoint.Parse(obj);
+                    return GeoJsonMultiPoint.Parse(json);
 
                 //case GeoJsonType.MultiLineString:
                 //    return GeoJsonMultiLineString.Parse(obj);
 
                 case GeoJsonType.MultiPolygon:
-                    return GeoJsonMultiPolygon.Parse(obj);
+                    return GeoJsonMultiPolygon.Parse(json);
 
                 case GeoJsonType.GeometryCollection:
-                    return GeoJsonGeometryCollection.Parse(obj);
+                    return GeoJsonGeometryCollection.Parse(json);
 
                 default:
                     throw new Exception("Unknown type " + type);
@@ -132,12 +132,17 @@ namespace Skybrud.Essentials.Maps.GeoJson {
 
         }
 
-
-
-
-
-
+        /// <summary>
+        /// Returns an instance of <see cref="IRectangle"/> representing the bounding box of the specified GeoJSON <paramref name="collections"/>.
+        /// </summary>
+        /// <param name="collections">An array of feature collections.</param>
+        /// <returns>An instance of <see cref="IRectangle"/>.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="collections"/> is <c>null</c>.</exception>
+        /// <exception cref="InvalidOperationException"><paramref name="collections"/> is empty.</exception>
         public static IRectangle GetBoundingBox(GeoJsonFeatureCollection[] collections) {
+
+            if (collections == null) throw new ArgumentNullException(nameof(collections));
+            if (collections.Length == 0) throw new InvalidOperationException(nameof(collections));
 
             List<IPoint> points = new List<IPoint>();
 
@@ -156,12 +161,22 @@ namespace Skybrud.Essentials.Maps.GeoJson {
 
             }
 
-            return points.Count == 0 ? null : PolygonUtils.GetBoundingBox(points);
+            return points.Count == 0 ? null : MapsUtils.GetBoundingBox(points);
 
         }
 
+        /// <summary>
+        /// Returns an instance of <see cref="IRectangle"/> representing the bounding box of the specified GeoJSON <paramref name="collection"/>.
+        /// </summary>
+        /// <param name="collection">The feature collection.</param>
+        /// <returns>An instance of <see cref="IRectangle"/>.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="collection"/> is <c>null</c>.</exception>
+        /// <exception cref="InvalidOperationException"><paramref name="collection"/> is empty.</exception>
         public static IRectangle GetBoundingBox(GeoJsonFeatureCollection collection) {
 
+            if (collection == null) throw new ArgumentNullException(nameof(collection));
+            if (collection.Features.Count == 0) throw new InvalidOperationException(nameof(collection));
+            
             List<IPoint> points = new List<IPoint>();
 
             foreach (GeoJsonFeature feature in collection.Features) {
@@ -175,11 +190,19 @@ namespace Skybrud.Essentials.Maps.GeoJson {
 
             }
 
-            return points.Count == 0 ? null : PolygonUtils.GetBoundingBox(points);
+            return points.Count == 0 ? null : MapsUtils.GetBoundingBox(points);
 
         }
 
+        /// <summary>
+        /// Returns an instance of <see cref="IRectangle"/> representing the bounding box of the GeoJSON specified <paramref name="feature."/>
+        /// </summary>
+        /// <param name="feature">The feature.</param>
+        /// <returns>An instance of <see cref="IRectangle"/>.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="feature"/> is <c>null</c>.</exception>
         public static IRectangle GetBoundingBox(GeoJsonFeature feature) {
+
+            if (feature == null) throw new ArgumentNullException(nameof(feature));
 
             IGeometry geometry = Convert(feature.Geometry);
 
