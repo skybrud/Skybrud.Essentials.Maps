@@ -90,7 +90,7 @@ namespace Skybrud.Essentials.Maps.Kmz {
             if (kml.Document.HasNetworkLink == false) return kml;
 
             // Get the KML or KMZ file specified by the network link
-            HttpResponse response = (HttpResponse) HttpUtils.Http.DoHttpGetRequest(kml.Document.NetworkLink.Link.Href);
+            HttpResponse response = (HttpResponse) HttpUtils.Requests.Get(kml.Document.NetworkLink.Link.Href);
 
             // Parse the response body
             switch (response.ContentType) {

@@ -29,8 +29,8 @@
 
   <ItemGroup>
     <Reference Include="System.IO.Compression" />
-    <PackageReference Include="Skybrud.Essentials" Version="1.1.15" />
-    <PackageReference Include="Skybrud.Essentials.Http" Version="1.0.6" />
+    <PackageReference Include="Skybrud.Essentials" Version="1.1.22" />
+    <PackageReference Include="Skybrud.Essentials.Http" Version="1.0.13" />
   </ItemGroup>
 
   <PropertyGroup>
