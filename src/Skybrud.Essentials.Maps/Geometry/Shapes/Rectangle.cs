@@ -72,7 +72,7 @@ namespace Skybrud.Essentials.Maps.Geometry.Shapes {
         /// <summary>
         /// Initializes a new rectangle based on the specified <paramref name="southWest"/> and <paramref name="southWest"/>.
         /// </summary>
-        /// <param name="southWest">The point that defines the south west corner of rectangle.</param>
+        /// <param name="southWest">The point that defines the south west corner of the rectangle.</param>
         /// <param name="northEast">The point that defines the north east corner of the rectangle.</param>
         public Rectangle(IPoint southWest, IPoint northEast) {
             if (southWest == null) throw new ArgumentNullException(nameof(southWest));
