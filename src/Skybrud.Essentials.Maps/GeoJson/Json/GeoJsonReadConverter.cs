@@ -53,6 +53,9 @@ namespace Skybrud.Essentials.Maps.GeoJson.Json {
                 case "linestring":
                     return GeoJsonLineString.Parse(obj);
 
+                case "multilinestring":
+                    return GeoJsonMultiLineString.Parse(obj);
+
                 case "polygon":
                     return GeoJsonPolygon.Parse(obj);
 
