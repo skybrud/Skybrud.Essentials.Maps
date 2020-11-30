@@ -39,24 +39,24 @@ namespace Skybrud.Essentials.Maps.GeoJson.Json {
 
             string type = obj.Value<string>("type");
 
-            switch (type) {
+            switch (type?.ToLower()) {
 
-                case "Feature":
+                case "feature":
                     return GeoJsonFeature.Parse(obj);
 
-                case "FeatureCollection":
+                case "featurecollection":
                     return GeoJsonFeatureCollection.Parse(obj);
 
-                case "Point":
+                case "point":
                     return GeoJsonPoint.Parse(obj);
 
-                case "LineString":
+                case "linestring":
                     return GeoJsonLineString.Parse(obj);
 
-                case "Polygon":
+                case "polygon":
                     return GeoJsonPolygon.Parse(obj);
 
-                case "MultiPolygon":
+                case "multipolygon":
                     return GeoJsonMultiPolygon.Parse(obj);
 
                 default:
