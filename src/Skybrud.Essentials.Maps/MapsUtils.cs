@@ -345,6 +345,19 @@ namespace Skybrud.Essentials.Maps {
         }
 
         /// <summary>
+        /// Returns the center point of the specified collection of <paramref name="points"/>.
+        /// </summary>
+        /// <param name="points">An array of points to find the center for.</param>
+        /// <returns>An instance of <see cref="IPoint"/> representing the center point.</returns>
+        /// <remarks>Internally the method will find the bounding box of the coordinates, and then get the center of
+        /// the bounding box. For one, this means that the center is not weighed - eg. if a majority of the coordinates
+        /// are in close proximity to eachother, it won't affect the result.</remarks>
+        public static IPoint GetCenter(IEnumerable<IPoint> points) {
+            if (points == null) throw new ArgumentNullException(nameof(points));
+            return GetBoundingBox(points).GetCenter();
+        }
+
+        /// <summary>
         /// Returns the length of the line or line string represented by the specified <paramref name="points"/>.
         /// </summary>
         /// <param name="points">The points making up the line.</param>
