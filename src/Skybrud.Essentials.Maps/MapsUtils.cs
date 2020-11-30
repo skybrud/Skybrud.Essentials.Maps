@@ -519,9 +519,9 @@ namespace Skybrud.Essentials.Maps {
         }
 
         /// <summary>
-        /// Returns the circumference of the polygon represented by the specified <paramref name="points"/>.
+        /// Returns the circumference of the closed path represented by the specified <paramref name="points"/>.
         /// </summary>
-        /// <param name="points">The points making up the polygon.</param>
+        /// <param name="points">The points making up the closed path.</param>
         /// <returns>The circumference in metres.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="points"/> is <c>null</c>.</exception>
         public static double GetCircumference(IPoint[] points) {
@@ -546,11 +546,62 @@ namespace Skybrud.Essentials.Maps {
         }
 
         /// <summary>
-        /// Returns whether the polygon defined by the specified <paramref name="coordinates"/> contains <paramref name="point"/>.
+        /// Returns the circumference of the closed path represented by the specified <paramref name="points"/>.
         /// </summary>
-        /// <param name="coordinates">The coordinates of the polygon.</param>
+        /// <param name="points">The points making up the closed path.</param>
+        /// <returns>The circumference in metres.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="points"/> is <c>null</c>.</exception>
+        public static double GetCircumference(IEnumerable<IPoint> points) {
+            if (points == null) throw new ArgumentNullException(nameof(points));
+            return GetCircumference(points.ToArray());
+        }
+
+        /// <summary>
+        /// Returns the circumference of the closed path represented by the specified <paramref name="points"/>.
+        /// </summary>
+        /// <param name="points">The points making up the closed path.</param>
+        /// <param name="radius">The radius of the spheroid.</param>
+        /// <returns>The circumference in metres.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="points"/> is <c>null</c>.</exception>
+        public static double GetCircumference(IPoint[] points, double radius) {
+
+            if (points == null) throw new ArgumentNullException(nameof(points));
+
+            double sum = 0;
+
+            // Iterate through each point in the path
+            for (int i = 0; i < points.Length; i++) {
+
+                // While "i" is the index of the first point and "j" is the second point
+                int j = i == 0 ? points.Length - 1 : i - 1;
+
+                // Calculate the distance between the two points
+                sum += DistanceUtils.GetDistance(points[i], points[j], radius);
+
+            }
+
+            return sum;
+
+        }
+
+        /// <summary>
+        /// Returns the circumference of the closed path represented by the specified <paramref name="points"/>.
+        /// </summary>
+        /// <param name="points">The points making up the closed path.</param>
+        /// <param name="radius">The radius of the spheroid.</param>
+        /// <returns>The circumference in metres.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="points"/> is <c>null</c>.</exception>
+        public static double GetCircumference(IEnumerable<IPoint> points, double radius) {
+            if (points == null) throw new ArgumentNullException(nameof(points));
+            return GetCircumference(points.ToArray(), radius);
+        }
+
+        /// <summary>
+        /// Returns whether the closed path defined by the specified <paramref name="coordinates"/> contains <paramref name="point"/>.
+        /// </summary>
+        /// <param name="coordinates">The coordinates of the closed path.</param>
         /// <param name="point">The point.</param>
-        /// <returns><c>true</c> if the polygon contains <paramref name="point"/>, otherwise <c>false</c>.</returns>
+        /// <returns><c>true</c> if the closed path contains <paramref name="point"/>, otherwise <c>false</c>.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="coordinates"/> or <paramref name="point"/> is <c>null</c>.</exception>
         public static bool Contains(IPoint[] coordinates, IPoint point) {
 
@@ -574,7 +625,20 @@ namespace Skybrud.Essentials.Maps {
         }
 
         /// <summary>
-        /// Returns an instance of <see cref="IRectangle"/> representing the bounding box of the polygon with the specified <paramref name="points"/>.
+        /// Returns whether the closed path defined by the specified <paramref name="coordinates"/> contains <paramref name="point"/>.
+        /// </summary>
+        /// <param name="coordinates">The coordinates of the closed path.</param>
+        /// <param name="point">The point.</param>
+        /// <returns><c>true</c> if the closed path contains <paramref name="point"/>, otherwise <c>false</c>.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="coordinates"/> or <paramref name="point"/> is <c>null</c>.</exception>
+        public static bool Contains(IEnumerable<IPoint> coordinates, IPoint point) {
+            if (coordinates == null) throw new ArgumentNullException(nameof(coordinates));
+            if (point == null) throw new ArgumentNullException(nameof(point));
+            return Contains(coordinates.ToArray(), point);
+        }
+
+        /// <summary>
+        /// Returns an instance of <see cref="IRectangle"/> representing the bounding box containing all of the specified <paramref name="points"/>.
         /// </summary>
         /// <param name="points">The points.</param>
         /// <returns>An instance of <see cref="IRectangle"/>.</returns>
