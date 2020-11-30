@@ -76,6 +76,23 @@ namespace Skybrud.Essentials.Maps.Geometry.Shapes {
             _inner = coordinates.Skip(1).ToList();
         }
 
+        /// <summary>
+        /// Initializes a new instance based on the corner points of the specified <paramref name="rectangle"/>.
+        /// </summary>
+        /// <param name="rectangle">The rectangle.</param>
+        public Polygon(IRectangle rectangle) {
+
+            if (rectangle == null) throw new ArgumentNullException(nameof(rectangle));
+            
+            // Convert "IRectangle" to "Rectangle"
+            Rectangle bbox = rectangle as Rectangle ?? new Rectangle(rectangle.SouthWest, rectangle.SouthWest);
+
+            // Set outer and inner bounds
+            _outer = new List<IPoint> { bbox.SouthWest, bbox.NorthWest, bbox.NorthEast, bbox.SouthEast, bbox.SouthWest };
+            _inner = new List<IPoint[]>();
+
+        }
+
         #endregion
 
         #region Member methods
