@@ -39,7 +39,7 @@ namespace Skybrud.Essentials.Maps.Geometry.Shapes {
         public double South => SouthWest.Latitude;
 
         /// <summary>
-        /// Gets the longitude of the west side of the rectangle.
+        /// Gets the longitude of the western side of the rectangle.
         /// </summary>
         public double West => SouthWest.Longitude;
 
