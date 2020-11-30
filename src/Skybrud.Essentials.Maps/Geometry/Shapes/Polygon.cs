@@ -128,7 +128,7 @@ namespace Skybrud.Essentials.Maps.Geometry.Shapes {
         /// </summary>
         /// <param name="latitude">The langitude of the point.</param>
         /// <param name="longitude">The longitude of the point.</param>
-        /// <returns><c>true</c> if the polygon contains the point; otheerwise <c>false</c>.</returns>
+        /// <returns><c>true</c> if the polygon contains the point; otherwise <c>false</c>.</returns>
         public bool Contains(double latitude, double longitude) {
             return Contains(new Point(latitude, longitude));
         }
