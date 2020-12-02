@@ -92,6 +92,38 @@ namespace Skybrud.Essentials.Maps.GeoJson {
         }
 
         /// <summary>
+        /// Returns the coordinates as an array consisting of the <see cref="X"/> (longitude) and <see cref="Y"/> (latitude) coordinates.
+        /// </summary>
+        /// <returns>An array of <see cref="double"/>.</returns>
+        public double[] ToXyArray() {
+            return new[] { X, Y };
+        }
+
+        /// <summary>
+        /// Returns the coordinates as an array consisting of the <see cref="X"/> (longitude) and <see cref="Y"/> (latitude) coordinates as well as the <see cref="Altitude"/> (<strong>Z</strong>).
+        /// </summary>
+        /// <returns>An array of <see cref="double"/>.</returns>
+        public double[] ToXyzArray() {
+            return new[] { X, Y, Altitude };
+        }
+
+        /// <summary>
+        /// Returns the coordinates as an array consisting of the <see cref="Y"/> (latitude) and <see cref="X"/> (longitude) coordinates.
+        /// </summary>
+        /// <returns>An array of <see cref="double"/>.</returns>
+        public double[] ToYxArray() {
+            return new[] { X, Y };
+        }
+
+        /// <summary>
+        /// Returns the coordinates as an array consisting of the <see cref="Y"/> (latitude) and <see cref="X"/> (longitude) coordinates as well as the <see cref="Altitude"/> (<strong>Z</strong>).
+        /// </summary>
+        /// <returns>An array of <see cref="double"/>.</returns>
+        public double[] ToYxzArray() {
+            return new[] { X, Y, Altitude };
+        }
+
+        /// <summary>
         /// Converts the coordinates to an instance of <see cref="IPoint"/>.
         /// </summary>
         /// <returns>An instance of <see cref="IPoint"/>.</returns>
