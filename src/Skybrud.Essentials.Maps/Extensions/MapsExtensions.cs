@@ -100,7 +100,7 @@ namespace Skybrud.Essentials.Maps.Extensions {
         }
 
         /// <summary>
-        /// Converts the specified <paramref name="rectangle"/> as a new polygon, based on the corner points.
+        /// Converts the specified <paramref name="rectangle"/> to a new polygon, based on the corner points.
         /// </summary>
         /// <param name="rectangle">The rectangle to be converted.</param>
         /// <returns>A new instance of <see cref="IPolygon"/>.</returns>
