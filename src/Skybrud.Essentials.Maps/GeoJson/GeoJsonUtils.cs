@@ -221,6 +221,34 @@ namespace Skybrud.Essentials.Maps.GeoJson {
 
         }
 
+        /// <summary>
+        /// Returns the specified <strong>GeoJSON</strong> <paramref name="geometry"/> as a list of polygons.
+        /// </summary>
+        /// <param name="geometry">The geometry to be converted.</param>
+        /// <returns>A list of <see cref="IPolygon"/>.</returns>
+        public static List<IPolygon> GetAsMultiPolygons(GeoJsonGeometry geometry) {
+
+            List<IPolygon> polygons = new List<IPolygon>();
+
+            switch (geometry) {
+                
+                case GeoJsonPolygon polygon:
+                    polygons.Add(polygon.ToPolygon());
+                    break;
+                
+                case GeoJsonMultiPolygon m:
+                    polygons.AddRange(m.ToMultiPolygon().Polygons);
+                    break;
+
+                default:
+                    throw new Exception("Unsupported geometry " + geometry.GetType());
+
+            }
+
+            return polygons;
+
+        }
+
     }
 
 }

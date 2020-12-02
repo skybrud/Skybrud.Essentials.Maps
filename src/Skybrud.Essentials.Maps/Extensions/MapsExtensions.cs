@@ -109,6 +109,33 @@ namespace Skybrud.Essentials.Maps.Extensions {
             return new Polygon(rectangle);
         }
 
+        /// <summary>
+        /// Converts the specified <paramref name="circle"/> to a polygon.
+        /// </summary>
+        /// <param name="circle">The circle to be converted.</param>
+        /// <returns>A new instance of <see cref="IPolygon"/>.</returns>
+        public static IPolygon ToPolygon(this ICircle circle) {
+            return ToPolygon(circle, 0.25f);
+        }
+
+        /// <summary>
+        /// Converts the specified <paramref name="circle"/> to a polygon.
+        /// </summary>
+        /// <param name="circle">The circle to be converted.</param>
+        /// <param name="delta"></param>
+        /// <returns>A new instance of <see cref="IPolygon"/>.</returns>
+        public static IPolygon ToPolygon(this ICircle circle, float delta) {
+
+            List<IPoint> path = new List<IPoint>();
+
+            for (float i = 0; i <= 360; i += delta) {
+                path.Add(MapsUtils.ComputeOffset(circle.Center, circle.Radius, i));
+            }
+
+            return new Polygon(path);
+
+        }
+
     }
 
 }
