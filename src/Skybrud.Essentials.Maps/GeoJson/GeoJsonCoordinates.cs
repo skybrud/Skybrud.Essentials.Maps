@@ -11,12 +11,12 @@ namespace Skybrud.Essentials.Maps.GeoJson {
         #region Properties
 
         /// <summary>
-        /// Gets or sets the coordinate on the X-axis.
+        /// Gets or sets the coordinate on the <strong>X</strong>-axis (longitude).
         /// </summary>
         public double X { get; set; }
 
         /// <summary>
-        /// Gets or sets the coordinate on the X-axis.
+        /// Gets or sets the coordinate on the <strong>Y</strong>-axis (latitude).
         /// </summary>
         public double Y { get; set; }
 
@@ -37,8 +37,8 @@ namespace Skybrud.Essentials.Maps.GeoJson {
         /// <summary>
         /// Initializes a new instance based on the specified <paramref name="x"/> and <paramref name="y"/> coordinates.
         /// </summary>
-        /// <param name="x">The coordinate on the X-axis.</param>
-        /// <param name="y">The coordinate on the Y-axis.</param>
+        /// <param name="x">The coordinate on the X-axis (longitude).</param>
+        /// <param name="y">The coordinate on the Y-axis (latitude).</param>
         public GeoJsonCoordinates(double x, double y) {
             X = x;
             Y = y;
@@ -47,8 +47,8 @@ namespace Skybrud.Essentials.Maps.GeoJson {
         /// <summary>
         /// Initializes a new instance based on the specified <paramref name="x"/> and <paramref name="y"/> coordinates and <paramref name="altitude"/>.
         /// </summary>
-        /// <param name="x">The coordinate on the X-axis.</param>
-        /// <param name="y">The coordinate on the Y-axis.</param>
+        /// <param name="x">The coordinate on the X-axis (longitude).</param>
+        /// <param name="y">The coordinate on the Y-axis (latitude).</param>
         /// <param name="altitude">The altitude.</param>
         public GeoJsonCoordinates(double x, double y, double altitude) {
             X = x;
