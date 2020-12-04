@@ -80,6 +80,43 @@ namespace Skybrud.Essentials.Maps.Extensions {
         }
 
         /// <summary>
+        /// Returns a three-dimensional array representing the outer and inner bounds of the specified <paramref name="polygon"/>.
+        /// </summary>
+        /// <param name="polygon">The polygon.</param>
+        /// <returns>A three-dimensional array with the <strong>x</strong> and <strong>y</strong> coordinates of <paramref name="polygon"/>.</returns>
+        public static double[][][] ToXyArray(this IPolygon polygon) {
+
+            double[][][] result = new double[polygon.Inner.Length + 1][][];
+
+            result[0] = polygon.Outer.Select(x => x.ToXyArray()).ToArray();
+
+            for (int i = 0; i<polygon.Inner.Length; i++) {
+                result[i + 1] = polygon.Inner[i].Select(x => x.ToXyArray()).ToArray();
+            }
+
+            return result;
+
+        }
+
+        /// <summary>
+        /// Returns a two-dimensional array representing the <strong>y</strong> and <strong>x</strong> coordinates of specified collection of <paramref name="points"/>.
+        /// </summary>
+        /// <param name="points">The points.</param>
+        /// <returns>A two-dimensional array with the <strong>y</strong> and <strong>x</strong> coordinates of <paramref name="points"/>.</returns>
+        public static double[][] ToYxArray(this IEnumerable<IPoint> points) {
+            return points.Select(x => x.ToYxArray()).ToArray();
+        }
+
+        /// <summary>
+        /// Returns a two-dimensional array representing the <strong>x</strong> and <strong>y</strong> coordinates of specified collection of <paramref name="points"/>.
+        /// </summary>
+        /// <param name="points">The points.</param>
+        /// <returns>A two-dimensional array with the <strong>x</strong> and <strong>y</strong> coordinates of <paramref name="points"/>.</returns>
+        public static double[][] ToXyArray(this IEnumerable<IPoint> points) {
+            return points.Select(x => x.ToXyArray()).ToArray();
+        }
+
+        /// <summary>
         /// Returns the center point of the specified collection of <paramref name="polygons"/>.
         /// </summary>
         /// <param name="polygons">A collection of polygons.</param>
