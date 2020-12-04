@@ -112,7 +112,7 @@ namespace Skybrud.Essentials.Maps.GeoJson {
         /// </summary>
         /// <returns>An array of <see cref="double"/>.</returns>
         public double[] ToYxArray() {
-            return new[] { X, Y };
+            return new[] { Y, X };
         }
 
         /// <summary>
@@ -120,7 +120,7 @@ namespace Skybrud.Essentials.Maps.GeoJson {
         /// </summary>
         /// <returns>An array of <see cref="double"/>.</returns>
         public double[] ToYxzArray() {
-            return new[] { X, Y, Altitude };
+            return new[] { Y, X, Altitude };
         }
 
         /// <summary>
