@@ -231,6 +231,9 @@ namespace Skybrud.Essentials.Maps.GeoJson {
             List<IPolygon> polygons = new List<IPolygon>();
 
             switch (geometry) {
+
+                case null:
+                    return polygons;
                 
                 case GeoJsonPolygon polygon:
                     polygons.Add(polygon.ToPolygon());
