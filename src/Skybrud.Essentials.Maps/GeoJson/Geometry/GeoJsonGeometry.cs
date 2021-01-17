@@ -2,6 +2,7 @@ using System;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Skybrud.Essentials.Json.Extensions;
+using Skybrud.Essentials.Maps.GeoJson.Exceptions;
 using Skybrud.Essentials.Maps.GeoJson.Json;
 using Skybrud.Essentials.Maps.Geometry;
 
@@ -52,32 +53,31 @@ namespace Skybrud.Essentials.Maps.GeoJson.Geometry {
 
             string type = json.GetString("type");
 
-            switch (type) {
+            switch (type?.ToLower()) {
 
-                case "Point":
+                case "point":
                     return GeoJsonPoint.Parse(json);
 
-                case "LineString":
+                case "linestring":
                     return GeoJsonLineString.Parse(json);
 
-                case "Polygon":
+                case "polygon":
                     return GeoJsonPolygon.Parse(json);
 
-                case "MultiPoint":
+                case "multipoint":
                     return GeoJsonMultiPoint.Parse(json);
 
-                case "MultiLineString":
-                    throw new NotImplementedException();
-                //return GeoJsonMultiLineString.Parse(obj);
+                case "multilinestring":
+                    return GeoJsonMultiLineString.Parse(json);
 
-                case "MultiPolygon":
+                case "multipolygon":
                     return GeoJsonMultiPolygon.Parse(json);
 
-                case "GeometryCollection":
+                case "geometrycollection":
                     return GeoJsonGeometryCollection.Parse(json);
 
                 default:
-                    throw new Exception("Unsupported type " + type);
+                    throw new GeoJsonParseException($"Unknown shape: {type}", json);
 
             }
 
