@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json.Linq;
 using Skybrud.Essentials.Json.Extensions;
+using Skybrud.Essentials.Maps.Extensions;
 using Skybrud.Essentials.Maps.Geometry;
 
 namespace Skybrud.Essentials.Maps.GeoJson.Geometry {
@@ -73,6 +74,15 @@ namespace Skybrud.Essentials.Maps.GeoJson.Geometry {
         public void Add(IPoint point) {
             if (point == null) throw new ArgumentNullException(nameof(point));
             _points.Add(new[] { point.Longitude, point.Latitude });
+        }
+
+        /// <summary>
+        /// Adds the specified collection of <paramref name="points"/> to the end of this <strong>MultiPoint</strong> geometry.
+        /// </summary>
+        /// <param name="points">A collection of points to be added.</param>
+        public void AddRange(IEnumerable<IPoint> points) {
+            if (points == null) throw new ArgumentNullException(nameof(points));
+            _points.AddRange(from point in points select point.ToXyArray());
         }
 
         /// <summary>
