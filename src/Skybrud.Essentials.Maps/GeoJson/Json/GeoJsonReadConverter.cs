@@ -51,6 +51,9 @@ namespace Skybrud.Essentials.Maps.GeoJson.Json {
                 case "point":
                     return GeoJsonPoint.Parse(obj);
 
+                case "multipoint":
+                    return GeoJsonMultiPoint.Parse(obj);
+
                 case "linestring":
                     return GeoJsonLineString.Parse(obj);
 
