@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json.Linq;
 using Skybrud.Essentials.Json.Extensions;
-using Skybrud.Essentials.Maps.Extensions;
 using Skybrud.Essentials.Maps.Geometry;
 
 namespace Skybrud.Essentials.Maps.GeoJson.Geometry {
@@ -12,9 +11,9 @@ namespace Skybrud.Essentials.Maps.GeoJson.Geometry {
     /// <summary>
     /// Class representing a GeoJSON <strong>MultiPoint</strong> geometry.
     /// </summary>
-    public class GeoJsonMultiPoint : GeoJsonGeometry, IEnumerable<double[]> {
+    public class GeoJsonMultiPoint : GeoJsonGeometry, IEnumerable<GeoJsonCoordinates> {
 
-        private readonly List<double[]> _points;
+        private readonly List<GeoJsonCoordinates> _points;
 
         #region Properties
 
@@ -31,7 +30,7 @@ namespace Skybrud.Essentials.Maps.GeoJson.Geometry {
         /// Initializes a new empty instance.
         /// </summary>
         public GeoJsonMultiPoint() : base(GeoJsonType.MultiPoint) {
-            _points = new List<double[]>();
+            _points = new List<GeoJsonCoordinates>();
         }
 
         /// <summary>
@@ -41,7 +40,7 @@ namespace Skybrud.Essentials.Maps.GeoJson.Geometry {
         protected GeoJsonMultiPoint(JObject json) : base(GeoJsonType.MultiPoint) {
             _points = (json.GetArray("coordinates") ?? new JArray())
                 .Cast<JArray>()
-                .Select(x => new [] {x.GetDouble(0), x.GetDouble(1)})
+                .Select(x => new GeoJsonCoordinates(x.GetDouble(0), x.GetDouble(1)))
                 .ToList();
         }
 
@@ -55,7 +54,7 @@ namespace Skybrud.Essentials.Maps.GeoJson.Geometry {
         /// <param name="x">The coordinate across the X axis.</param>
         /// <param name="y">The coordinate across the Y axis.</param>
         public void Add(double x, double y) {
-            _points.Add(new[] { x, y });
+            _points.Add(new GeoJsonCoordinates(x, y));
         }
 
         /// <summary>
@@ -64,7 +63,7 @@ namespace Skybrud.Essentials.Maps.GeoJson.Geometry {
         /// <param name="point">The point to be added. The array must have a minimum length of two describing both the <c>x</c> and <c>y</c> coordinates of the point, and may optionally specify the altitude as a third item in the array.</param>
         public void Add(double[] point) {
             if (point == null) throw new ArgumentNullException(nameof(point));
-            _points.Add(point);
+            _points.Add(new GeoJsonCoordinates(point[0], point[1], point.Length > 2 ? point[2] : 0));
         }
 
         /// <summary>
@@ -73,7 +72,16 @@ namespace Skybrud.Essentials.Maps.GeoJson.Geometry {
         /// <param name="point">The point to be added. Notice that <see cref="IPoint.Latitude"/> equals to <c>y</c> coordinate and <see cref="IPoint.Longitude"/> equals to <c>x</c> coordinate.</param>
         public void Add(IPoint point) {
             if (point == null) throw new ArgumentNullException(nameof(point));
-            _points.Add(new[] { point.Longitude, point.Latitude });
+            _points.Add(new GeoJsonCoordinates(point.Longitude, point.Latitude));
+        }
+
+        /// <summary>
+        /// Adds the specified <paramref name="point"/>. 
+        /// </summary>
+        /// <param name="point">The point to be added.</param>
+        public void Add(GeoJsonCoordinates point) {
+            if (point == null) throw new ArgumentNullException(nameof(point));
+            _points.Add(point);
         }
 
         /// <summary>
@@ -82,14 +90,23 @@ namespace Skybrud.Essentials.Maps.GeoJson.Geometry {
         /// <param name="points">A collection of points to be added.</param>
         public void AddRange(IEnumerable<IPoint> points) {
             if (points == null) throw new ArgumentNullException(nameof(points));
-            _points.AddRange(from point in points select point.ToXyArray());
+            _points.AddRange(from point in points select new GeoJsonCoordinates(point.Longitude, point.Latitude));
+        }
+
+        /// <summary>
+        /// Adds the specified collection of <paramref name="points"/> to the end of this <strong>MultiPoint</strong> geometry.
+        /// </summary>
+        /// <param name="points">A collection of points to be added.</param>
+        public void AddRange(IEnumerable<GeoJsonCoordinates> points) {
+            if (points == null) throw new ArgumentNullException(nameof(points));
+            _points.AddRange(points);
         }
 
         /// <summary>
         /// Removes the specified <paramref name="point"/>.
         /// </summary>
         /// <param name="point">The point to be removed.</param>
-        public void Remove(double[] point) {
+        public void Remove(GeoJsonCoordinates point) {
             if (point == null) throw new ArgumentNullException(nameof(point));
             _points.Remove(point);
         }
@@ -110,7 +127,7 @@ namespace Skybrud.Essentials.Maps.GeoJson.Geometry {
         /// Returns an enumerator that iterates through the underlying <see cref="List{Double}"/>.
         /// </summary>
         /// <returns>A System.Collections.Generic.List`1.Enumerator for the System.Collections.Generic.List`1.</returns>
-        public IEnumerator<double[]> GetEnumerator() {
+        public IEnumerator<GeoJsonCoordinates> GetEnumerator() {
             return _points.GetEnumerator();
         }
 
