@@ -1,10 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Skybrud.Essentials.Json;
 using Skybrud.Essentials.Json.Extensions;
+using Skybrud.Essentials.Maps.GeoJson.Exceptions;
 using Skybrud.Essentials.Maps.Geometry;
 
 namespace Skybrud.Essentials.Maps.GeoJson.Geometry {
@@ -55,7 +55,7 @@ namespace Skybrud.Essentials.Maps.GeoJson.Geometry {
 
         /// <inheritdoc />
         public override IGeometry ToGeometry() {
-            throw new Exception($"The Geometry namespace does not have an equivalent for {nameof(GeoJsonGeometryCollection)}.");
+            throw new GeoJsonException($"The Geometry namespace does not have an equivalent for {nameof(GeoJsonGeometryCollection)}.");
         }
 
         #endregion

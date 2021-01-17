@@ -4,6 +4,7 @@ using Newtonsoft.Json.Linq;
 using Skybrud.Essentials.Enums;
 using Skybrud.Essentials.Json;
 using Skybrud.Essentials.Json.Extensions;
+using Skybrud.Essentials.Maps.GeoJson.Exceptions;
 using Skybrud.Essentials.Maps.GeoJson.Features;
 using Skybrud.Essentials.Maps.GeoJson.Geometry;
 using Skybrud.Essentials.Maps.Geometry;
@@ -91,10 +92,10 @@ namespace Skybrud.Essentials.Maps.GeoJson {
 
             // Get the value of the "type" property
             string type = json.GetString("type");
-            if (string.IsNullOrWhiteSpace(type)) throw new Exception("The JSON object doesn't specify a type");
+            if (string.IsNullOrWhiteSpace(type)) throw new GeoJsonParseException("The JSON object doesn't specify a type", json);
 
             // Parse the type into an enum
-            if (EnumUtils.TryParseEnum(type, out GeoJsonType result) == false) throw new Exception("Unknown type " + type);
+            if (EnumUtils.TryParseEnum(type, out GeoJsonType result) == false) throw new GeoJsonParseException($"Unknown type {type}", json);
 
             switch (result) {
 
@@ -126,7 +127,7 @@ namespace Skybrud.Essentials.Maps.GeoJson {
                     return GeoJsonGeometryCollection.Parse(json);
 
                 default:
-                    throw new Exception("Unknown type " + type);
+                    throw new GeoJsonParseException($"Unknown type {type}", json);
 
             }
 
@@ -215,7 +216,7 @@ namespace Skybrud.Essentials.Maps.GeoJson {
                     return shape.GetBoundingBox();
 
                 default:
-                    throw new Exception("Unsupported geometry " + geometry.GetType());
+                    throw new GeoJsonException($"Unsupported geometry {geometry.GetType()}");
                 
             }
 
@@ -244,7 +245,7 @@ namespace Skybrud.Essentials.Maps.GeoJson {
                     break;
 
                 default:
-                    throw new Exception("Unsupported geometry " + geometry.GetType());
+                    throw new GeoJsonException($"Unsupported geometry {geometry.GetType()}");
 
             }
 

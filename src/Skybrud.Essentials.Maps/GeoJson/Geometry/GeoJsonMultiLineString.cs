@@ -54,7 +54,7 @@ namespace Skybrud.Essentials.Maps.GeoJson.Geometry {
         public GeoJsonMultiLineString(JObject json) : base(GeoJsonType.MultiLineString) {
             
             JArray coordinates = json.GetValue("coordinates") as JArray;
-            if (coordinates == null) throw new GeoJsonParseException("Unable to parse MultiLineString. \"coordinates\" is not an instance of JArray.");
+            if (coordinates == null) throw new GeoJsonParseException("Unable to parse MultiLineString. \"coordinates\" is not an instance of JArray.", json);
 
             try {
 
@@ -66,7 +66,7 @@ namespace Skybrud.Essentials.Maps.GeoJson.Geometry {
 
             } catch (Exception ex)  {
                 
-                throw new GeoJsonParseException("Unable to parse \"coordinates\" of MultiLineString.", ex);
+                throw new GeoJsonParseException("Unable to parse \"coordinates\" of MultiLineString.", json, ex);
 
             }
 

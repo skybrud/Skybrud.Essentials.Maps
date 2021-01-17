@@ -3,7 +3,7 @@ using Newtonsoft.Json.Linq;
 
 namespace Skybrud.Essentials.Maps.GeoJson.Exceptions {
     
-    public class GeoJsonParseException : Exception {
+    public class GeoJsonParseException : GeoJsonException {
 
         public JObject JObject { get; }
 
@@ -14,6 +14,10 @@ namespace Skybrud.Essentials.Maps.GeoJson.Exceptions {
         }
 
         public GeoJsonParseException(string message, Exception innerException) : base(message, innerException) { }
+
+        public GeoJsonParseException(string message, JObject obj, Exception innerException) : base(message, innerException) {
+            JObject = obj;
+        }
 
     }
 
