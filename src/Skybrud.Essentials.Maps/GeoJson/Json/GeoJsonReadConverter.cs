@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using Skybrud.Essentials.Maps.GeoJson.Exceptions;
 using Skybrud.Essentials.Maps.GeoJson.Features;
 using Skybrud.Essentials.Maps.GeoJson.Geometry;
 
@@ -66,7 +67,7 @@ namespace Skybrud.Essentials.Maps.GeoJson.Json {
                     if (objectType == typeof(GeoJsonProperties)) {
                         return ReadJsonProperties(reader);
                     }
-                    throw new Exception("Unknown shape: " + type);
+                    throw new GeoJsonParseException($"Unknown shape: {type}", obj);
 
             }
 
