@@ -26,6 +26,13 @@ namespace Skybrud.Essentials.Maps.Wkt {
         /// </summary>
         public int Count => _points.Count;
 
+        /// <summary>
+        /// Returns the point at the specified <paramref name="index"/>.
+        /// </summary>
+        /// <param name="index">The zero-based index of the point to retrieve.</param>
+        /// <returns>The <see cref="WktPoint"/> at the specified <paramref name="index"/>.</returns>
+        public WktPoint this[int index] => _points.ElementAt(index);
+
         #endregion
 
         #region Constructors
