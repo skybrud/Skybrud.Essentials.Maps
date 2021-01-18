@@ -96,6 +96,16 @@ namespace Skybrud.Essentials.Maps.GeoJson.Geometry {
         }
 
         /// <summary>
+        /// Adds a new point with the specified <paramref name="x"/> and <paramref name="y"/> coordinates and <paramref name="altitude"/>.
+        /// </summary>
+        /// <param name="x">The coordinate across the X axis.</param>
+        /// <param name="y">The coordinate across the Y axis.</param>
+        /// <param name="altitude">The altitude.</param>
+        public void Add(double x, double y, double altitude) {
+            _points.Add(new GeoJsonCoordinates(x, y, altitude));
+        }
+
+        /// <summary>
         /// Adds the specified <paramref name="point"/>. 
         /// </summary>
         /// <param name="point">The point to be added. The array must have a minimum length of two describing both the <c>x</c> and <c>y</c> coordinates of the point, and may optionally specify the altitude as a third item in the array.</param>

@@ -32,13 +32,6 @@ namespace Skybrud.Essentials.Maps.GeoJson.Geometry {
         /// <returns>The <see cref="GeoJsonCoordinates"/> at the specified <paramref name="index"/>.</returns>
         public GeoJsonCoordinates this[int index] => _points.ElementAt(index);
 
-        /// <summary>
-        /// Gets or sets the coordinates making up the line string.
-        /// </summary>
-        [JsonProperty("coordinates", Order = 100)]
-        [JsonConverter(typeof(GeoJsonReadConverter))]
-        public IEnumerable<GeoJsonCoordinates> Coordinates => _points;
-
         #endregion
 
         #region Constructors
@@ -127,6 +120,16 @@ namespace Skybrud.Essentials.Maps.GeoJson.Geometry {
         }
 
         /// <summary>
+        /// Adds a new point with the specified <paramref name="x"/> and <paramref name="y"/> coordinates and <paramref name="altitude"/>.
+        /// </summary>
+        /// <param name="x">The coordinate across the X axis.</param>
+        /// <param name="y">The coordinate across the Y axis.</param>
+        /// <param name="altitude">The altitude.</param>
+        public void Add(double x, double y, double altitude) {
+            _points.Add(new GeoJsonCoordinates(x, y, altitude));
+        }
+
+        /// <summary>
         /// Adds the specified <paramref name="point"/>. 
         /// </summary>
         /// <param name="point">The point to be added. The array must have a minimum length of two describing both the <c>x</c> and <c>y</c> coordinates of the point, and may optionally specify the altitude as a third item in the array.</param>
@@ -192,7 +195,7 @@ namespace Skybrud.Essentials.Maps.GeoJson.Geometry {
         /// </summary>
         /// <returns>An instance of <see cref="ILineString"/>.</returns>
         public ILineString ToLineString() {
-            return new LineString(Coordinates.Select(x => x.ToPoint()));
+            return new LineString(_points.Select(x => x.ToPoint()));
         }
 
         /// <inheritdoc />
