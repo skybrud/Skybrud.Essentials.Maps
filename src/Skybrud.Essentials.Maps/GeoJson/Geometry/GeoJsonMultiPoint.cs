@@ -76,6 +76,7 @@ namespace Skybrud.Essentials.Maps.GeoJson.Geometry {
         /// </summary>
         /// <param name="json">An instance of <see cref="JObject"/> representing the <strong>MultiPoint</strong> geometry.</param>
         protected GeoJsonMultiPoint(JObject json) : base(GeoJsonType.MultiPoint) {
+            if (json == null) throw new ArgumentNullException(nameof(json));
             _points = (json.GetArray("coordinates") ?? new JArray())
                 .Cast<JArray>()
                 .Select(x => new GeoJsonCoordinates(x.GetDouble(0), x.GetDouble(1)))

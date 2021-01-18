@@ -46,6 +46,13 @@ namespace Skybrud.Essentials.Maps.GeoJson.Json {
                     }.WriteTo(writer);
                     return;
 
+                case GeoJsonMultiLineString multiLineString:
+                    new JObject {
+                        {"type", multiLineString.Type.ToString() },
+                        {"coordinates", JArray.FromObject(multiLineString.ToList().Select(x => x.ToList()), serializer)}
+                    }.WriteTo(writer);
+                    return;
+
                 case GeoJsonProperties properties:
                     
                     Dictionary<string, object> temp = new Dictionary<string, object>();

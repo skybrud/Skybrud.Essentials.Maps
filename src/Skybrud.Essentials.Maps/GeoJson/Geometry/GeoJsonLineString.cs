@@ -62,6 +62,15 @@ namespace Skybrud.Essentials.Maps.GeoJson.Geometry {
         }
 
         /// <summary>
+        /// Initializes a new instance based on the specified array of <paramref name="coordinates"/>.
+        /// </summary>
+        /// <param name="coordinates">The array of coordinates the <strong>LineString</strong> geometry should be based on.</param>
+        public GeoJsonLineString(params GeoJsonCoordinates[] coordinates) : base(GeoJsonType.LineString) {
+            if (coordinates == null) throw new ArgumentNullException(nameof(coordinates));
+            _points = new List<GeoJsonCoordinates>(coordinates);
+        }
+
+        /// <summary>
         /// Initializes a new instance based on the specified collection of <paramref name="coordinates"/>.
         /// </summary>
         /// <param name="coordinates">The collection of coordinates the <strong>LineString</strong> geometry should be based on.</param>

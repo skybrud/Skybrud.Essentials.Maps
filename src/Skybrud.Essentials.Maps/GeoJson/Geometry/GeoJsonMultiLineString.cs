@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Skybrud.Essentials.Maps.GeoJson.Exceptions;
+using Skybrud.Essentials.Maps.GeoJson.Json;
 using Skybrud.Essentials.Maps.Geometry;
 using Skybrud.Essentials.Maps.Geometry.Lines;
 using Skybrud.Essentials.Maps.Geometry.Shapes;
@@ -13,20 +15,24 @@ namespace Skybrud.Essentials.Maps.GeoJson.Geometry {
     /// <summary>
     /// Class representing a GeoJSON <strong>MultiLineString</strong> geometry.
     /// </summary>
-    public class GeoJsonMultiLineString : GeoJsonGeometry, IGeoJsonLine {
+    [JsonConverter(typeof(GeoJsonConverter))]
+    public class GeoJsonMultiLineString : GeoJsonGeometry, IGeoJsonLine, IEnumerable<GeoJsonLineString> {
 
         private readonly List<GeoJsonLineString> _lineStrings;
 
         #region Properties
 
         /// <summary>
-        /// Gets a three dimensional array representing the coordinates of this <strong>MultiLineString</strong>.
+        /// Gets the amount of <strong>LineString</strong> geometries in the this <strong>MultiLineString</strong>.
         /// </summary>
-        [JsonProperty("coordinates")]
-        public double[][][] Coordinates => (
-            from line in _lineStrings
-            select line.Coordinates.Select(x => x.ToArray()).ToArray()
-        ).ToArray();
+        public int Count => _lineStrings.Count;
+
+        /// <summary>
+        /// Returns the <strong>LineString</strong> geometry at the specified <paramref name="index"/>.
+        /// </summary>
+        /// <param name="index">The zero-based index of the point to retrieve.</param>
+        /// <returns>The <see cref="GeoJsonLineString"/> at the specified <paramref name="index"/>.</returns>
+        public GeoJsonLineString this[int index] => _lineStrings.ElementAt(index);
 
         #endregion
 
@@ -44,7 +50,35 @@ namespace Skybrud.Essentials.Maps.GeoJson.Geometry {
         /// </summary>
         /// <param name="coordinates">The coordinates of the <strong>MultiLineString</strong> geometry.</param>
         public GeoJsonMultiLineString(double[][][] coordinates) : base(GeoJsonType.MultiLineString) {
+            if (coordinates == null) throw new ArgumentNullException(nameof(coordinates));
             _lineStrings = new List<GeoJsonLineString>(coordinates.Select(x => new GeoJsonLineString(x)));
+        }
+
+        /// <summary>
+        /// Initializes a instance based on the specified collection of <paramref name="lineStrings"/>.
+        /// </summary>
+        /// <param name="lineStrings">A collection of <see cref="LineString"/>.</param>
+        public GeoJsonMultiLineString(IEnumerable<LineString> lineStrings) : base(GeoJsonType.MultiLineString) {
+            if (lineStrings == null) throw new ArgumentNullException(nameof(lineStrings));
+            _lineStrings = new List<GeoJsonLineString>(lineStrings.Select(x => new GeoJsonLineString(x)));
+        }
+
+        /// <summary>
+        /// Initializes a instance based on the specified array of <paramref name="lineStrings"/>.
+        /// </summary>
+        /// <param name="lineStrings">An array of <strong>LineString</strong> geometries.</param>
+        public GeoJsonMultiLineString(params GeoJsonLineString[] lineStrings) : base(GeoJsonType.MultiLineString) {
+            if (lineStrings == null) throw new ArgumentNullException(nameof(lineStrings));
+            _lineStrings = new List<GeoJsonLineString>(lineStrings);
+        }
+
+        /// <summary>
+        /// Initializes a instance based on the specified collection of <paramref name="lineStrings"/>.
+        /// </summary>
+        /// <param name="lineStrings">A collection of <strong>LineString</strong> geometries.</param>
+        public GeoJsonMultiLineString(IEnumerable<GeoJsonLineString> lineStrings) : base(GeoJsonType.MultiLineString) {
+            if (lineStrings == null) throw new ArgumentNullException(nameof(lineStrings));
+            _lineStrings = new List<GeoJsonLineString>(lineStrings);
         }
 
         /// <summary>
@@ -70,7 +104,6 @@ namespace Skybrud.Essentials.Maps.GeoJson.Geometry {
 
             }
 
-
         }
 
         #endregion
@@ -93,6 +126,18 @@ namespace Skybrud.Essentials.Maps.GeoJson.Geometry {
         /// <inheritdoc />
         public override IGeometry ToGeometry() {
             return ToMultiLineString();
+        }
+
+        /// <summary>
+        /// Returns an enumerator that iterates through the underlying <see cref="List{GeoJsonLineString}"/>.
+        /// </summary>
+        /// <returns>A <see cref="List{GeoJsonLineString}.Enumerator"/> for the interal <see cref="List{GeoJsonLineString}"/>.</returns>
+        public IEnumerator<GeoJsonLineString> GetEnumerator() {
+            return _lineStrings.GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator() {
+            return GetEnumerator();
         }
 
         #endregion
