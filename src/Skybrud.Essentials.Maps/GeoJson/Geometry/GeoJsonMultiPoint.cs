@@ -2,9 +2,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Skybrud.Essentials.Json.Extensions;
 using Skybrud.Essentials.Maps.GeoJson.Exceptions;
+using Skybrud.Essentials.Maps.GeoJson.Json;
 using Skybrud.Essentials.Maps.Geometry;
 
 namespace Skybrud.Essentials.Maps.GeoJson.Geometry {
@@ -12,6 +14,7 @@ namespace Skybrud.Essentials.Maps.GeoJson.Geometry {
     /// <summary>
     /// Class representing a GeoJSON <strong>MultiPoint</strong> geometry.
     /// </summary>
+    [JsonConverter(typeof(GeoJsonConverter))]
     public class GeoJsonMultiPoint : GeoJsonGeometry, IEnumerable<GeoJsonCoordinates> {
 
         private readonly List<GeoJsonCoordinates> _points;
@@ -23,6 +26,13 @@ namespace Skybrud.Essentials.Maps.GeoJson.Geometry {
         /// </summary>
         public int Count => _points.Count;
 
+        /// <summary>
+        /// Returns the point at the specified <paramref name="index"/>.
+        /// </summary>
+        /// <param name="index">The zero-based index of the point to retrieve.</param>
+        /// <returns>The <see cref="GeoJsonCoordinates"/> at the specified <paramref name="index"/>.</returns>
+        public GeoJsonCoordinates this[int index] => _points.ElementAt(index);
+
         #endregion
 
         #region Constructors
@@ -32,6 +42,33 @@ namespace Skybrud.Essentials.Maps.GeoJson.Geometry {
         /// </summary>
         public GeoJsonMultiPoint() : base(GeoJsonType.MultiPoint) {
             _points = new List<GeoJsonCoordinates>();
+        }
+
+        /// <summary>
+        /// Initializes a new instance based on the specified array of <paramref name="coordinates"/>.
+        /// </summary>
+        /// <param name="coordinates">An array of coordinates which the <strong>MultiPoint</strong> geometry should be based on.</param>
+        public GeoJsonMultiPoint(double[][] coordinates) : base(GeoJsonType.MultiPoint) {
+            if (coordinates == null) throw new ArgumentNullException(nameof(coordinates));
+            _points = coordinates.Select(x => new GeoJsonCoordinates(x)).ToList();
+        }
+
+        /// <summary>
+        /// Initializes a new instance based on the specified collection of <paramref name="points"/>.
+        /// </summary>
+        /// <param name="points">The collection of points which the <strong>MultiPoint</strong> geometry should be based on.</param>
+        public GeoJsonMultiPoint(IEnumerable<IPoint> points) : base(GeoJsonType.MultiPoint) {
+            if (points == null) throw new ArgumentNullException(nameof(points));
+            _points = points.Select(x => new GeoJsonCoordinates(x)).ToList();
+        }
+
+        /// <summary>
+        /// Initializes a new instance based on the specified collection of <paramref name="coordinates"/>.
+        /// </summary>
+        /// <param name="coordinates">The collection of coordinates which the <strong>MultiPoint</strong> geometry should be based on.</param>
+        public GeoJsonMultiPoint(IEnumerable<GeoJsonCoordinates> coordinates) : base(GeoJsonType.LineString) {
+            if (coordinates == null) throw new ArgumentNullException(nameof(coordinates));
+            _points = new List<GeoJsonCoordinates>(coordinates);
         }
 
         /// <summary>
@@ -127,7 +164,7 @@ namespace Skybrud.Essentials.Maps.GeoJson.Geometry {
         /// <summary>
         /// Returns an enumerator that iterates through the underlying <see cref="List{Double}"/>.
         /// </summary>
-        /// <returns>A System.Collections.Generic.List`1.Enumerator for the System.Collections.Generic.List`1.</returns>
+        /// <returns>A <see cref="List{GeoJsonCoordinates}.Enumerator"/> for the interal <see cref="List{GeoJsonCoordinates}"/>.</returns>
         public IEnumerator<GeoJsonCoordinates> GetEnumerator() {
             return _points.GetEnumerator();
         }
