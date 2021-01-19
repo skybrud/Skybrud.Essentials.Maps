@@ -1,10 +1,8 @@
-﻿using System.Collections.Generic;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
 using Skybrud.Essentials.Maps.GeoJson;
 using Skybrud.Essentials.Maps.GeoJson.Geometry;
 using Skybrud.Essentials.Maps.Geometry;
-using Skybrud.Essentials.Maps.Geometry.Lines;
 
 namespace UnitTestProject1.GeoJson.Geometries {
 
