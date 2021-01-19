@@ -56,6 +56,8 @@
     <Reference Include="System.Web" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GeoJson\Geometries\GeoJsonPolygonTests.cs" />
+    <Compile Include="GeoJson\Geometries\GeoJsonPointTests.cs" />
     <Compile Include="GeoJson\Geometries\GeoJsonMultiLineStringTests.cs" />
     <Compile Include="GeoJson\Geometries\GeoJsonMultiPointTests.cs" />
     <Compile Include="GeoJson\Geometries\GeoJsonMultiPolygonTests.cs" />

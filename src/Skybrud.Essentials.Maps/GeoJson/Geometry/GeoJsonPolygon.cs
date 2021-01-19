@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Skybrud.Essentials.Maps.GeoJson.Exceptions;
+using Skybrud.Essentials.Maps.GeoJson.Json;
 using Skybrud.Essentials.Maps.Geometry;
 using Skybrud.Essentials.Maps.Geometry.Shapes;
 
@@ -11,6 +13,7 @@ namespace Skybrud.Essentials.Maps.GeoJson.Geometry {
     /// <summary>
     /// Class representing a GeoJSON <strong>Polygon</strong> geometry.
     /// </summary>
+    [JsonConverter(typeof(GeoJsonConverter))]
     public class GeoJsonPolygon : GeoJsonGeometry {
         
         #region Properties
@@ -57,6 +60,22 @@ namespace Skybrud.Essentials.Maps.GeoJson.Geometry {
         }
 
         /// <summary>
+        /// Initializes a new instance from the specified <paramref name="outer"/> coordinates.
+        /// </summary>
+        /// <param name="outer">A two-dimensional array representing the outer polygon.</param>
+        public GeoJsonPolygon(double[][] outer) : base(GeoJsonType.Polygon) {
+
+            if (outer == null) throw new ArgumentNullException(nameof(outer));
+            
+            Outer = outer
+                .Select(x => new GeoJsonCoordinates(x))
+                .ToList();
+
+            Inner = new List<List<GeoJsonCoordinates>>();
+
+        }
+
+        /// <summary>
         /// Initializes a new instance from the specified <paramref name="coordinates"/>.
         /// </summary>
         /// <param name="coordinates">A three-dimensional array representing the outer polygon as well as any inner polygons.</param>
@@ -79,6 +98,22 @@ namespace Skybrud.Essentials.Maps.GeoJson.Geometry {
                 .Skip(1)
                 .Select(x => x.Select(y => new GeoJsonCoordinates(y)).ToList())
                 .ToList();
+
+        }
+
+        /// <summary>
+        /// Initializes a new instance from the specified array of <paramref name="outer"/> coordinates.
+        /// </summary>
+        /// <param name="outer">The outer coordinates.</param>
+        public GeoJsonPolygon(IPoint[] outer) : base(GeoJsonType.Polygon) {
+            
+            if (outer == null) throw new ArgumentNullException(nameof(outer));
+            
+            Outer = outer
+                .Select(x => new GeoJsonCoordinates(x))
+                .ToList();
+
+            Inner = new List<List<GeoJsonCoordinates>>();
 
         }
         

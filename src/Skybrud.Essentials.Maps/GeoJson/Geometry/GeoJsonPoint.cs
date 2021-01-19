@@ -1,6 +1,8 @@
 ﻿using System;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using Skybrud.Essentials.Maps.GeoJson.Exceptions;
+using Skybrud.Essentials.Maps.GeoJson.Json;
 using Skybrud.Essentials.Maps.Geometry;
 
 namespace Skybrud.Essentials.Maps.GeoJson.Geometry {
@@ -8,6 +10,7 @@ namespace Skybrud.Essentials.Maps.GeoJson.Geometry {
     /// <summary>
     /// Class representing a GeoJSON <strong>Point</strong> geometry.
     /// </summary>
+    [JsonConverter(typeof(GeoJsonConverter))]
     public class GeoJsonPoint : GeoJsonGeometry {
 
         #region Properties
@@ -15,7 +18,6 @@ namespace Skybrud.Essentials.Maps.GeoJson.Geometry {
         /// <summary>
         /// Gets or sets the <strong>X</strong> coordinate of the point.
         /// </summary>
-        [JsonIgnore]
         public double X {
             get => Coordinates?.X ?? 0;
             set => (Coordinates ?? (Coordinates = new GeoJsonCoordinates())).X = value;
@@ -42,7 +44,6 @@ namespace Skybrud.Essentials.Maps.GeoJson.Geometry {
         /// <summary>
         /// Gets or sets the coordinates of the point.
         /// </summary>
-        [JsonProperty("coordinates", Order = 100)]
         public GeoJsonCoordinates Coordinates { get; set; }
 
         #endregion
@@ -50,14 +51,14 @@ namespace Skybrud.Essentials.Maps.GeoJson.Geometry {
         #region Constructors
 
         /// <summary>
-        /// Initializes a new point with <c>0</c> for both the <see cref="X"/> and <see cref="Y"/> coordinates.
+        /// Initializes a new <strong>Point</strong> geometry with <c>0</c> for both the <see cref="X"/> and <see cref="Y"/> coordinates.
         /// </summary>
         public GeoJsonPoint() : base(GeoJsonType.Point) {
             Coordinates = new GeoJsonCoordinates();
         }
 
         /// <summary>
-        /// Initializes a new point based on the specified <paramref name="x"/> and <paramref name="y"/> coordinates.
+        /// Initializes a new <strong>Point</strong> geometry based on the specified <paramref name="x"/> and <paramref name="y"/> coordinates.
         /// </summary>
         /// <param name="x">The <strong>x</strong> (longitude) coordinate.</param>
         /// <param name="y">The <strong>y</strong> (latitude) coordinate.</param>
@@ -66,7 +67,7 @@ namespace Skybrud.Essentials.Maps.GeoJson.Geometry {
         }
 
         /// <summary>
-        /// Initializes a new point based on the specified <paramref name="x"/> and <paramref name="y"/> coordinates, as wel as the specified <paramref name="altitude"/>.
+        /// Initializes a new <strong>Point</strong> geometry based on the specified <paramref name="x"/> and <paramref name="y"/> coordinates, as wel as the specified <paramref name="altitude"/>.
         /// </summary>
         /// <param name="x">The <strong>x</strong> (longitude) coordinate.</param>
         /// <param name="y">The <strong>y</strong> (latitude) coordinate.</param>
@@ -74,19 +75,20 @@ namespace Skybrud.Essentials.Maps.GeoJson.Geometry {
         public GeoJsonPoint(double x, double y, double altitude) : base(GeoJsonType.Point) {
             Coordinates = new GeoJsonCoordinates(x, y, altitude);
         }
-        
+
         /// <summary>
-        /// Initializes a new point from the specified array of <paramref name="coordinates"/>.
+        /// Initializes a new <strong>Point</strong> geometry from the specified array of <paramref name="coordinates"/>.
         ///
         /// The first and second items in the array represents the <strong>x</strong> and <strong>y</strong> coordinates respectively. A third item may be used to specify the altitude of the point.
         /// </summary>
         /// <param name="coordinates">The array representing the coordinates.</param>
         public GeoJsonPoint(double[] coordinates) : base(GeoJsonType.Point) {
+            if (coordinates == null) throw new ArgumentNullException(nameof(coordinates));
             Coordinates = new GeoJsonCoordinates(coordinates);
         }
 
         /// <summary>
-        /// Initializes a new instance based on the specified <paramref name="point"/>.
+        /// Initializes a new <strong>Point</strong> geometry based on the specified <paramref name="point"/>.
         /// </summary>
         /// <param name="point">An instance of <see cref="IPoint"/> representing the point.</param>
         public GeoJsonPoint(IPoint point) : base(GeoJsonType.Point) {
@@ -95,12 +97,24 @@ namespace Skybrud.Essentials.Maps.GeoJson.Geometry {
         }
 
         /// <summary>
-        /// Initializes a new instance based on the specified <paramref name="json"/> object.
+        /// Initializes a new <strong>Point</strong> geometry based on the specified <paramref name="json"/> object.
         /// </summary>
         /// <param name="json">An instance of <see cref="JObject"/> representing the <strong>Point</strong> geometry.</param>
         protected GeoJsonPoint(JObject json) : base(GeoJsonType.Point) {
-            if (!(json.GetValue("coordinates") is JArray array)) return;
-            Coordinates = new GeoJsonCoordinates(array.ToObject<double[]>());
+            
+            JArray coordinates = json.GetValue("coordinates") as JArray;
+            if (coordinates == null) throw new GeoJsonParseException("Unable to parse Point geometry. \"coordinates\" is not an instance of JArray.", json);
+
+            try {
+
+                Coordinates = new GeoJsonCoordinates(coordinates.ToObject<double[]>());
+
+            } catch (Exception ex)  {
+                
+                throw new GeoJsonParseException("Unable to parse \"coordinates\" of Point geometry.", json, ex);
+
+            }
+
         }
 
         #endregion

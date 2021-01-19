@@ -32,6 +32,13 @@ namespace Skybrud.Essentials.Maps.GeoJson.Json {
                     JArray.FromObject(list.Select(x => x.ToArray())).WriteTo(writer);
                     return;
 
+                case GeoJsonPoint point:
+                    new JObject {
+                        {"type", point.Type.ToString() },
+                        {"coordinates", JArray.FromObject(point.Coordinates, serializer)}
+                    }.WriteTo(writer);
+                    return;
+
                 case GeoJsonMultiPoint multiPoint:
                     new JObject {
                         {"type", multiPoint.Type.ToString() },
@@ -50,6 +57,13 @@ namespace Skybrud.Essentials.Maps.GeoJson.Json {
                     new JObject {
                         {"type", multiLineString.Type.ToString() },
                         {"coordinates", JArray.FromObject(multiLineString.ToList().Select(x => x.ToList()), serializer)}
+                    }.WriteTo(writer);
+                    return;
+
+                case GeoJsonPolygon polygon:
+                    new JObject {
+                        {"type", polygon.Type.ToString() },
+                        {"coordinates", JArray.FromObject(polygon.Coordinates, serializer)}
                     }.WriteTo(writer);
                     return;
 
