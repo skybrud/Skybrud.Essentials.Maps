@@ -1,8 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using Skybrud.Essentials.Maps.Extensions;
+using Skybrud.Essentials.Maps.GeoJson.Exceptions;
 using Skybrud.Essentials.Maps.Geometry;
 using Skybrud.Essentials.Maps.Geometry.Shapes;
 
@@ -12,34 +12,120 @@ namespace Skybrud.Essentials.Maps.GeoJson.Geometry {
     /// Class representing a GeoJSON <strong>Polygon</strong> geometry.
     /// </summary>
     public class GeoJsonPolygon : GeoJsonGeometry {
-
-        #region Properties
         
+        #region Properties
+
         /// <summary>
-        /// Gets the three-dimensional array representing the outer polygon as well as any inner polygons.
+        /// Gets a list representing the outer coordinates of the polygon.
         /// </summary>
-        [JsonProperty("coordinates", Order = 100)]
-        public double[][][] Coordinates { get; }
+        public List<GeoJsonCoordinates> Outer { get; }
+
+        /// <summary>
+        /// Gets a list representing the inner coordinates of the polygon.
+        /// </summary>
+        public List<List<GeoJsonCoordinates>> Inner { get; }
+
+        /// <summary>
+        /// Returns a three-dimensional array representing the outer and inner coordinates of the <strong>Polygon</strong>.
+        /// </summary>
+        public double[][][] Coordinates {
+
+            get {
+
+                List<double[][]> list = new List<double[][]> {
+                    Outer.Select(x => x.ToArray()).ToArray()
+                };
+                
+                list.AddRange(Inner.Select(inner => inner.Select(x => x.ToArray()).ToArray()));
+
+                return list.ToArray();
+
+            }
+
+        }
 
         #endregion
 
         #region Constructors
 
         /// <summary>
+        /// Initializes a new empty <strong>Polygon</strong> geometry.
+        /// </summary>
+        public GeoJsonPolygon() : base(GeoJsonType.Polygon)  {
+            Outer = new List<GeoJsonCoordinates>();
+            Inner = new List<List<GeoJsonCoordinates>>();
+        }
+
+        /// <summary>
         /// Initializes a new instance from the specified <paramref name="coordinates"/>.
         /// </summary>
         /// <param name="coordinates">A three-dimensional array representing the outer polygon as well as any inner polygons.</param>
         public GeoJsonPolygon(double[][][] coordinates) : base(GeoJsonType.Polygon) {
-            Coordinates = coordinates;
+
+            if (coordinates == null) throw new ArgumentNullException(nameof(coordinates));
+
+            if (coordinates.Length == 0) {
+                Outer = new List<GeoJsonCoordinates>();
+                Inner = new List<List<GeoJsonCoordinates>>();
+                return;
+            }
+
+            Outer = coordinates
+                .ElementAt(0)
+                .Select(x => new GeoJsonCoordinates(x))
+                .ToList();
+
+            Inner = coordinates
+                .Skip(1)
+                .Select(x => x.Select(y => new GeoJsonCoordinates(y)).ToList())
+                .ToList();
+
+        }
+        
+        /// <summary>
+        /// Initializes a new instance from the specified array of <see cref="IPoint"/> <paramref name="coordinates"/>.
+        /// </summary>
+        /// <param name="coordinates">The coordinates.</param>
+        public GeoJsonPolygon(IPoint[][] coordinates) : base(GeoJsonType.Polygon) {
+            
+            if (coordinates == null) throw new ArgumentNullException(nameof(coordinates));
+
+            if (coordinates.Length == 0) {
+                Outer = new List<GeoJsonCoordinates>();
+                Inner = new List<List<GeoJsonCoordinates>>();
+                return;
+            }
+
+            Outer = coordinates
+                .ElementAt(0)
+                .Select(x => new GeoJsonCoordinates(x))
+                .ToList();
+
+            Inner = coordinates
+                .Skip(1)
+                .Select(x => x.Select(y => new GeoJsonCoordinates(y)).ToList())
+                .ToList();
+
         }
 
         /// <summary>
-        /// Initializes a new instance based on the specified <paramref name="json"/> object.
+        /// Initializes a new <strong>Polygon</strong> geometry based on the specified <paramref name="outer"/> coordinates.
         /// </summary>
-        /// <param name="json">The JSON object.</param>
-        public GeoJsonPolygon(JObject json) : base(GeoJsonType.Polygon) {
-            JArray coordinates = json.GetValue("coordinates") as JArray;
-            Coordinates = coordinates == null ? new double[0][][] : coordinates.ToObject<double[][][]>();
+        /// <param name="outer">The outher coordinates of the polygon.</param>
+        public GeoJsonPolygon(params GeoJsonCoordinates[] outer) : base(GeoJsonType.Polygon) {
+            if (outer == null) throw new ArgumentNullException(nameof(outer));
+            Outer = outer.ToList();
+            Inner = new List<List<GeoJsonCoordinates>>();
+        }
+
+        /// <summary>
+        /// Initializes a new <strong>Polygon</strong> geometry based on the specified <paramref name="outer"/> coordinates.
+        /// </summary>
+        /// <param name="outer">The outher coordinates of the polygon.</param>
+        public GeoJsonPolygon(IEnumerable<GeoJsonCoordinates> outer) : base(GeoJsonType.Polygon) {
+            if (outer == null) throw new ArgumentNullException(nameof(outer));
+            Outer = outer.ToList();
+            Inner = new List<List<GeoJsonCoordinates>>();
         }
         
         /// <summary>
@@ -48,16 +134,46 @@ namespace Skybrud.Essentials.Maps.GeoJson.Geometry {
         /// <param name="polygon">The polygon.</param>
         public GeoJsonPolygon(IPolygon polygon) : base(GeoJsonType.Polygon) {
             if (polygon == null) throw new ArgumentNullException(nameof(polygon));
-            Coordinates = MapsUtils.ToXyArray(polygon.GetCoordinates());
+            Outer = polygon.Outer.Select(x => new GeoJsonCoordinates(x)).ToList();
+            Inner = polygon.Inner.Select(x => x.Select(y => new GeoJsonCoordinates(y)).ToList()).ToList();
         }
 
         /// <summary>
-        /// Initializes a new instance from the specified array of <see cref="IPoint"/> <paramref name="coordinates"/>.
+        /// Initializes a new instance based on the specified <paramref name="json"/> object.
         /// </summary>
-        /// <param name="coordinates">The coordinates.</param>
-        public GeoJsonPolygon(IPoint[][] coordinates) : base(GeoJsonType.Polygon) {
-            if (coordinates == null) throw new ArgumentNullException(nameof(coordinates));
-            Coordinates = MapsUtils.ToXyArray(coordinates);
+        /// <param name="json">The JSON object.</param>
+        public GeoJsonPolygon(JObject json) : base(GeoJsonType.Polygon) {
+
+            JArray coordinates = json.GetValue("coordinates") as JArray;
+            if (coordinates == null) throw new GeoJsonParseException("Unable to parse Polygon. \"coordinates\" is not an instance of JArray.", json);
+
+            try {
+
+                // Convert the JArray to a three dimensional array
+                double[][][] array = coordinates.ToObject<double[][][]>();
+                
+                if (array.Length == 0) {
+                    Outer = new List<GeoJsonCoordinates>();
+                    Inner = new List<List<GeoJsonCoordinates>>();
+                    return;
+                }
+
+                Outer = array
+                    .ElementAt(0)
+                    .Select(x => new GeoJsonCoordinates(x))
+                    .ToList();
+
+                Inner = array
+                    .Skip(1)
+                    .Select(x => x.Select(y => new GeoJsonCoordinates(y)).ToList())
+                    .ToList();
+
+            } catch (Exception ex)  {
+                
+                throw new GeoJsonParseException("Unable to parse \"coordinates\" of MultiLineString.", json, ex);
+
+            }
+
         }
 
         #endregion
@@ -69,9 +185,12 @@ namespace Skybrud.Essentials.Maps.GeoJson.Geometry {
         /// </summary>
         /// <returns>An instance of <see cref="IPolygon"/>.</returns>
         public IPolygon ToPolygon() {
-            return new Polygon(Coordinates
-                .Select(x => x.Select(y => (IPoint)new Point(y[1], y[0])).ToArray())
-                .ToArray());
+
+            IEnumerable<IPoint> outer = Outer.Select(x => x.ToPoint());
+            IEnumerable<IEnumerable<IPoint>> inner = Inner.Select(x => x.Select(y => y.ToPoint()));
+
+            return new Polygon(outer, inner);
+
         }
 
         /// <inheritdoc />

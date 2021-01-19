@@ -111,6 +111,58 @@ namespace Skybrud.Essentials.Maps.GeoJson.Geometry {
         #region Member methods
 
         /// <summary>
+        /// Adds the specified <paramref name="lineString"/>. 
+        /// </summary>
+        /// <param name="lineString">The line string to be added.</param>
+        public void Add(ILineString lineString) {
+            if (lineString == null) throw new ArgumentNullException(nameof(lineString));
+            _lineStrings.Add(new GeoJsonLineString(lineString));
+        }
+
+        /// <summary>
+        /// Adds the specified <paramref name="lineString"/>. 
+        /// </summary>
+        /// <param name="lineString">The line string to be added.</param>
+        public void Add(GeoJsonLineString lineString) {
+            if (lineString == null) throw new ArgumentNullException(nameof(lineString));
+            _lineStrings.Add(lineString);
+        }
+
+        /// <summary>
+        /// Adds the specified collection of <paramref name="lineStrings"/> to the end of this <strong>MultiLineString</strong> geometry.
+        /// </summary>
+        /// <param name="lineStrings">A collection of line strings to be added.</param>
+        public void AddRange(IEnumerable<ILineString> lineStrings) {
+            if (lineStrings == null) throw new ArgumentNullException(nameof(lineStrings));
+            _lineStrings.AddRange(lineStrings.Select(x => new GeoJsonLineString(x)));
+        }
+
+        /// <summary>
+        /// Adds the specified collection of <paramref name="lineStrings"/> to the end of this <strong>MultiLineString</strong> geometry.
+        /// </summary>
+        /// <param name="lineStrings">A collection of line strings to be added.</param>
+        public void AddRange(IEnumerable<GeoJsonLineString> lineStrings) {
+            if (lineStrings == null) throw new ArgumentNullException(nameof(lineStrings));
+            _lineStrings.AddRange(lineStrings);
+        }
+
+        /// <summary>
+        /// Removes the specified <paramref name="lineString"/>.
+        /// </summary>
+        /// <param name="lineString">The line string to be removed.</param>
+        public void Remove(GeoJsonLineString lineString) {
+            if (lineString == null) throw new ArgumentNullException(nameof(lineString));
+            _lineStrings.Remove(lineString);
+        }
+
+        /// <summary>
+        /// Removes all line strings.
+        /// </summary>
+        public void Clear() {
+            _lineStrings.Clear();
+        }
+
+        /// <summary>
         /// Returns an instance of <see cref="IMultiLineString"/> representing this GeoJSON <strong>MultiLineString</strong>.
         /// </summary>
         /// <returns>An instance of <see cref="IMultiPolygon"/>.</returns>

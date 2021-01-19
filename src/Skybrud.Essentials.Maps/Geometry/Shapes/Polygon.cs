@@ -66,6 +66,16 @@ namespace Skybrud.Essentials.Maps.Geometry.Shapes {
             _outer = outer?.ToList() ?? throw new ArgumentNullException(nameof(outer));
             _inner = inner?.Select(x => x.ToArray()).ToList() ?? new List<IPoint[]>();
         }
+        
+        /// <summary>
+        /// Initializes a new instance from the specified <paramref name="outer"/> and <paramref name="inner"/> coordinates.
+        /// </summary>
+        /// <param name="outer">The outer coordinates.</param>
+        /// <param name="inner">The inner coordinates.</param>
+        public Polygon(IEnumerable<IPoint> outer, IEnumerable<IEnumerable<IPoint>> inner) {
+            _outer = outer?.ToList() ?? throw new ArgumentNullException(nameof(outer));
+            _inner = inner?.Select(x => x.ToArray()).ToList() ?? new List<IPoint[]>();
+        }
 
         /// <summary>
         /// Initializes a new instance from the specified array of coordinates.

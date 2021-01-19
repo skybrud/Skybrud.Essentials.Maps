@@ -58,6 +58,7 @@
   <ItemGroup>
     <Compile Include="GeoJson\Geometries\GeoJsonMultiLineStringTests.cs" />
     <Compile Include="GeoJson\Geometries\GeoJsonMultiPointTests.cs" />
+    <Compile Include="GeoJson\Geometries\GeoJsonMultiPolygonTests.cs" />
     <Compile Include="WellKnownText\Geometries\MultiPointTests.cs" />
     <Compile Include="GeoJson\Geometries\GeoJsonLineStringTests.cs" />
     <Compile Include="GeoJson\LineUtilsTests.cs" />

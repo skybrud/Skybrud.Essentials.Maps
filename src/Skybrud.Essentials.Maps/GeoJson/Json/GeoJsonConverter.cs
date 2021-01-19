@@ -53,6 +53,13 @@ namespace Skybrud.Essentials.Maps.GeoJson.Json {
                     }.WriteTo(writer);
                     return;
 
+                case GeoJsonMultiPolygon multiPolygon:
+                    new JObject {
+                        {"type", multiPolygon.Type.ToString() },
+                        {"coordinates", JArray.FromObject(multiPolygon.Coordinates, serializer)}
+                    }.WriteTo(writer);
+                    return;
+
                 case GeoJsonProperties properties:
                     
                     Dictionary<string, object> temp = new Dictionary<string, object>();
