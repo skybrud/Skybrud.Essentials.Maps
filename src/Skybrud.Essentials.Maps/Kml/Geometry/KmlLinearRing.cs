@@ -52,22 +52,42 @@ namespace Skybrud.Essentials.Maps.Kml.Geometry {
 
         #region Constructors
 
+        /// <summary>
+        /// Initializes a new empty KML <c>&lt;Document&gt;</c> element.
+        /// </summary>
         public KmlLinearRing() {
             Coordinates = new KmlLinearRingCoordinates();
         }
 
+        /// <summary>
+        /// Initializes a new KML <c>&lt;Document&gt;</c> element containing the specified <paramref name="coordinates"/>.
+        /// </summary>
+        /// <param name="coordinates">An array of coordinates that make up the linear ring.</param>
         public KmlLinearRing(params KmlPointCoordinates[] coordinates) {
             Coordinates = new KmlLinearRingCoordinates(coordinates);
         }
 
+        /// <summary>
+        /// Initializes a new KML <c>&lt;Document&gt;</c> element containing the specified <paramref name="coordinates"/>.
+        /// </summary>
+        /// <param name="coordinates">An array of coordinates that make up the linear ring.</param>
         public KmlLinearRing(IEnumerable<KmlPointCoordinates> coordinates) {
             Coordinates = new KmlLinearRingCoordinates(coordinates);
         }
 
-        public KmlLinearRing(double[][] array) {
-            Coordinates = new KmlLinearRingCoordinates(array);
+        /// <summary>
+        /// Initializes a new KML <c>&lt;Document&gt;</c> element containing the specified <paramref name="coordinates"/>.
+        /// </summary>
+        /// <param name="coordinates">An array of coordinates that make up the linear ring.</param>
+        public KmlLinearRing(double[][] coordinates) {
+            Coordinates = new KmlLinearRingCoordinates(coordinates);
         }
 
+        /// <summary>
+        /// Initializes a new KML <c>&lt;Document&gt;</c> element.
+        /// </summary>
+        /// <param name="xml">The XML element the document should be based on.</param>
+        /// <param name="namespaces">The XML namespace.</param>
         protected KmlLinearRing(XElement xml, XmlNamespaceManager namespaces) {
             Extrude = xml.GetElementValueAsBoolean("kml:extrude", namespaces);
             Tesselate = xml.GetElementValueAsBoolean("kml:tesselate", namespaces);
@@ -78,6 +98,7 @@ namespace Skybrud.Essentials.Maps.Kml.Geometry {
 
         #region Member methods
 
+        /// <inheritdoc />
         public override XElement ToXElement() {
 
             if (Coordinates == null) throw new PropertyNotSetException(nameof(Coordinates));
@@ -98,11 +119,22 @@ namespace Skybrud.Essentials.Maps.Kml.Geometry {
 
         #region Static methods
 
+        /// <summary>
+        /// Parses the specified <paramref name="xml"/> element into an instance of <see cref="KmlLinearRing"/>.
+        /// </summary>
+        /// <param name="xml">The XML element representing the document.</param>
+        /// <returns>An instance of <see cref="KmlLinearRing"/>.</returns>
         public static KmlLinearRing Parse(XElement xml) {
             return xml == null ? null : new KmlLinearRing(xml, Namespaces);
 
         }
 
+        /// <summary>
+        /// Parses the specified <paramref name="xml"/> element into an instance of <see cref="KmlLinearRing"/>.
+        /// </summary>
+        /// <param name="xml">The XML element representing the document.</param>
+        /// <param name="namespaces">The XML namespace.</param>
+        /// <returns>An instance of <see cref="KmlLinearRing"/>.</returns>
         public static KmlLinearRing Parse(XElement xml, XmlNamespaceManager namespaces) {
             return xml == null ? null : new KmlLinearRing(xml, namespaces);
         }

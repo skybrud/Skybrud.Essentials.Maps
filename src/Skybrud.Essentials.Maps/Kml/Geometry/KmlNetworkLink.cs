@@ -29,8 +29,16 @@ namespace Skybrud.Essentials.Maps.Kml.Geometry {
 
         #region Constructors
 
+        /// <summary>
+        /// Initializes a new empty KML <c>&lt;NetworkLink&gt;</c> element.
+        /// </summary>
         public KmlNetworkLink() { }
 
+        /// <summary>
+        /// Initializes a new KML <c>&lt;NetworkLink&gt;</c> element.
+        /// </summary>
+        /// <param name="xml">The XML element the document should be based on.</param>
+        /// <param name="namespaces">The XML namespace.</param>
         protected KmlNetworkLink(XElement xml, XmlNamespaceManager namespaces) : base(xml, namespaces) {
             RefreshVisibility = xml.GetElementValueAsInt32("kml:refreshVisibility", namespaces) == 1;
             FlyToView = xml.GetElementValueAsInt32("kml:flyToView", namespaces) == 1;
@@ -41,6 +49,7 @@ namespace Skybrud.Essentials.Maps.Kml.Geometry {
 
         #region Member methods
 
+        /// <inheritdoc />
         public override XElement ToXElement() {
 
             XElement xml = base.ToXElement();
@@ -56,11 +65,22 @@ namespace Skybrud.Essentials.Maps.Kml.Geometry {
         #endregion
 
         #region Static methods
-        
+
+        /// <summary>
+        /// Parses the specified <paramref name="xml"/> element into an instance of <see cref="KmlNetworkLink"/>.
+        /// </summary>
+        /// <param name="xml">The XML element representing the document.</param>
+        /// <returns>An instance of <see cref="KmlNetworkLink"/>.</returns>
         public static KmlNetworkLink Parse(XElement xml) {
             return new KmlNetworkLink(xml, Namespaces);
         }
 
+        /// <summary>
+        /// Parses the specified <paramref name="xml"/> element into an instance of <see cref="KmlNetworkLink"/>.
+        /// </summary>
+        /// <param name="xml">The XML element representing the document.</param>
+        /// <param name="namespaces">The XML namespace.</param>
+        /// <returns>An instance of <see cref="KmlNetworkLink"/>.</returns>
         public static KmlNetworkLink Parse(XElement xml, XmlNamespaceManager namespaces) {
             return new KmlNetworkLink(xml, namespaces);
         }

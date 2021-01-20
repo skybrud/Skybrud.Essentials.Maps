@@ -3,10 +3,20 @@ using System.Xml.Linq;
 
 namespace Skybrud.Essentials.Maps.Kml.Features {
 
+    /// <summary>
+    /// Class representing a KML <c>&lt;FeatureCollection&gt;</c> element.
+    /// </summary>
     public class KmlFeatureCollection : KmlCollectionBase<KmlFeature> {
 
+        /// <summary>
+        /// Initializes a new empty KML <c>&lt;FeatureCollection&gt;</c> element.
+        /// </summary>
         public KmlFeatureCollection() { }
 
+        /// <summary>
+        /// Initializes a new empty KML <c>&lt;FeatureCollection&gt;</c> element containing the specified <paramref name="features"/>.
+        /// </summary>
+        /// <param name="features">An array of features to add to the document.</param>
         public KmlFeatureCollection(IEnumerable<KmlFeature> features) {
             AddRange(features);
         }

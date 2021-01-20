@@ -15,6 +15,9 @@ namespace Skybrud.Essentials.Maps.Kml.Features {
 
         #region Properties
 
+        /// <summary>
+        /// Gets or sets the ID of the feature.
+        /// </summary>
         public string Id { get; set; }
 
         /// <summary>
@@ -22,16 +25,31 @@ namespace Skybrud.Essentials.Maps.Kml.Features {
         /// </summary>
         public string Name { get; set; }
 
+        /// <summary>
+        /// Gets or sets the description of the feature.
+        /// </summary>
         public string Description { get; set; }
 
+        /// <summary>
+        /// URL of a &lt;Style&gt; or &lt;StyleMap&gt; defined in a Document. If the style is in the same file, use a #
+        /// reference. If the style is defined in an external file, use a full URL along with # referencing.
+        /// </summary>
         public string StyleUrl { get; set; }
 
         #endregion
 
         #region Constructors
 
+        /// <summary>
+        /// Initializes a new KML feature.
+        /// </summary>
         protected KmlFeature() { }
 
+        /// <summary>
+        /// Initializes a new KML feature.
+        /// </summary>
+        /// <param name="xml">The XML element the feature should be based on.</param>
+        /// <param name="namespaces">The XML namespace.</param>
         protected KmlFeature(XElement xml, XmlNamespaceManager namespaces) {
             Name = xml.GetElementValue("kml:name", namespaces);
             Description = xml.GetElementValue("kml:description", namespaces);
@@ -42,6 +60,7 @@ namespace Skybrud.Essentials.Maps.Kml.Features {
 
         #region Member methods
 
+        /// <inheritdoc />
         public override XElement ToXElement() {
 
             XElement xml = base.ToXElement();

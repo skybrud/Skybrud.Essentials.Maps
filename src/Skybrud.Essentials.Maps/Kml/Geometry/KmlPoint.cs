@@ -1,5 +1,7 @@
 ﻿using System.Xml;
 using System.Xml.Linq;
+using Skybrud.Essentials.Maps.Kml.Features;
+using Skybrud.Essentials.Maps.Kml.Styles;
 using Skybrud.Essentials.Xml.Extensions;
 
 namespace Skybrud.Essentials.Maps.Kml.Geometry {
@@ -42,18 +44,37 @@ namespace Skybrud.Essentials.Maps.Kml.Geometry {
 
         #region Constructors
 
+        /// <summary>
+        /// Initializes a new empty KML <c>&lt;Point&gt;</c> element.
+        /// </summary>
         public KmlPoint() {
             Coordinates = new KmlPointCoordinates();
         }
 
+        /// <summary>
+        /// Initializes a new KML <c>&lt;Point&gt;</c> element based on the specified <paramref name="latitude"/> and <paramref name="longitude"/>.
+        /// </summary>
+        /// <param name="latitude">The latitude of the point.</param>
+        /// <param name="longitude">The longitude of the point.</param>
         public KmlPoint(double latitude, double longitude) {
             Coordinates = new KmlPointCoordinates(latitude, longitude);
         }
 
+        /// <summary>
+        /// Initializes a new KML <c>&lt;Point&gt;</c> element based on the specified <paramref name="latitude"/>, <paramref name="longitude"/> and <paramref name="altitude"/>.
+        /// </summary>
+        /// <param name="latitude">The latitude of the point.</param>
+        /// <param name="longitude">The longitude of the point.</param>
+        /// <param name="altitude">The altitude of the point.</param>
         public KmlPoint(double latitude, double longitude, double altitude) {
             Coordinates = new KmlPointCoordinates(latitude, longitude, altitude);
         }
 
+        /// <summary>
+        /// Initializes a new KML <c>&lt;Point&gt;</c> element.
+        /// </summary>
+        /// <param name="xml">The XML element the document should be based on.</param>
+        /// <param name="namespaces">The XML namespace.</param>
         protected KmlPoint(XElement xml, XmlNamespaceManager namespaces) : base(xml, namespaces) {
             Coordinates = xml.GetElement("kml:coordinates", namespaces, KmlPointCoordinates.Parse) ?? new KmlPointCoordinates();
         }
@@ -62,6 +83,7 @@ namespace Skybrud.Essentials.Maps.Kml.Geometry {
 
         #region Static methods
 
+        /// <inheritdoc />
         public override XElement ToXElement() {
             XElement xml = base.ToXElement();
             xml.Add((Coordinates ?? new KmlPointCoordinates()).ToXElement());
@@ -71,11 +93,22 @@ namespace Skybrud.Essentials.Maps.Kml.Geometry {
         #endregion
 
         #region Static methods
-        
+
+        /// <summary>
+        /// Parses the specified <paramref name="xml"/> element into an instance of <see cref="KmlPoint"/>.
+        /// </summary>
+        /// <param name="xml">The XML element representing the document.</param>
+        /// <returns>An instance of <see cref="KmlPoint"/>.</returns>
         public static KmlPoint Parse(XElement xml) {
             return new KmlPoint(xml, Namespaces);
         }
 
+        /// <summary>
+        /// Parses the specified <paramref name="xml"/> element into an instance of <see cref="KmlPoint"/>.
+        /// </summary>
+        /// <param name="xml">The XML element representing the document.</param>
+        /// <param name="namespaces">The XML namespace.</param>
+        /// <returns>An instance of <see cref="KmlPoint"/>.</returns>
         public static KmlPoint Parse(XElement xml, XmlNamespaceManager namespaces) {
             return new KmlPoint(xml, namespaces);
         }

@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Skybrud.Essentials.Maps.Kml.Extensions {
+﻿namespace Skybrud.Essentials.Maps.Kml.Extensions {
 
     internal static class KmlExtensions {
 
@@ -9,7 +7,7 @@ namespace Skybrud.Essentials.Maps.Kml.Extensions {
             switch (obj) {
 
                 case string str:
-                    return String.IsNullOrWhiteSpace(str) == false;
+                    return string.IsNullOrWhiteSpace(str) == false;
 
                 default:
                     return obj != null;
@@ -19,11 +17,11 @@ namespace Skybrud.Essentials.Maps.Kml.Extensions {
         }
 
         internal static bool IsDefault(KmlLinkRefreshMode value) {
-            return value == default(KmlLinkRefreshMode);
+            return value == default;
         }
 
         internal static bool IsNotDefault(KmlLinkRefreshMode value) {
-            return value != default(KmlLinkRefreshMode);
+            return value != default;
         }
 
     }

@@ -5,6 +5,9 @@
     /// </summary>
     public enum KmlAltitudeMode {
 
+        /// <summary>
+        /// Indicates that the altitude mode is not specified.
+        /// </summary>
         Unspecified,
 
         /// <summary>

@@ -4,6 +4,7 @@ using System.IO.Compression;
 using Skybrud.Essentials.Http;
 using Skybrud.Essentials.Maps.Kml;
 using Skybrud.Essentials.Maps.Kml.Constants;
+using Skybrud.Essentials.Maps.Kml.Features;
 
 namespace Skybrud.Essentials.Maps.Kmz {
 
@@ -14,6 +15,9 @@ namespace Skybrud.Essentials.Maps.Kmz {
 
         #region Properties
 
+        /// <summary>
+        /// Gets a reference to the internal stream.
+        /// </summary>
         protected Stream Stream { get; private set; }
 
         /// <summary>
@@ -46,6 +50,7 @@ namespace Skybrud.Essentials.Maps.Kmz {
 
         #region Member methods
 
+        /// <inheritdoc />
         public void Dispose() {
             Stream?.Dispose();
             Archive?.Dispose();
@@ -69,14 +74,31 @@ namespace Skybrud.Essentials.Maps.Kmz {
 
         #region Static methods
 
+        /// <summary>
+        /// Opens the KMZ file at the specified <paramref name="path"/> for reading.
+        /// </summary>
+        /// <param name="path">The path to the file on disk.</param>
+        /// <returns>An instance of <see cref="KmzFile"/>.</returns>
         public static KmzFile OpenRead(string path) {
             return new KmzFile(path);
         }
 
+        /// <summary>
+        /// Parses the specified <paramref name="bytes"/> into an instances of <see cref="KmzFile"/>.
+        /// </summary>
+        /// <param name="bytes">The bytes representing the KMZ file.</param>
+        /// <returns>An instance of <see cref="KmzFile"/>.</returns>
         public static KmzFile Parse(byte[] bytes) {
             return new KmzFile(bytes);
         }
 
+        /// <summary>
+        /// Returns the KML file at the specified <paramref name="path"/>.
+        ///
+        /// If the KMZ file's <see cref="KmlDocument.NetworkLink"/> property indicates another KML or KMZ file, that file will be retrieved and returned instead.
+        /// </summary>
+        /// <param name="path">The path to the file on disk.</param>
+        /// <returns>An instance of <see cref="KmlFile"/>.</returns>
         public static KmlFile LoadKml(string path) {
 
             KmlFile kml;

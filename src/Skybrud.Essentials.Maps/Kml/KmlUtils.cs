@@ -8,6 +8,9 @@ using Skybrud.Essentials.Maps.Kml.Geometry;
 
 namespace Skybrud.Essentials.Maps.Kml {
 
+    /// <summary>
+    /// Static class with various KML related utils.
+    /// </summary>
     public static class KmlUtils {
 
         public static KmlGeometry[] ParseGeometryChildren(XElement xml, XmlNamespaceManager namespaces) {
@@ -47,6 +50,13 @@ namespace Skybrud.Essentials.Maps.Kml {
 
         }
 
+        /// <summary>
+        /// Returns the corresponding HEX value of the color with specified <paramref name="red"/>, <paramref name="green"/> and <paramref name="blue"/> values.
+        /// </summary>
+        /// <param name="red">The red of the color.</param>
+        /// <param name="green">The green of the color.</param>
+        /// <param name="blue">The blue of the color.</param>
+        /// <returns>The HEX value.</returns>
         public static string RgbToHex(byte red, byte green, byte blue) {
 
             string r = red.ToString("x").PadLeft(2, '0');
@@ -57,6 +67,14 @@ namespace Skybrud.Essentials.Maps.Kml {
 
         }
 
+        /// <summary>
+        /// Returns the corresponding HEX value of the color with specified <paramref name="red"/>, <paramref name="green"/>, <paramref name="blue"/> and <paramref name="alpha"/> values.
+        /// </summary>
+        /// <param name="red">The red of the color.</param>
+        /// <param name="green">The green of the color.</param>
+        /// <param name="blue">The blue of the color.</param>
+        /// <param name="alpha">The alpha value of the color.</param>
+        /// <returns>The HEX value.</returns>
         public static string RgbToHex(byte red, byte green, byte blue, float alpha) {
 
             // Clamp the alpha value
