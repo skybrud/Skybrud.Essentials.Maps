@@ -14,7 +14,7 @@
     <Product>Skybrud.Essentials</Product>
     <Authors>Anders Bjerner</Authors>
     <Copyright>Copyright © 2022</Copyright>
-    <Description>.NET library for working with maps, geospatial data and geometry.</Description>
+    <Description>.NET library for working with maps, geospatial data and geometries.</Description>
   </PropertyGroup>
 
   <!-- Information for the NuGet package -->
