@@ -158,8 +158,8 @@ namespace Skybrud.Essentials.Maps.Geometry.Shapes {
         /// <returns>The circumference in metres.</returns>
         public double GetCircumference() {
 
-            double lengthX = DistanceUtils.GetDistance(SouthWest, SouthEast);
-            double lengthY = DistanceUtils.GetDistance(SouthWest, NorthWest);
+            double lengthX = PointUtils.GetDistance(SouthWest, SouthEast);
+            double lengthY = PointUtils.GetDistance(SouthWest, NorthWest);
 
             return lengthX + lengthX + lengthY + lengthY;
 

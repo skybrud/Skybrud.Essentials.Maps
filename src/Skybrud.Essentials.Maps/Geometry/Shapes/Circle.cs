@@ -52,7 +52,7 @@ namespace Skybrud.Essentials.Maps.Geometry.Shapes {
         /// <inheritdoc />
         public bool Contains(IPoint point) {
             if (point == null) throw new ArgumentNullException(nameof(point));
-            return DistanceUtils.GetDistance(Center, point) <= Radius;
+            return PointUtils.GetDistance(Center, point) <= Radius;
         }
 
         /// <inheritdoc />

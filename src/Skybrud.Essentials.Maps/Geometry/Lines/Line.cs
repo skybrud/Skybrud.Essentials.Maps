@@ -55,7 +55,7 @@ namespace Skybrud.Essentials.Maps.Geometry.Lines {
         /// </summary>
         /// <returns>The total length in metres.</returns>
         public double GetLength() {
-            return DistanceUtils.GetDistance(A, B);
+            return PointUtils.GetDistance(A, B);
         }
         
         /// <summary>

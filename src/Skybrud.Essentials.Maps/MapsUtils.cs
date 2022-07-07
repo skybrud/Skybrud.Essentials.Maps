@@ -159,7 +159,7 @@ namespace Skybrud.Essentials.Maps {
             for (int i = 1; i < points.Count; i++) {
 
                 // Calculate the distance between the two points
-                sum += DistanceUtils.GetDistance(points[i - 1], points[i]);
+                sum += PointUtils.GetDistance(points[i - 1], points[i]);
 
             }
 
@@ -324,7 +324,7 @@ namespace Skybrud.Essentials.Maps {
                 IPoint a = line.Points[i - 1];
                 IPoint b = line.Points[i];
 
-                double d = DistanceUtils.GetDistance(a, b);
+                double d = PointUtils.GetDistance(a, b);
 
                 if (d > distance) {
 
@@ -373,7 +373,7 @@ namespace Skybrud.Essentials.Maps {
             for (int i = 1; i < points.Length; i++) {
 
                 // Calculate the distance between the two points
-                sum += DistanceUtils.GetDistance(points[i - 1], points[i]);
+                sum += PointUtils.GetDistance(points[i - 1], points[i]);
 
             }
 
@@ -537,7 +537,7 @@ namespace Skybrud.Essentials.Maps {
                 int j = i == 0 ? points.Length - 1 : i - 1;
 
                 // Calculate the distance between the two points
-                sum += DistanceUtils.GetDistance(points[i], points[j]);
+                sum += PointUtils.GetDistance(points[i], points[j]);
 
             }
 
@@ -576,7 +576,7 @@ namespace Skybrud.Essentials.Maps {
                 int j = i == 0 ? points.Length - 1 : i - 1;
 
                 // Calculate the distance between the two points
-                sum += DistanceUtils.GetDistance(points[i], points[j], radius);
+                sum += PointUtils.GetDistance(points[i], points[j], radius);
 
             }
 
