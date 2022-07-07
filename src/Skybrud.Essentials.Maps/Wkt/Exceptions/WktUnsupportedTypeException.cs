@@ -22,7 +22,7 @@ namespace Skybrud.Essentials.Maps.Wkt.Exceptions {
         /// Initializes a new instance based on the specified <paramref name="type"/>.
         /// </summary>
         /// <param name="type">The type of the geometry that resulted in this exception.</param>
-        public WktUnsupportedTypeException(string type) : base("Unsupported type: " + type) {
+        public WktUnsupportedTypeException(string type) : base($"Unsupported type: {type}") {
             Type = type;
         }
 
@@ -39,7 +39,7 @@ namespace Skybrud.Essentials.Maps.Wkt.Exceptions {
         /// Initializes a new instance based on the specified <paramref name="type"/>.
         /// </summary>
         /// <param name="type">The type of the geometry that resulted in this exception.</param>
-        public WktUnsupportedTypeException(Type type) : base("Unsupported type: " + type.FullName) {
+        public WktUnsupportedTypeException(Type type) : base($"Unsupported type: {type.FullName}") {
             Type = type.FullName;
         }
 

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Xml;
+﻿using System.Xml;
 using System.Xml.Linq;
 using Skybrud.Essentials.Common;
 using Skybrud.Essentials.Xml.Extensions;
@@ -37,8 +36,8 @@ namespace Skybrud.Essentials.Maps.Kml.Styles {
 
         public override XElement ToXElement() {
 
-            if (String.IsNullOrWhiteSpace(Key)) throw new PropertyNotSetException(nameof(Key), "The Key property of a <Pair> must have a value");
-            if (String.IsNullOrWhiteSpace(StyleUrl)) throw new PropertyNotSetException(nameof(StyleUrl), "The StyleUrl property of a <Pair> must have a value");
+            if (string.IsNullOrWhiteSpace(Key)) throw new PropertyNotSetException(nameof(Key), "The Key property of a <Pair> must have a value");
+            if (string.IsNullOrWhiteSpace(StyleUrl)) throw new PropertyNotSetException(nameof(StyleUrl), "The StyleUrl property of a <Pair> must have a value");
 
             XElement xml = base.NewXElement("Pair");
 

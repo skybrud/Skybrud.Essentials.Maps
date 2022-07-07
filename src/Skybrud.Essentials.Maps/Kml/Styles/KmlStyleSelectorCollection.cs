@@ -41,41 +41,41 @@ namespace Skybrud.Essentials.Maps.Kml.Styles {
         public void Add(KmlStyle style) {
             if (style == null) throw new ArgumentNullException(nameof(style));
             _selectors.Add(style);
-            if (String.IsNullOrWhiteSpace(style.Id)) return;
+            if (string.IsNullOrWhiteSpace(style.Id)) return;
             _lookup[style.Id] = style;
         }
 
         public void Add(KmlStyleMap styleMap) {
             if (styleMap == null) throw new ArgumentNullException(nameof(styleMap));
             _selectors.Add(styleMap);
-            if (String.IsNullOrWhiteSpace(styleMap.Id)) return;
+            if (string.IsNullOrWhiteSpace(styleMap.Id)) return;
             _lookup[styleMap.Id] = styleMap;
         }
 
         public bool Contains(string id) {
-            if (String.IsNullOrWhiteSpace(id)) throw new ArgumentNullException(nameof(id));
+            if (string.IsNullOrWhiteSpace(id)) throw new ArgumentNullException(nameof(id));
             return _lookup.ContainsKey(id);
         }
 
         public KmlStyle GetStyleById(string id) {
-            if (String.IsNullOrWhiteSpace(id)) throw new ArgumentNullException(nameof(id));
+            if (string.IsNullOrWhiteSpace(id)) throw new ArgumentNullException(nameof(id));
             return _lookup[id] as KmlStyle;
         }
 
         public KmlStyleMap GetStyleMapById(string id) {
-            if (String.IsNullOrWhiteSpace(id)) throw new ArgumentNullException(nameof(id));
+            if (string.IsNullOrWhiteSpace(id)) throw new ArgumentNullException(nameof(id));
             return _lookup[id] as KmlStyleMap;
         }
 
         public bool TryGetStyleById(string id, out KmlStyle style) {
-            if (String.IsNullOrWhiteSpace(id)) throw new ArgumentNullException(nameof(id));
+            if (string.IsNullOrWhiteSpace(id)) throw new ArgumentNullException(nameof(id));
             _lookup.TryGetValue(id, out KmlStyleSelector selector);
             style = selector as KmlStyle;
             return style != null;
         }
 
         public bool TryGetStyleMapById(string id, out KmlStyleMap styleMap) {
-            if (String.IsNullOrWhiteSpace(id)) throw new ArgumentNullException(nameof(id));
+            if (string.IsNullOrWhiteSpace(id)) throw new ArgumentNullException(nameof(id));
             _lookup.TryGetValue(id, out KmlStyleSelector selector);
             styleMap = selector as KmlStyleMap;
             return styleMap != null;

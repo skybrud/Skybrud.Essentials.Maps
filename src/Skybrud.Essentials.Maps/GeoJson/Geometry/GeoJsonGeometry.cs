@@ -47,39 +47,18 @@ namespace Skybrud.Essentials.Maps.GeoJson.Geometry {
         /// <param name="json">The JSON object.</param>
         /// <returns>An instance of <see cref="GeoJsonGeometry"/>.</returns>
         public static GeoJsonGeometry Parse(JObject json) {
-
             if (json == null) return null;
-
             string type = json.GetString("type");
-
-            switch (type?.ToLower()) {
-
-                case "point":
-                    return GeoJsonPoint.Parse(json);
-
-                case "linestring":
-                    return GeoJsonLineString.Parse(json);
-
-                case "polygon":
-                    return GeoJsonPolygon.Parse(json);
-
-                case "multipoint":
-                    return GeoJsonMultiPoint.Parse(json);
-
-                case "multilinestring":
-                    return GeoJsonMultiLineString.Parse(json);
-
-                case "multipolygon":
-                    return GeoJsonMultiPolygon.Parse(json);
-
-                case "geometrycollection":
-                    return GeoJsonGeometryCollection.Parse(json);
-
-                default:
-                    throw new GeoJsonParseException($"Unknown shape: {type}", json);
-
-            }
-
+            return type?.ToLower() switch {
+                "point" => GeoJsonPoint.Parse(json),
+                "linestring" => GeoJsonLineString.Parse(json),
+                "polygon" => GeoJsonPolygon.Parse(json),
+                "multipoint" => GeoJsonMultiPoint.Parse(json),
+                "multilinestring" => GeoJsonMultiLineString.Parse(json),
+                "multipolygon" => GeoJsonMultiPolygon.Parse(json),
+                "geometrycollection" => GeoJsonGeometryCollection.Parse(json),
+                _ => throw new GeoJsonParseException($"Unknown shape: {type}", json)
+            };
         }
 
         /// <summary>

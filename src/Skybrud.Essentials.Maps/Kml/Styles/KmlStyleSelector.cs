@@ -47,22 +47,12 @@ namespace Skybrud.Essentials.Maps.Kml.Styles {
         }
 
         public static KmlStyleSelector Parse(XElement xml, XmlNamespaceManager namespaces) {
-
             if (xml == null) return null;
-
-            switch (xml.Name.LocalName) {
-
-                case "Style":
-                    return KmlStyle.Parse(xml, namespaces);
-
-                case "StyleMap":
-                    return KmlStyleMap.Parse(xml, namespaces);
-
-                default:
-                    throw new Exception("Unknown style selector " + xml.Name.LocalName);
-
-            }
-
+            return xml.Name.LocalName switch {
+                "Style" => KmlStyle.Parse(xml, namespaces),
+                "StyleMap" => KmlStyleMap.Parse(xml, namespaces),
+                _ => throw new Exception("Unknown style selector " + xml.Name.LocalName)
+            };
         }
 
         #endregion

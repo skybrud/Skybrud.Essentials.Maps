@@ -55,11 +55,11 @@ namespace Skybrud.Essentials.Maps.Kml.Styles {
 
         #region Static methods
         
-        public new static KmlStyle Parse(XElement xml) {
+        public static new KmlStyle Parse(XElement xml) {
             return new KmlStyle(xml, Namespaces);
         }
 
-        public new static KmlStyle Parse(XElement xml, XmlNamespaceManager namespaces) {
+        public static new KmlStyle Parse(XElement xml, XmlNamespaceManager namespaces) {
             return new KmlStyle(xml, namespaces);
         }
 

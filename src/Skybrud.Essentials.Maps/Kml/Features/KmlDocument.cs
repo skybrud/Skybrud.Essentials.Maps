@@ -65,9 +65,9 @@ namespace Skybrud.Essentials.Maps.Kml.Features {
 
             NetworkLink = xml.GetElement("kml:NetworkLink", namespaces, KmlNetworkLink.Parse);
 
-            List<KmlStyleSelector> selectors = new List<KmlStyleSelector>();
+            List<KmlStyleSelector> selectors = new();
 
-            List<KmlFeature> features = new List<KmlFeature>();
+            List<KmlFeature> features = new();
 
             foreach (XElement child in xml.Elements()) {
 

@@ -131,22 +131,12 @@ namespace Skybrud.Essentials.Maps.Wkt {
         /// </see>
         /// <exception cref="ArgumentNullException"><paramref name="geometry"/> is <c>null</c>.</exception>
         public static double GetArea(WktGeometry geometry) {
-
             if (geometry == null) throw new ArgumentNullException(nameof(geometry));
-
-            switch (geometry) {
-
-                case WktMultiPolygon multi:
-                    return GetArea(multi);
-
-                case WktPolygon polygon:
-                    return GetArea(polygon);
-
-                default:
-                    throw new InvalidOperationException("Unsupported type " + geometry.GetType());
-
-            }
-
+            return geometry switch {
+                WktMultiPolygon multi => GetArea(multi),
+                WktPolygon polygon => GetArea(polygon),
+                _ => throw new InvalidOperationException("Unsupported type " + geometry.GetType())
+            };
         }
 
         /// <summary>
@@ -199,22 +189,12 @@ namespace Skybrud.Essentials.Maps.Wkt {
         /// <exception cref="ArgumentNullException"><paramref name="geometry"/> is <c>null</c>.</exception>
         /// <exception cref="WktUnsupportedTypeException">type of <paramref name="geometry"/> is not supported.</exception>
         public static IShape ToShape(WktGeometry geometry) {
-
             if (geometry == null) throw new ArgumentNullException(nameof(geometry));
-
-            switch (geometry) {
-
-                case WktPolygon polygon:
-                    return ToPolygon(polygon);
-
-                case WktMultiPolygon multi:
-                    return ToMultiPolygon(multi);
-
-                default:
-                    throw new WktUnsupportedTypeException(geometry.GetType().FullName);
-
-            }
-
+            return geometry switch {
+                WktPolygon polygon => ToPolygon(polygon),
+                WktMultiPolygon multi => ToMultiPolygon(multi),
+                _ => throw new WktUnsupportedTypeException(geometry.GetType().FullName)
+            };
         }
 
     }

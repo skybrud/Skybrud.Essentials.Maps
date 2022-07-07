@@ -20,7 +20,7 @@ namespace Skybrud.Essentials.Maps.GeoJson.Geometry {
         /// </summary>
         public double X {
             get => Coordinates?.X ?? 0;
-            set => (Coordinates ?? (Coordinates = new GeoJsonCoordinates())).X = value;
+            set => (Coordinates ??= new GeoJsonCoordinates()).X = value;
         }
 
         /// <summary>
@@ -29,7 +29,7 @@ namespace Skybrud.Essentials.Maps.GeoJson.Geometry {
         [JsonIgnore]
         public double Y {
             get => Coordinates?.Y ?? 0;
-            set => (Coordinates ?? (Coordinates = new GeoJsonCoordinates())).Y = value;
+            set => (Coordinates ??= new GeoJsonCoordinates()).Y = value;
         }
 
         /// <summary>
@@ -38,7 +38,7 @@ namespace Skybrud.Essentials.Maps.GeoJson.Geometry {
         [JsonIgnore]
         public double Altitude {
             get => Coordinates?.Altitude ?? 0;
-            set => (Coordinates ?? (Coordinates = new GeoJsonCoordinates())).Altitude = value;
+            set => (Coordinates ??= new GeoJsonCoordinates()).Altitude = value;
         }
 
         /// <summary>
@@ -102,8 +102,7 @@ namespace Skybrud.Essentials.Maps.GeoJson.Geometry {
         /// <param name="json">An instance of <see cref="JObject"/> representing the <strong>Point</strong> geometry.</param>
         protected GeoJsonPoint(JObject json) : base(GeoJsonType.Point) {
             
-            JArray coordinates = json.GetValue("coordinates") as JArray;
-            if (coordinates == null) throw new GeoJsonParseException("Unable to parse Point geometry. \"coordinates\" is not an instance of JArray.", json);
+            if (json.GetValue("coordinates") is not JArray coordinates) throw new GeoJsonParseException("Unable to parse Point geometry. \"coordinates\" is not an instance of JArray.", json);
 
             try {
 
@@ -143,7 +142,7 @@ namespace Skybrud.Essentials.Maps.GeoJson.Geometry {
         /// </summary>
         /// <param name="json">The raw JSON string.</param>
         /// <returns>An instance of <see cref="GeoJsonPoint"/>.</returns>
-        public new static GeoJsonPoint Parse(string json) {
+        public static new GeoJsonPoint Parse(string json) {
             return ParseJsonObject(json, Parse);
         }
 
@@ -152,7 +151,7 @@ namespace Skybrud.Essentials.Maps.GeoJson.Geometry {
         /// </summary>
         /// <param name="json">The JSON object.</param>
         /// <returns>An instance of <see cref="GeoJsonPoint"/>.</returns>
-        public new static GeoJsonPoint Parse(JObject json) {
+        public static new GeoJsonPoint Parse(JObject json) {
             return json == null ? null : new GeoJsonPoint(json);
         }
 
@@ -161,7 +160,7 @@ namespace Skybrud.Essentials.Maps.GeoJson.Geometry {
         /// </summary>
         /// <param name="path">The path to a file on disk.</param>
         /// <returns>An instance of <see cref="GeoJsonPoint"/>.</returns>
-        public new static GeoJsonPoint Load(string path) {
+        public static new GeoJsonPoint Load(string path) {
             return LoadJsonObject(path, Parse);
         }
 

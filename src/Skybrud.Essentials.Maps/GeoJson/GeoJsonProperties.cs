@@ -32,7 +32,7 @@ namespace Skybrud.Essentials.Maps.GeoJson {
         /// Gets an array with the keys of the internal dictionary.
         /// </summary>
         [JsonIgnore]
-        public string[] Keys => Properties?.Keys.ToArray() ?? new string[0];
+        public IReadOnlyList<string> Keys => Properties?.Keys.ToArray() ?? ArrayUtils.Empty<string>();
 
         /// <summary>
         /// Gets or sets the value associated with the specified key.
@@ -69,7 +69,7 @@ namespace Skybrud.Essentials.Maps.GeoJson {
         }
 
         public float? FillOpacity {
-            get => Properties.TryGetValue("fill-opacity", out object value) ? (float?) Convert.ToSingle(value) : null;
+            get => Properties.TryGetValue("fill-opacity", out object value) ? Convert.ToSingle(value) : null;
             set => Properties["fill-opacity"] = value;
         }
 
@@ -89,12 +89,12 @@ namespace Skybrud.Essentials.Maps.GeoJson {
         }
 
         public float? StrokeWidth {
-            get => Properties.TryGetValue("stroke-width", out object value) ? (float?) Convert.ToSingle(value) : null;
+            get => Properties.TryGetValue("stroke-width", out object value) ? Convert.ToSingle(value) : null;
             set => Properties["stroke-width"] = value;
         }
 
         public float? StrokeOpacity {
-            get => Properties.TryGetValue("stroke-opacity", out object value) ? (float?) Convert.ToSingle(value) : null;
+            get => Properties.TryGetValue("stroke-opacity", out object value) ? Convert.ToSingle(value) : null;
             set => Properties["stroke-opacity"] = value;
         }
 

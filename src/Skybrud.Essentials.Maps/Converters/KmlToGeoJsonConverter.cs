@@ -16,24 +16,12 @@ namespace Skybrud.Essentials.Maps.Converters {
     public class KmlToGeoJsonConverter {
         
         public virtual GeoJsonFeatureCollection[] Convert(KmlFile kml) {
-
-            if (kml.Feature == null) return new GeoJsonFeatureCollection[0];
-        
-            switch (kml.Feature) {
-
-                case KmlDocument document:
-                    return ConvertDocument(document);
-
-                case KmlPlacemark placemark:
-                    return new [] {
-                        new GeoJsonFeatureCollection(ConvertPlacemark(placemark)),
-                    };
-
-                default:
-                    throw new KmlException("Unsupported feature " + kml.Feature.GetType());
-                    
-            }
-
+            if (kml.Feature == null) return ArrayUtils.Empty<GeoJsonFeatureCollection>();
+            return kml.Feature switch {
+                KmlDocument document => ConvertDocument(document),
+                KmlPlacemark placemark => new[] { new GeoJsonFeatureCollection(ConvertPlacemark(placemark)), },
+                _ => throw new KmlException("Unsupported feature " + kml.Feature.GetType())
+            };
         }
 
         protected virtual GeoJsonFeatureCollection[] ConvertDocument(KmlDocument document) {
@@ -43,10 +31,10 @@ namespace Skybrud.Essentials.Maps.Converters {
         protected virtual GeoJsonFeatureCollection[] ConvertDocument(KmlDocument document, IStyleProvider provider) {
 
             // Use the style provider of the document if not explicitly specified
-            provider = provider ?? document.StyleSelectors;
+            provider ??= document.StyleSelectors;
 
             // Initialize a new list of collections
-            List<GeoJsonFeatureCollection> collections = new List<GeoJsonFeatureCollection>();
+            List<GeoJsonFeatureCollection> collections = new();
 
             if (document.Features.Any(x => x is KmlFolder)) {
 
@@ -56,7 +44,7 @@ namespace Skybrud.Essentials.Maps.Converters {
 
                     switch (feature) {
 
-                        case KmlDocument _:
+                        case KmlDocument:
                             throw new KmlException("Weird place for a <Document>, huh?");
 
                         case KmlFolder folder:
@@ -74,8 +62,7 @@ namespace Skybrud.Essentials.Maps.Converters {
                             break;
 
                         default:
-                            throw new KmlException("Unsupported feature " + feature.GetType());
-
+                            throw new KmlException($"Unsupported feature {feature.GetType()}");
 
                     }
 
@@ -83,13 +70,13 @@ namespace Skybrud.Essentials.Maps.Converters {
 
             } else {
 
-                GeoJsonFeatureCollection features = new GeoJsonFeatureCollection();
+                GeoJsonFeatureCollection features = new();
 
                 foreach (KmlFeature feature in document.Features) {
 
                     switch (feature) {
 
-                        case KmlDocument _:
+                        case KmlDocument:
                             throw new KmlException("Weird place for a <Document>, huh?");
 
                         case KmlPlacemark placemark:
@@ -97,8 +84,7 @@ namespace Skybrud.Essentials.Maps.Converters {
                             break;
 
                         default:
-                            throw new KmlException("Unsupported feature " + feature.GetType());
-
+                            throw new KmlException($"Unsupported feature {feature.GetType()}");
 
                     }
 
@@ -117,29 +103,18 @@ namespace Skybrud.Essentials.Maps.Converters {
         }
 
         public virtual GeoJsonObject ConvertFeature(KmlFeature feature, IStyleProvider provider) {
-
-            switch (feature) {
-
-                case KmlDocument document:
-                    throw new NotImplementedException();
-                    //return ConvertDocument(document, provider ?? document.StyleSelectors);
-
-                case KmlFolder folder:
-                    return ConvertFolder(folder, provider);
-
-                case KmlPlacemark placemark:
-                    return ConvertPlacemark(placemark, provider);
-
-                default:
-                    throw new KmlException("Unsupported feature " + feature.GetType());
-                    
-            }
-
+            return feature switch {
+                KmlDocument => throw new NotImplementedException(),
+                //return ConvertDocument(document, provider ?? document.StyleSelectors);
+                KmlFolder folder => ConvertFolder(folder, provider),
+                KmlPlacemark placemark => ConvertPlacemark(placemark, provider),
+                _ => throw new KmlException("Unsupported feature " + feature.GetType())
+            };
         }
 
         public virtual GeoJsonFeatureCollection ConvertFolder(KmlFolder folder, IStyleProvider provider) {
 
-            GeoJsonFeatureCollection collection = new GeoJsonFeatureCollection();
+            GeoJsonFeatureCollection collection = new();
 
             foreach (KmlFeature feature in folder.Features) {
                 ConvertFolder(folder, collection, feature, provider);
@@ -166,7 +141,7 @@ namespace Skybrud.Essentials.Maps.Converters {
                     // Why would you have folder in another folder? (although it seems legal according to the specification)
 
                 default:
-                    throw new KmlException("Unsupported feature " + feature.GetType());
+                    throw new KmlException($"Unsupported feature {feature.GetType()}");
                 
             }
 
@@ -179,31 +154,19 @@ namespace Skybrud.Essentials.Maps.Converters {
         public virtual GeoJsonFeature ConvertPlacemark(KmlPlacemark placemark, IStyleProvider provider) {
             
             // Initialize a new feature
-            GeoJsonFeature feature = new GeoJsonFeature();
+            GeoJsonFeature feature = new();
 
             // Convert the name and description
             if (placemark.Name.HasValue()) feature.Properties.Name = placemark.Name;
             if (placemark.Description.HasValue()) feature.Properties.Description = placemark.Description;
 
-            switch (placemark.Geometry) {
+            feature.Geometry = placemark.Geometry switch {
+                KmlPoint point => Convert(point),
+                KmlLineString lineString => Convert(lineString),
+                KmlPolygon polygon => Convert(polygon),
+                _ => throw new KmlException($"Geometry type {placemark.Geometry.GetType()} not supported")
+            };
 
-                case KmlPoint point:
-                    feature.Geometry = Convert(point);
-                    break;
-
-                case KmlLineString lineString:
-                    feature.Geometry = Convert(lineString);
-                    break;
-
-                case KmlPolygon polygon:
-                    feature.Geometry = Convert(polygon);
-                    break;
-
-                default:
-                    throw new KmlException("Geometry type " + placemark.Geometry.GetType() + " not supported");
-
-            }
-            
             if (string.IsNullOrWhiteSpace(placemark.StyleUrl) == false && provider != null) {
                 if (provider.TryGetStyleMapById(placemark.StyleUrl.Substring(1), out KmlStyleMap styleMap)) {
                     if (styleMap.Normal != null && provider.TryGetStyleById(styleMap.Normal.StyleUrl.Substring(1), out KmlStyle style)) {

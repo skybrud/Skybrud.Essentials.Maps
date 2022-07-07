@@ -80,7 +80,7 @@ namespace Skybrud.Essentials.Maps.Wkt {
         /// <returns>An instance of <see cref="WktPoint"/>.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="input"/> is <c>null</c>.</exception>
         /// <exception cref="WktInvalidFormatException"><paramref name="input"/> is not in a known format.</exception>
-        public new static WktPoint Parse(string input) {
+        public static new WktPoint Parse(string input) {
 
             if (string.IsNullOrWhiteSpace(input)) throw new ArgumentNullException(nameof(input));
 

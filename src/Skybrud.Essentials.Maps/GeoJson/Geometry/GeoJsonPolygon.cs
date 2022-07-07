@@ -35,7 +35,7 @@ namespace Skybrud.Essentials.Maps.GeoJson.Geometry {
 
             get {
 
-                List<double[][]> list = new List<double[][]> {
+                List<double[][]> list = new() {
                     Outer.Select(x => x.ToArray()).ToArray()
                 };
                 
@@ -242,7 +242,7 @@ namespace Skybrud.Essentials.Maps.GeoJson.Geometry {
         /// </summary>
         /// <param name="json">The raw JSON string.</param>
         /// <returns>An instance of <see cref="GeoJsonPolygon"/>.</returns>
-        public new static GeoJsonPolygon Parse(string json) {
+        public static new GeoJsonPolygon Parse(string json) {
             return ParseJsonObject(json, Parse);
         }
 
@@ -251,7 +251,7 @@ namespace Skybrud.Essentials.Maps.GeoJson.Geometry {
         /// </summary>
         /// <param name="json">The JSON object.</param>
         /// <returns>An instance of <see cref="GeoJsonPolygon"/>.</returns>
-        public new static GeoJsonPolygon Parse(JObject json) {
+        public static new GeoJsonPolygon Parse(JObject json) {
             return json == null ? null : new GeoJsonPolygon(json);
         }
 
@@ -260,7 +260,7 @@ namespace Skybrud.Essentials.Maps.GeoJson.Geometry {
         /// </summary>
         /// <param name="path">The path to a file on disk.</param>
         /// <returns>An instance of <see cref="GeoJsonPolygon"/>.</returns>
-        public new static GeoJsonPolygon Load(string path) {
+        public static new GeoJsonPolygon Load(string path) {
             return LoadJsonObject(path, Parse);
         }
 

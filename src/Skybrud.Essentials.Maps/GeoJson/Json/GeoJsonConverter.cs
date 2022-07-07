@@ -76,7 +76,7 @@ namespace Skybrud.Essentials.Maps.GeoJson.Json {
 
                 case GeoJsonProperties properties:
                     
-                    Dictionary<string, object> temp = new Dictionary<string, object>();
+                    Dictionary<string, object> temp = new();
                     foreach (KeyValuePair<string, object> pair in properties.Properties) {
                         if (pair.Value == null) continue;
                         temp.Add(pair.Key, pair.Value);

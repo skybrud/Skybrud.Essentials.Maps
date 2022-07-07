@@ -107,7 +107,7 @@ namespace Skybrud.Essentials.Maps.Kml.Geometry {
 
             if (Extrude) xml.Add(NewXElement("extrude", "1"));
             if (Tesselate) xml.Add(NewXElement("tessellate", "1"));
-            if (AltitudeMode != default(KmlAltitudeMode)) xml.Add(NewXElement("altitudeMode", AltitudeMode.ToCamelCase()));
+            if (AltitudeMode != default) xml.Add(NewXElement("altitudeMode", AltitudeMode.ToCamelCase()));
 
             xml.Add(Coordinates.ToXElement());
 

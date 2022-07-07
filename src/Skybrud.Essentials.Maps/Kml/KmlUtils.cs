@@ -15,7 +15,7 @@ namespace Skybrud.Essentials.Maps.Kml {
 
         public static KmlGeometry[] ParseGeometryChildren(XElement xml, XmlNamespaceManager namespaces) {
 
-            List<KmlGeometry> temp = new List<KmlGeometry>();
+            List<KmlGeometry> temp = new();
 
             foreach (XElement element in xml.Elements()) {
 

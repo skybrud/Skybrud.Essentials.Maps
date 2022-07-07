@@ -3,6 +3,7 @@ using System.Xml.Linq;
 using Skybrud.Essentials.Common;
 
 namespace Skybrud.Essentials.Maps.Kml.Geometry {
+    
     public class KmlPolygonInnerBoundaries : KmlPolygonBoundaries {
 
         #region Constructors

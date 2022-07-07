@@ -43,7 +43,7 @@ namespace Skybrud.Essentials.Maps.Wkt {
         /// </summary>
         public WktPolygon() {
             Coordinates = new WktPoint[1][];
-            Coordinates[0] = new WktPoint[0];
+            Coordinates[0] = ArrayUtils.Empty<WktPoint>();
         }
         
         /// <summary>
@@ -130,7 +130,7 @@ namespace Skybrud.Essentials.Maps.Wkt {
         /// <returns>The polygon formatted as a <strong>Well Known Text</strong> string.</returns>
         public string ToString(WktFormatting formatting) {
 
-            StringBuilder sb = new StringBuilder();
+            StringBuilder sb = new();
 
             sb.Append("POLYGON");
 
@@ -154,7 +154,7 @@ namespace Skybrud.Essentials.Maps.Wkt {
         /// <param name="input">The string to be parsed.</param>
         /// <returns>An instacne of <see cref="WktPolygon"/>.</returns>
         /// <exception cref="WktInvalidFormatException"><paramref name="input"/> is not in a known format.</exception>
-        public new static WktPolygon Parse(string input) {
+        public static new WktPolygon Parse(string input) {
             
             if (string.IsNullOrWhiteSpace(input)) throw new ArgumentNullException(nameof(input));
 
@@ -165,7 +165,7 @@ namespace Skybrud.Essentials.Maps.Wkt {
             MatchCollection matches = Regex.Matches(input, "\\(([0-9\\., ]+)\\)");
             if (matches.Count == 0) throw new WktInvalidFormatException(input);
 
-            List<WktPoint[]> inner = new List<WktPoint[]>();
+            List<WktPoint[]> inner = new();
 
             for (int i = 1; i < matches.Count; i++) {
                 inner.Add(ParsePoints(matches[i].Groups[1].Value));

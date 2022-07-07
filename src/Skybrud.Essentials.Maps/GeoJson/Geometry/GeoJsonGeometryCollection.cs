@@ -67,7 +67,7 @@ namespace Skybrud.Essentials.Maps.GeoJson.Geometry {
         /// </summary>
         /// <param name="json">The JSON string to be parsed.</param>
         /// <returns>An instance of <see cref="GeoJsonGeometryCollection"/>.</returns>
-        public new static GeoJsonGeometryCollection Parse(string json) {
+        public static new GeoJsonGeometryCollection Parse(string json) {
             return JsonUtils.ParseJsonObject(json, Parse);
         }
 
@@ -76,7 +76,7 @@ namespace Skybrud.Essentials.Maps.GeoJson.Geometry {
         /// </summary>
         /// <param name="json">The instance of <see cref="JObject"/> to be parsed.</param>
         /// <returns>An instance of <see cref="GeoJsonGeometryCollection"/>.</returns>
-        public new static GeoJsonGeometryCollection Parse(JObject json) {
+        public static new GeoJsonGeometryCollection Parse(JObject json) {
             return json == null ? null : new GeoJsonGeometryCollection(json);
         }
 

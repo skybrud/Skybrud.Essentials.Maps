@@ -9,7 +9,7 @@ namespace Skybrud.Essentials.Maps.Kml.Styles {
 
     public class KmlStyleMap : KmlStyleSelector, IEnumerable<KmlStyleMapPair> {
 
-        protected List<KmlStyleMapPair> Pairs = new List<KmlStyleMapPair>();
+        protected List<KmlStyleMapPair> Pairs = new();
 
         #region Properties
 
@@ -88,11 +88,11 @@ namespace Skybrud.Essentials.Maps.Kml.Styles {
 
         #region Static methods
 
-        public new static KmlStyleMap Parse(XElement xml) {
+        public static new KmlStyleMap Parse(XElement xml) {
             return xml == null ? null : new KmlStyleMap(xml, Namespaces);
         }
 
-        public new static KmlStyleMap Parse(XElement xml, XmlNamespaceManager namespaces) {
+        public static new KmlStyleMap Parse(XElement xml, XmlNamespaceManager namespaces) {
             return xml == null ? null : new KmlStyleMap(xml, namespaces);
         }
 

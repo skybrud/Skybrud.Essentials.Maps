@@ -2,7 +2,6 @@
 using System.Reflection;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
-using Skybrud.Essentials.Maps.GeoJson.Geometry;
 
 namespace Skybrud.Essentials.Maps.GeoJson.Json {
     
@@ -16,7 +15,7 @@ namespace Skybrud.Essentials.Maps.GeoJson.Json {
         /// <summary>
         /// Gets a reference to the singleton instance of this class.
         /// </summary>
-        public static readonly GeoJsonContractResolver Instance = new GeoJsonContractResolver();
+        public static readonly GeoJsonContractResolver Instance = new();
 
         #endregion
 
@@ -52,11 +51,11 @@ namespace Skybrud.Essentials.Maps.GeoJson.Json {
 
         private bool ShouldSerialize(MemberInfo member, object obj) {
 
-            if (!(member is PropertyInfo property)) return true;
+            if (member is not PropertyInfo property) return true;
 
             // Make sure to only serialize "properties" if the object has any properties
             if (property.Name == "Properties" && property.PropertyType == typeof(GeoJsonProperties)) {
-                return property.GetValue(obj) is GeoJsonProperties properties && properties.Count > 0;
+                return property.GetValue(obj) is GeoJsonProperties { Count: > 0 };
             }
 
             //if (property.Name == "Altitude" && property.GetValue(obj) is double altitude) {

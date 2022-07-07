@@ -11,7 +11,7 @@ namespace Skybrud.Essentials.Maps.Kml {
 
         protected KmlExtendedData(XElement xml, XmlNamespaceManager namespaces) {
             
-            Dictionary<string, string> temp = new Dictionary<string, string>();
+            Dictionary<string, string> temp = new();
 
             foreach (XElement sd in xml.GetElements("kml:SchemaData/kml:SimpleData", namespaces)) {
                 string name = sd.GetAttributeValue("name");
@@ -26,7 +26,7 @@ namespace Skybrud.Essentials.Maps.Kml {
         public static KmlExtendedData Parse(XElement xml) {
 
             XmlNameTable table = new NameTable();
-            XmlNamespaceManager namespaces = new XmlNamespaceManager(table);
+            XmlNamespaceManager namespaces = new(table);
             namespaces.AddNamespace("kml", "http://www.opengis.net/kml/2.2");
 
             return new KmlExtendedData(xml, namespaces);

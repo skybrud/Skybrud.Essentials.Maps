@@ -17,7 +17,7 @@ namespace Skybrud.Essentials.Maps.Extensions {
         /// <param name="polygon">The polygon.</param>
         /// <returns>A two-dimensional array of <see cref="IPoint"/>.</returns>
         public static IPoint[][] GetCoordinates(this IPolygon polygon) {
-            List<IPoint[]> temp = new List<IPoint[]> { polygon.Outer };
+            List<IPoint[]> temp = new() { polygon.Outer };
             temp.AddRange(polygon.Inner);
             return temp.ToArray();
         }
@@ -163,7 +163,7 @@ namespace Skybrud.Essentials.Maps.Extensions {
         /// <returns>A new instance of <see cref="IPolygon"/>.</returns>
         public static IPolygon ToPolygon(this ICircle circle, float delta) {
 
-            List<IPoint> path = new List<IPoint>();
+            List<IPoint> path = new();
 
             for (float i = 0; i <= 360; i += delta) {
                 path.Add(MapsUtils.ComputeOffset(circle.Center, circle.Radius, i));

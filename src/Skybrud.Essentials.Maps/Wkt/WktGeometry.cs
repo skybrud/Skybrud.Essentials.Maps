@@ -46,7 +46,7 @@ namespace Skybrud.Essentials.Maps.Wkt {
 
             if (formatting == WktFormatting.Indented) throw new NotImplementedException("Indented formatting is currently not supported");
 
-            List<string> temp = new List<string>();
+            List<string> temp = new();
 
             temp.Add(ToString(polygon.Outer, formatting, indentation));
 
@@ -85,15 +85,15 @@ namespace Skybrud.Essentials.Maps.Wkt {
             string type = input.Split('(')[0].ToUpper().Trim();
             if (string.IsNullOrWhiteSpace(type)) throw new WktInvalidFormatException(input);
 
-            switch (type){
-                case "POINT": return WktPoint.Parse(input);
-                case "POLYGON": return WktPolygon.Parse(input);
-                case "LINESTRING": return WktLineString.Parse(input);
-                case "MULTIPOINT": return WktMultiPoint.Parse(input);
-                case "MULTILINESTRING": return WktMultiLineString.Parse(input);
-                case "MULTIPOLYGON": return WktMultiPolygon.Parse(input);
-                default: throw new WktUnsupportedTypeException(type);
-            }
+            return type switch {
+                "POINT" => WktPoint.Parse(input),
+                "POLYGON" => WktPolygon.Parse(input),
+                "LINESTRING" => WktLineString.Parse(input),
+                "MULTIPOINT" => WktMultiPoint.Parse(input),
+                "MULTILINESTRING" => WktMultiLineString.Parse(input),
+                "MULTIPOLYGON" => WktMultiPolygon.Parse(input),
+                _ => throw new WktUnsupportedTypeException(type)
+            };
 
         }
 

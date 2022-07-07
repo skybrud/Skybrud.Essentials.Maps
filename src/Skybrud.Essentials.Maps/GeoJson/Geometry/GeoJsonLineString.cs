@@ -85,7 +85,7 @@ namespace Skybrud.Essentials.Maps.GeoJson.Geometry {
         /// <param name="line">The line the <strong>LineString</strong> geometry should be based on.</param>
         public GeoJsonLineString(ILine line) : base(GeoJsonType.LineString) {
             if (line == null) throw new ArgumentNullException(nameof(line));
-            _points = new List<GeoJsonCoordinates> {new GeoJsonCoordinates(line.A), new GeoJsonCoordinates(line.B)};
+            _points = new List<GeoJsonCoordinates> {new(line.A), new(line.B)};
         }
 
         /// <summary>
@@ -105,7 +105,7 @@ namespace Skybrud.Essentials.Maps.GeoJson.Geometry {
 
             _points = new List<GeoJsonCoordinates>();
 
-            if (!(json.GetValue("coordinates") is JArray array)) {
+            if (json.GetValue("coordinates") is not JArray array) {
                 return;
             }
 
@@ -238,7 +238,7 @@ namespace Skybrud.Essentials.Maps.GeoJson.Geometry {
         /// </summary>
         /// <param name="json">The raw JSON string.</param>
         /// <returns>An instance of <see cref="GeoJsonLineString"/>.</returns>
-        public new static GeoJsonLineString Parse(string json) {
+        public static new GeoJsonLineString Parse(string json) {
             return ParseJsonObject(json, Parse);
         }
 
@@ -247,7 +247,7 @@ namespace Skybrud.Essentials.Maps.GeoJson.Geometry {
         /// </summary>
         /// <param name="json">The JSON object.</param>
         /// <returns>An instance of <see cref="GeoJsonLineString"/>.</returns>
-        public new static GeoJsonLineString Parse(JObject json) {
+        public static new GeoJsonLineString Parse(JObject json) {
             return json == null ? null : new GeoJsonLineString(json);
         }
 
@@ -256,7 +256,7 @@ namespace Skybrud.Essentials.Maps.GeoJson.Geometry {
         /// </summary>
         /// <param name="path">The path to a file on disk.</param>
         /// <returns>An instance of <see cref="GeoJsonLineString"/>.</returns>
-        public new static GeoJsonLineString Load(string path) {
+        public static new GeoJsonLineString Load(string path) {
             return LoadJsonObject(path, Parse);
         }
 

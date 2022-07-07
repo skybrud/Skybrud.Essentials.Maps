@@ -35,7 +35,7 @@ namespace Skybrud.Essentials.Maps.Kml.Features {
 
         public static KmlFeatureCollection GetFromChildren(XElement xml) {
             
-            List<KmlFeature> temp = new List<KmlFeature>();
+            List<KmlFeature> temp = new();
 
             foreach (XElement element in xml.Elements()) {
 

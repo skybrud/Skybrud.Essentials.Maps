@@ -87,8 +87,7 @@ namespace Skybrud.Essentials.Maps.GeoJson.Geometry {
         /// <param name="json">An instance of <see cref="JObject"/> representing the <strong>MultiLineString</strong> geometry.</param>
         public GeoJsonMultiLineString(JObject json) : base(GeoJsonType.MultiLineString) {
             
-            JArray coordinates = json.GetValue("coordinates") as JArray;
-            if (coordinates == null) throw new GeoJsonParseException("Unable to parse MultiLineString. \"coordinates\" is not an instance of JArray.", json);
+            if (json.GetValue("coordinates") is not JArray coordinates) throw new GeoJsonParseException("Unable to parse MultiLineString. \"coordinates\" is not an instance of JArray.", json);
 
             try {
 
@@ -201,7 +200,7 @@ namespace Skybrud.Essentials.Maps.GeoJson.Geometry {
         /// </summary>
         /// <param name="json">The raw JSON string.</param>
         /// <returns>An instance of <see cref="GeoJsonMultiLineString"/>.</returns>
-        public new static GeoJsonMultiLineString Parse(string json) {
+        public static new GeoJsonMultiLineString Parse(string json) {
             return ParseJsonObject(json, Parse);
         }
 
@@ -210,7 +209,7 @@ namespace Skybrud.Essentials.Maps.GeoJson.Geometry {
         /// </summary>
         /// <param name="json">The JSON object.</param>
         /// <returns>An instance of <see cref="GeoJsonMultiLineString"/>.</returns>
-        public new static GeoJsonMultiLineString Parse(JObject json) {
+        public static new GeoJsonMultiLineString Parse(JObject json) {
             return json == null ? null : new GeoJsonMultiLineString(json);
         }
 
@@ -219,7 +218,7 @@ namespace Skybrud.Essentials.Maps.GeoJson.Geometry {
         /// </summary>
         /// <param name="path">The path to a file on disk.</param>
         /// <returns>An instance of <see cref="GeoJsonMultiLineString"/>.</returns>
-        public new static GeoJsonMultiLineString Load(string path) {
+        public static new GeoJsonMultiLineString Load(string path) {
             return LoadJsonObject(path, Parse);
         }
 

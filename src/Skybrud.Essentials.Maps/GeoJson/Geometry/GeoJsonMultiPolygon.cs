@@ -91,8 +91,7 @@ namespace Skybrud.Essentials.Maps.GeoJson.Geometry {
         /// <param name="json">An instance of <see cref="JObject"/> representing the <strong>MultiPolygon</strong> geometry.</param>
         public GeoJsonMultiPolygon(JObject json) : base(GeoJsonType.MultiPolygon) {
             
-            JArray coordinates = json.GetValue("coordinates") as JArray;
-            if (coordinates == null) throw new GeoJsonParseException("Unable to parse MultiPolygon. \"coordinates\" is not an instance of JArray.", json);
+            if (json.GetValue("coordinates") is not JArray coordinates) throw new GeoJsonParseException("Unable to parse MultiPolygon. \"coordinates\" is not an instance of JArray.", json);
 
             try {
 
@@ -205,7 +204,7 @@ namespace Skybrud.Essentials.Maps.GeoJson.Geometry {
         /// </summary>
         /// <param name="json">The raw JSON string.</param>
         /// <returns>An instance of <see cref="GeoJsonPolygon"/>.</returns>
-        public new static GeoJsonMultiPolygon Parse(string json) {
+        public static new GeoJsonMultiPolygon Parse(string json) {
             return ParseJsonObject(json, Parse);
         }
 
@@ -214,7 +213,7 @@ namespace Skybrud.Essentials.Maps.GeoJson.Geometry {
         /// </summary>
         /// <param name="json">The JSON object.</param>
         /// <returns>An instance of <see cref="GeoJsonPolygon"/>.</returns>
-        public new static GeoJsonMultiPolygon Parse(JObject json) {
+        public static new GeoJsonMultiPolygon Parse(JObject json) {
             return json == null ? null : new GeoJsonMultiPolygon(json);
         }
 
@@ -223,7 +222,7 @@ namespace Skybrud.Essentials.Maps.GeoJson.Geometry {
         /// </summary>
         /// <param name="path">The path to a file on disk.</param>
         /// <returns>An instance of <see cref="GeoJsonMultiPolygon"/>.</returns>
-        public new static GeoJsonMultiPolygon Load(string path) {
+        public static new GeoJsonMultiPolygon Load(string path) {
             return LoadJsonObject(path, Parse);
         }
 

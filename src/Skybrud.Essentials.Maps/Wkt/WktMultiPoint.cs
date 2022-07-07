@@ -112,7 +112,7 @@ namespace Skybrud.Essentials.Maps.Wkt {
         /// <returns>The multi point geometry formatted as a <strong>Well Known Text</strong> string.</returns>
         public string ToString(WktFormatting formatting) {
             
-            StringBuilder sb = new StringBuilder();
+            StringBuilder sb = new();
 
             sb.Append("MULTIPOINT");
 
@@ -143,7 +143,7 @@ namespace Skybrud.Essentials.Maps.Wkt {
         /// <returns>An instance of <seealso cref="WktMultiPoint"/>.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="input"/> is <c>null</c>.</exception>
         /// <exception cref="WktInvalidFormatException"><paramref name="input"/> is not in a known format.</exception>
-        public new static WktMultiPoint Parse(string input) {
+        public static new WktMultiPoint Parse(string input) {
             
             if (string.IsNullOrWhiteSpace(input)) throw new ArgumentNullException(nameof(input));
 

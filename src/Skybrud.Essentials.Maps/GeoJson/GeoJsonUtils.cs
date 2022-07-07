@@ -145,7 +145,7 @@ namespace Skybrud.Essentials.Maps.GeoJson {
             if (collections == null) throw new ArgumentNullException(nameof(collections));
             if (collections.Length == 0) throw new InvalidOperationException(nameof(collections));
 
-            List<IPoint> points = new List<IPoint>();
+            List<IPoint> points = new();
 
             foreach (GeoJsonFeatureCollection collection in collections) {
 
@@ -178,7 +178,7 @@ namespace Skybrud.Essentials.Maps.GeoJson {
             if (collection == null) throw new ArgumentNullException(nameof(collection));
             if (collection.Features.Count == 0) throw new InvalidOperationException(nameof(collection));
             
-            List<IPoint> points = new List<IPoint>();
+            List<IPoint> points = new();
 
             foreach (GeoJsonFeature feature in collection.Features) {
 
@@ -202,24 +202,13 @@ namespace Skybrud.Essentials.Maps.GeoJson {
         /// <returns>An instance of <see cref="IRectangle"/>.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="feature"/> is <c>null</c>.</exception>
         public static IRectangle GetBoundingBox(GeoJsonFeature feature) {
-
             if (feature == null) throw new ArgumentNullException(nameof(feature));
-
             IGeometry geometry = Convert(feature.Geometry);
-
-            switch (geometry) {
-
-                case IPoint point:
-                    return new Rectangle(point, point);
-
-                case IShape shape:
-                    return shape.GetBoundingBox();
-
-                default:
-                    throw new GeoJsonException($"Unsupported geometry {geometry.GetType()}");
-                
-            }
-
+            return geometry switch {
+                IPoint point => new Rectangle(point, point),
+                IShape shape => shape.GetBoundingBox(),
+                _ => throw new GeoJsonException($"Unsupported geometry {geometry.GetType()}")
+            };
         }
 
         /// <summary>
@@ -229,7 +218,7 @@ namespace Skybrud.Essentials.Maps.GeoJson {
         /// <returns>A list of <see cref="IPolygon"/>.</returns>
         public static List<IPolygon> GetAsMultiPolygons(GeoJsonGeometry geometry) {
 
-            List<IPolygon> polygons = new List<IPolygon>();
+            List<IPolygon> polygons = new();
 
             switch (geometry) {
 

@@ -45,22 +45,12 @@ namespace Skybrud.Essentials.Maps.Google {
         /// <exception cref="ArgumentNullException"><paramref name="shape"/> is <c>null</c>.</exception>
         /// <exception cref="InvalidOperationException"><paramref name="shape"/> is not a supported type.</exception>
         public static string Encode(IShape shape) {
-
             if (shape == null) throw new ArgumentNullException(nameof(shape));
-
-            switch (shape) {
-
-                case IPolygon polygon:
-                    return Encode(polygon);
-
-                case IMultiPolygon multiPolygon:
-                    return Encode(multiPolygon);
-
-                default:
-                    throw new InvalidOperationException("Unsupported type: " + shape.GetType());
-
-            }
-
+            return shape switch {
+                IPolygon polygon => Encode(polygon),
+                IMultiPolygon multiPolygon => Encode(multiPolygon),
+                _ => throw new InvalidOperationException("Unsupported type: " + shape.GetType())
+            };
         }
 
         /// <summary>
@@ -117,7 +107,7 @@ namespace Skybrud.Essentials.Maps.Google {
         /// <exception cref="ArgumentNullException"><paramref name="points"/> is <c>null</c>.</exception>
         public static string Encode(IEnumerable<IPoint> points) {
 
-            StringBuilder str = new StringBuilder();
+            StringBuilder str = new();
 
             void EncodeDiff(int diff) {
 

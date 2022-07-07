@@ -220,7 +220,7 @@ namespace Skybrud.Essentials.Maps {
             double x = (b2 * c1 - b1 * c2) / d;
             double y = (a1 * c2 - a2 * c1) / d;
 
-            Point result = new Point(y, x);
+            Point result = new(y, x);
 
             // Check the boundaries of the first line
             if (result.Longitude < Min(line1.A.Longitude, line1.B.Longitude)) return null;
@@ -402,7 +402,7 @@ namespace Skybrud.Essentials.Maps {
             
             if (points == null) throw new ArgumentNullException(nameof(points));
             
-            double[][] temp = new double[0][];
+            double[][] temp = ArrayUtils.Empty<double[]>();
 
             for (int i = 0; i < points.Length; i++) {
                 temp[i] = ToXyArray(points[i]);
@@ -443,7 +443,7 @@ namespace Skybrud.Essentials.Maps {
         /// <exception cref="ArgumentNullException"><paramref name="polygon"/> is <c>null</c>.</exception>
         public static IPoint[][] GetCoordinates(IPolygon polygon) {
             if (polygon == null) throw new ArgumentNullException(nameof(polygon));
-            List<IPoint[]> temp = new List<IPoint[]> { polygon.Outer };
+            List<IPoint[]> temp = new() { polygon.Outer };
             temp.AddRange(polygon.Inner);
             return temp.ToArray();
         }

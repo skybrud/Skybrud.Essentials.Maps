@@ -3,17 +3,10 @@
     internal static class KmlExtensions {
 
         internal static bool HasValue(this object obj) {
-
-            switch (obj) {
-
-                case string str:
-                    return string.IsNullOrWhiteSpace(str) == false;
-
-                default:
-                    return obj != null;
-                    
-            }
-
+            return obj switch {
+                string str => string.IsNullOrWhiteSpace(str) == false,
+                _ => obj != null
+            };
         }
 
         internal static bool IsDefault(KmlLinkRefreshMode value) {

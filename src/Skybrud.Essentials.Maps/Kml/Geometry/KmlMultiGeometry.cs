@@ -59,7 +59,7 @@ namespace Skybrud.Essentials.Maps.Kml.Geometry {
         public static KmlMultiGeometry Parse(XElement xml) {
 
             XmlNameTable table = new NameTable();
-            XmlNamespaceManager namespaces = new XmlNamespaceManager(table);
+            XmlNamespaceManager namespaces = new(table);
             namespaces.AddNamespace("kml", "http://www.opengis.net/kml/2.2");
 
             return new KmlMultiGeometry(xml, namespaces);

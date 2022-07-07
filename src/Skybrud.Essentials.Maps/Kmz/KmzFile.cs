@@ -18,17 +18,17 @@ namespace Skybrud.Essentials.Maps.Kmz {
         /// <summary>
         /// Gets a reference to the internal stream.
         /// </summary>
-        protected Stream Stream { get; private set; }
+        protected Stream Stream { get; }
 
         /// <summary>
         /// Gets a reference to the underlying <see cref="ZipArchive"/> of the KMZ file.
         /// </summary>
-        public ZipArchive Archive { get; private set; }
+        public ZipArchive Archive { get; }
 
         /// <summary>
         /// Gets the <c>doc.kml</c> KML file of the KMZ file.
         /// </summary>
-        public KmlFile Kml { get; private set; }
+        public KmlFile Kml { get; }
 
         #endregion
 
@@ -57,17 +57,11 @@ namespace Skybrud.Essentials.Maps.Kmz {
         }
 
         private KmlFile LoadKmlFile() {
-
             ZipArchiveEntry entry = Archive.GetEntry("doc.kml");
-
             if (entry == null) throw new KmzException("KMZ file is missing doc.kml entry");
-
-            using (Stream stream = entry.Open()) {
-                using (StreamReader reader = new StreamReader(stream)) {
-                    return KmlFile.Parse(reader.ReadToEnd());
-                }
-            }
-
+            using Stream stream = entry.Open();
+            using StreamReader reader = new(stream);
+            return KmlFile.Parse(reader.ReadToEnd());
         }
 
         #endregion

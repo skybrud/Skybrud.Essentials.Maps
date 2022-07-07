@@ -115,7 +115,7 @@ namespace Skybrud.Essentials.Maps.Wkt {
         /// <param name="input">The input string to parse.</param>
         /// <returns>An instance of <seealso cref="WktLineString"/>.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="input"/> is <c>null</c>.</exception>
-        public new static WktLineString Parse(string input) {
+        public static new WktLineString Parse(string input) {
 
             if (string.IsNullOrWhiteSpace(input)) throw new ArgumentNullException(nameof(input));
 

@@ -127,7 +127,7 @@ namespace Skybrud.Essentials.Maps.Wkt {
         /// <returns>An instance of <seealso cref="WktLineString"/>.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="input"/> is <c>null</c>.</exception>
         /// <exception cref="WktInvalidFormatException"><paramref name="input"/> is not in a known format.</exception>
-        public new static WktMultiLineString Parse(string input) {
+        public static new WktMultiLineString Parse(string input) {
 
             if (string.IsNullOrWhiteSpace(input)) throw new ArgumentNullException(nameof(input));
 
