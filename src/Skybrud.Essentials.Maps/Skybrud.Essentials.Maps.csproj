@@ -1,37 +1,46 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net47</TargetFramework>
-    <TargetFrameworks>net45;net46;net47;netstandard2.0</TargetFrameworks>
+    <TargetFrameworks>netstandard2.0;net45;net46;net47</TargetFrameworks>
+    <BuildInParallel>false</BuildInParallel>
   </PropertyGroup>
 
   <PropertyGroup>
-    <RootNamespace>Skybrud.Essentials.Maps</RootNamespace>
     <Version>1.0.0-beta004</Version>
-    <Company>Skybrud.dk a/s</Company>
+    <Company>Limbo</Company>
     <Product>Skybrud.Essentials</Product>
     <Authors>Anders Bjerner</Authors>
-    <Copyright>Copyright © 2020</Copyright>
+    <Copyright>Copyright © 2022</Copyright>
+    <Description>.NET library for working with maps, geospatial data and geometry.</Description>
   </PropertyGroup>
-  
+
+  <!-- Information for the NuGet package -->
   <PropertyGroup>
+    <PackageId>Skybrud.Essentials.Maps</PackageId>
+    <PackageTags>Skybrud, Essentials, Maps, Kml, GeoJson, Wkt</PackageTags>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/skybrud/Skybrud.Essentials.Maps</PackageProjectUrl>
+    <PackageIcon>Limbo.png</PackageIcon>
     <RepositoryType>git</RepositoryType>
     <RepositoryUrl>https://github.com/skybrud/Skybrud.Essentials.Maps</RepositoryUrl>
   </PropertyGroup>
-  
-  <PropertyGroup>
-    <PackageTags>Skybrud, Essentials, Maps, Kml, GeoJson, Wkt</PackageTags>
-    <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <PackageProjectUrl>https://packages.skybrud.dk/skybrud.essentials.maps/</PackageProjectUrl>
-    <PackageIconUrl>https://www.skybrud.dk/img/5431sk/icon/favicon.ico</PackageIconUrl>
-  </PropertyGroup>
 
+  <!-- Include NuGet dependencies -->
   <ItemGroup>
     <Reference Include="System.IO.Compression" />
     <PackageReference Include="Skybrud.Essentials" Version="1.1.25" />
     <PackageReference Include="Skybrud.Essentials.Http" Version="1.0.14" />
   </ItemGroup>
 
+  <!-- Include package icon for NuGet -->
+  <ItemGroup>
+    <Content Include="../build/Limbo.png" Pack="true" PackagePath="\" />
+  </ItemGroup>
+
+  <!-- Generate XML documentation -->
   <PropertyGroup>
     <DocumentationFile>bin\$(ConfigurationName)\$(TargetFramework)\Skybrud.Essentials.Maps.xml</DocumentationFile>
   </PropertyGroup>
