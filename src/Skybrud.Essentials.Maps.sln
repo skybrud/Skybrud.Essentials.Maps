@@ -1,11 +1,13 @@
-﻿
-Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.28803.202
+﻿Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Skybrud.Essentials.Maps", "Skybrud.Essentials.Maps\Skybrud.Essentials.Maps.csproj", "{20EBE068-56B7-4C38-ABFD-84830407DF3F}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{B4DED7AC-19A6-4ED9-97C0-EFE13299B049}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTestProject1", "UnitTestProject1\UnitTestProject1.csproj", "{D87B7CF3-0CF8-4E9A-B62B-0D19135FD319}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Skybrud.Essentials.Maps", "Skybrud.Essentials.Maps\Skybrud.Essentials.Maps.csproj", "{2B66A4EE-80C1-4DE8-B5B7-D3296BBEAAC5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -13,19 +15,15 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{20EBE068-56B7-4C38-ABFD-84830407DF3F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{20EBE068-56B7-4C38-ABFD-84830407DF3F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{20EBE068-56B7-4C38-ABFD-84830407DF3F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{20EBE068-56B7-4C38-ABFD-84830407DF3F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D87B7CF3-0CF8-4E9A-B62B-0D19135FD319}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D87B7CF3-0CF8-4E9A-B62B-0D19135FD319}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D87B7CF3-0CF8-4E9A-B62B-0D19135FD319}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D87B7CF3-0CF8-4E9A-B62B-0D19135FD319}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2B66A4EE-80C1-4DE8-B5B7-D3296BBEAAC5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2B66A4EE-80C1-4DE8-B5B7-D3296BBEAAC5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2B66A4EE-80C1-4DE8-B5B7-D3296BBEAAC5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2B66A4EE-80C1-4DE8-B5B7-D3296BBEAAC5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {30F9FC3E-A7B6-45FF-BCD6-D9DC91DBC231}
+		SolutionGuid = {00000000-0000-0000-0000-000000000000}
 	EndGlobalSection
 EndGlobal
