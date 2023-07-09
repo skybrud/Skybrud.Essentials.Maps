@@ -1,5 +1,5 @@
 ﻿namespace Skybrud.Essentials.Maps.Geometry.Shapes {
-    
+
     /// <summary>
     /// Interface represeting a polygon.
     /// </summary>

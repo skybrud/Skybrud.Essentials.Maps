@@ -5,7 +5,7 @@ using System.Xml.Linq;
 using Skybrud.Essentials.Maps.Kml.Features;
 
 namespace Skybrud.Essentials.Maps.Kml.Styles {
-    
+
     /// <summary>
     /// Specifies how the name of a <see cref="KmlFeature"/> is drawn. A custom color, color mode, and scale for the label (name) can be specified.
     /// </summary>

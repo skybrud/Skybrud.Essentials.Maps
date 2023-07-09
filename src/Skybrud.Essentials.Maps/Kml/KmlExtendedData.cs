@@ -10,7 +10,7 @@ namespace Skybrud.Essentials.Maps.Kml {
         public Dictionary<string, string> SchemaData { get; }
 
         protected KmlExtendedData(XElement xml, XmlNamespaceManager namespaces) {
-            
+
             Dictionary<string, string> temp = new();
 
             foreach (XElement sd in xml.GetElements("kml:SchemaData/kml:SimpleData", namespaces)) {

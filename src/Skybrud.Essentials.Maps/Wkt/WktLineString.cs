@@ -24,7 +24,7 @@ namespace Skybrud.Essentials.Maps.Wkt {
         public int Count => _points.Count;
 
         #endregion
-        
+
         #region Constructors
 
         /// <summary>

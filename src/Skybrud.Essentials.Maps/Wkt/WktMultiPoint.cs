@@ -111,7 +111,7 @@ namespace Skybrud.Essentials.Maps.Wkt {
         /// <param name="formatting">The formatting to be used.</param>
         /// <returns>The multi point geometry formatted as a <strong>Well Known Text</strong> string.</returns>
         public string ToString(WktFormatting formatting) {
-            
+
             StringBuilder sb = new();
 
             sb.Append("MULTIPOINT");
@@ -121,7 +121,7 @@ namespace Skybrud.Essentials.Maps.Wkt {
                 sb.Append(" EMPTY");
 
             } else {
-                
+
                 if (formatting != WktFormatting.Minified) sb.Append(" ");
 
                 sb.Append("(" + string.Join(", ", from point in _points select string.Format(CultureInfo.InvariantCulture, "{0} {1}", point.X, point.Y)) + ")");
@@ -144,7 +144,7 @@ namespace Skybrud.Essentials.Maps.Wkt {
         /// <exception cref="ArgumentNullException"><paramref name="input"/> is <c>null</c>.</exception>
         /// <exception cref="WktInvalidFormatException"><paramref name="input"/> is not in a known format.</exception>
         public static new WktMultiPoint Parse(string input) {
-            
+
             if (string.IsNullOrWhiteSpace(input)) throw new ArgumentNullException(nameof(input));
 
             input = input.Trim();
@@ -152,7 +152,7 @@ namespace Skybrud.Essentials.Maps.Wkt {
             if (!input.StartsWith("MULTIPOINT")) throw new WktInvalidFormatException(input);
 
             if (input.Equals("MULTIPOINT EMPTY")) return new WktMultiPoint();
-            
+
             if (input.StartsWith("MULTIPOINT ((")) {
                 input = input.Substring(12);
                 input = input.Substring(0, input.Length - 1);

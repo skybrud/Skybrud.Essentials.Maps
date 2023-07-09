@@ -207,7 +207,7 @@ namespace Skybrud.Essentials.Maps.Google {
             int shifter;
 
             while (index < polylineChars.Length) {
-                
+
                 // calculate next latitude
                 sum = 0;
                 shifter = 0;

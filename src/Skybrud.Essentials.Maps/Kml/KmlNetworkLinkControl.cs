@@ -42,7 +42,7 @@ namespace Skybrud.Essentials.Maps.Kml {
         #region Member methods
 
         public override XElement ToXElement() {
-            
+
             XElement xml = base.NewXElement("NetworkLinkControl");
 
             if (MinRefreshPeriod.TotalSeconds > 0) xml.Add(NewXElement("minRefreshPeriod", MinRefreshPeriod.TotalSeconds));

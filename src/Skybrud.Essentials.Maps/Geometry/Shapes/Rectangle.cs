@@ -2,7 +2,7 @@ using System;
 using Skybrud.Essentials.Common;
 
 namespace Skybrud.Essentials.Maps.Geometry.Shapes {
-    
+
     /// <summary>
     /// Clas representing a retangle.
     /// </summary>
@@ -122,7 +122,7 @@ namespace Skybrud.Essentials.Maps.Geometry.Shapes {
         }
 
         /// <summary>
-        /// Returns the area of the rectangle in square metres. 
+        /// Returns the area of the rectangle in square metres.
         /// </summary>
         /// <returns>The area in square metres.</returns>
         public double GetArea() {
@@ -137,7 +137,7 @@ namespace Skybrud.Essentials.Maps.Geometry.Shapes {
         }
 
         /// <summary>
-        /// Returns the area of the rectangle in square metres. 
+        /// Returns the area of the rectangle in square metres.
         /// </summary>
         /// <param name="radius">The radius of the spheroid.</param>
         /// <returns>The area in square metres.</returns>
@@ -153,7 +153,7 @@ namespace Skybrud.Essentials.Maps.Geometry.Shapes {
         }
 
         /// <summary>
-        /// Returns the circumference of the rectangle in metres. 
+        /// Returns the circumference of the rectangle in metres.
         /// </summary>
         /// <returns>The circumference in metres.</returns>
         public double GetCircumference() {

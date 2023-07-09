@@ -51,7 +51,7 @@ namespace Skybrud.Essentials.Maps.Kml.Styles {
         #region Member methods
 
         public override XElement ToXElement() {
-            
+
             XElement xml = base.ToXElement();
 
             if (Math.Abs(Scale) > Single.Epsilon) xml.Add(NewXElement("scale", Scale.ToString(CultureInfo.InvariantCulture)));

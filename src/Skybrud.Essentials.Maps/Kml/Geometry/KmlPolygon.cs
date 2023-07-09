@@ -6,12 +6,12 @@ using Skybrud.Essentials.Common;
 using Skybrud.Essentials.Xml.Extensions;
 
 namespace Skybrud.Essentials.Maps.Kml.Geometry {
-    
+
     /// <see>
     ///     <cref>https://developers.google.com/kml/documentation/kmlreference#polygon</cref>
     /// </see>
     public class KmlPolygon : KmlGeometry {
-        
+
         public KmlPolygonOuterBoundaries OuterBoundaries { get; set; }
 
         public List<KmlPolygonInnerBoundaries> InnerBoundaries { get; set; }
@@ -20,17 +20,17 @@ namespace Skybrud.Essentials.Maps.Kml.Geometry {
             OuterBoundaries = new KmlPolygonOuterBoundaries();
             InnerBoundaries = new List<KmlPolygonInnerBoundaries>();
         }
-        
+
         public KmlPolygon(params KmlPointCoordinates[] outer) {
             OuterBoundaries = new KmlPolygonOuterBoundaries(outer);
             InnerBoundaries = new List<KmlPolygonInnerBoundaries>();
         }
-        
+
         public KmlPolygon(IEnumerable<KmlPointCoordinates> outer) {
             OuterBoundaries = new KmlPolygonOuterBoundaries(outer);
             InnerBoundaries = new List<KmlPolygonInnerBoundaries>();
         }
-        
+
         public KmlPolygon(KmlPolygonOuterBoundaries outer, KmlPolygonInnerBoundaries[] inner) {
             OuterBoundaries = outer;
             InnerBoundaries = inner?.ToList() ?? new List<KmlPolygonInnerBoundaries>();
@@ -40,9 +40,9 @@ namespace Skybrud.Essentials.Maps.Kml.Geometry {
             OuterBoundaries = xml.GetElement("kml:outerBoundaryIs", namespaces, KmlPolygonOuterBoundaries.Parse);
             InnerBoundaries = xml.GetElements("kml:innerBoundaryIs", namespaces, KmlPolygonInnerBoundaries.Parse).ToList();
         }
-            
+
         public override XElement ToXElement() {
-            
+
             if (OuterBoundaries == null) throw new PropertyNotSetException(nameof(OuterBoundaries));
 
             XElement xml = base.ToXElement();
@@ -54,7 +54,7 @@ namespace Skybrud.Essentials.Maps.Kml.Geometry {
                     xml.Add(inner.ToXElement());
                 }
             }
-            
+
             return xml;
 
         }

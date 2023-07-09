@@ -118,7 +118,7 @@ namespace Skybrud.Essentials.Maps.Kml.Features {
 
         /// <inheritdoc />
         public override XElement ToXElement() {
-            
+
             XElement xml = base.ToXElement();
 
             if (NetworkLink.HasValue()) {

@@ -86,7 +86,7 @@ namespace Skybrud.Essentials.Maps.GeoJson.Geometry {
         /// </summary>
         /// <param name="json">An instance of <see cref="JObject"/> representing the <strong>MultiLineString</strong> geometry.</param>
         public GeoJsonMultiLineString(JObject json) : base(GeoJsonType.MultiLineString) {
-            
+
             if (json.GetValue("coordinates") is not JArray coordinates) throw new GeoJsonParseException("Unable to parse MultiLineString. \"coordinates\" is not an instance of JArray.", json);
 
             try {
@@ -98,7 +98,7 @@ namespace Skybrud.Essentials.Maps.GeoJson.Geometry {
                 _lineStrings = array.Select(x => new GeoJsonLineString(x)).ToList();
 
             } catch (Exception ex)  {
-                
+
                 throw new GeoJsonParseException("Unable to parse \"coordinates\" of MultiLineString.", json, ex);
 
             }
@@ -110,7 +110,7 @@ namespace Skybrud.Essentials.Maps.GeoJson.Geometry {
         #region Member methods
 
         /// <summary>
-        /// Adds the specified <paramref name="lineString"/>. 
+        /// Adds the specified <paramref name="lineString"/>.
         /// </summary>
         /// <param name="lineString">The line string to be added.</param>
         public void Add(ILineString lineString) {
@@ -119,7 +119,7 @@ namespace Skybrud.Essentials.Maps.GeoJson.Geometry {
         }
 
         /// <summary>
-        /// Adds the specified <paramref name="lineString"/>. 
+        /// Adds the specified <paramref name="lineString"/>.
         /// </summary>
         /// <param name="lineString">The line string to be added.</param>
         public void Add(GeoJsonLineString lineString) {

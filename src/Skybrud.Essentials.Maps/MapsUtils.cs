@@ -121,7 +121,7 @@ namespace Skybrud.Essentials.Maps {
         /// <returns>The <see cref="IPoint"/> resulting from moving a distance from an origin in the specified heading.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="origin"/> is <c>null</c>.</exception>
         public static IPoint ComputeOffset(IPoint origin, double distance, double heading, double radius) {
-            
+
             if (origin == null) throw new ArgumentNullException(nameof(origin));
 
             distance /= radius;
@@ -150,7 +150,7 @@ namespace Skybrud.Essentials.Maps {
         /// <returns>The length in metres.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="points"/> is <c>null</c>.</exception>
         public static double GetLength(List<IPoint> points) {
-            
+
             if (points == null) throw new ArgumentNullException(nameof(points));
 
             double sum = 0;
@@ -167,7 +167,7 @@ namespace Skybrud.Essentials.Maps {
 
         }
 
-        
+
         /// <summary>
         /// Returns the point of intersections between the two lines defined by the points <paramref name="a1"/>,
         /// <paramref name="a2"/>, <paramref name="b1"/> and <paramref name="b2"/>.
@@ -364,9 +364,9 @@ namespace Skybrud.Essentials.Maps {
         /// <returns>The length in metres.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="points"/> is <c>null</c>.</exception>
         public static double GetLength(IPoint[] points) {
-            
+
             if (points == null) throw new ArgumentNullException(nameof(points));
-            
+
             double sum = 0;
 
             // Iterate through each point in the path (skip the first point)
@@ -399,9 +399,9 @@ namespace Skybrud.Essentials.Maps {
         /// <returns>A three-dimensional array of X and Y coordinates.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="points"/> is <c>null</c>.</exception>
         public static double[][] ToXyArray(IPoint[] points) {
-            
+
             if (points == null) throw new ArgumentNullException(nameof(points));
-            
+
             double[][] temp = ArrayUtils.Empty<double[]>();
 
             for (int i = 0; i < points.Length; i++) {
@@ -477,7 +477,7 @@ namespace Skybrud.Essentials.Maps {
         }
 
         /// <summary>
-        /// Returns the area of the polygon in square metres. 
+        /// Returns the area of the polygon in square metres.
         /// </summary>
         /// <param name="points">The points making up the polygon.</param>
         /// <param name="radius">The radius of the spheroid.</param>
@@ -489,7 +489,7 @@ namespace Skybrud.Essentials.Maps {
         }
 
         /// <summary>
-        /// Returns the area of the polygon in square metres. 
+        /// Returns the area of the polygon in square metres.
         /// </summary>
         /// <param name="points">The points making up the polygon.</param>
         /// <param name="radius">The radius of the spheroid.</param>

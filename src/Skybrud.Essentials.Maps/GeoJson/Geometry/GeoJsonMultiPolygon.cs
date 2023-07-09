@@ -90,7 +90,7 @@ namespace Skybrud.Essentials.Maps.GeoJson.Geometry {
         /// </summary>
         /// <param name="json">An instance of <see cref="JObject"/> representing the <strong>MultiPolygon</strong> geometry.</param>
         public GeoJsonMultiPolygon(JObject json) : base(GeoJsonType.MultiPolygon) {
-            
+
             if (json.GetValue("coordinates") is not JArray coordinates) throw new GeoJsonParseException("Unable to parse MultiPolygon. \"coordinates\" is not an instance of JArray.", json);
 
             try {
@@ -102,7 +102,7 @@ namespace Skybrud.Essentials.Maps.GeoJson.Geometry {
                 _polygons = array.Select(x => new GeoJsonPolygon(x)).ToList();
 
             } catch (Exception ex)  {
-                
+
                 throw new GeoJsonParseException("Unable to parse \"coordinates\" of MultiLineString.", json, ex);
 
             }
@@ -114,7 +114,7 @@ namespace Skybrud.Essentials.Maps.GeoJson.Geometry {
         #region Member methods
 
         /// <summary>
-        /// Adds the specified <paramref name="polygon"/>. 
+        /// Adds the specified <paramref name="polygon"/>.
         /// </summary>
         /// <param name="polygon">The polygon to be added.</param>
         public void Add(IPolygon polygon) {
@@ -123,7 +123,7 @@ namespace Skybrud.Essentials.Maps.GeoJson.Geometry {
         }
 
         /// <summary>
-        /// Adds the specified <paramref name="polygon"/>. 
+        /// Adds the specified <paramref name="polygon"/>.
         /// </summary>
         /// <param name="polygon">The polygon to be added.</param>
         public void Add(GeoJsonPolygon polygon) {

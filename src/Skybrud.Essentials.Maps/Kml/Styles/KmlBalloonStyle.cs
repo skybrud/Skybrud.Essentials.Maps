@@ -14,7 +14,7 @@ namespace Skybrud.Essentials.Maps.Kml.Styles {
 
         /// <summary>
         /// Gets or sets the background color of the balloon (optional). Color and opacity (alpha) values are expressed
-        /// in hexadecimal notation. 
+        /// in hexadecimal notation.
         /// </summary>
         public string BackgroundColor { get; set; }
 
@@ -57,7 +57,7 @@ namespace Skybrud.Essentials.Maps.Kml.Styles {
         #region Member methods
 
         public override XElement ToXElement() {
-            
+
             XElement xml = base.ToXElement();
 
             if (BackgroundColor.HasValue()) xml.Add(NewXElement("bgColor", BackgroundColor));

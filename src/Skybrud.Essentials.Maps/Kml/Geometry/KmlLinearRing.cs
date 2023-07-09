@@ -6,7 +6,7 @@ using Skybrud.Essentials.Strings.Extensions;
 using Skybrud.Essentials.Xml.Extensions;
 
 namespace Skybrud.Essentials.Maps.Kml.Geometry {
-    
+
     /// <summary>
     /// Defines a closed line string, typically the outer boundary of a polygon. Optionally, a
     /// <c>&lt;LinearRing&gt;</c> can also be used as the inner boundary of a polygon to create holes in the polygon.
@@ -43,7 +43,7 @@ namespace Skybrud.Essentials.Maps.Kml.Geometry {
         /// <summary>
         /// Four or more tuples, each consisting of floating point values for <em>longitude</em>, <em>latitude</em>,
         /// and <em>altitude</em>. The <em>altitude</em> component is optional.
-        /// 
+        ///
         /// The last coordinate must be the same as the first coordinate. Coordinates are expressed in decimal degrees only.
         /// </summary>
         public KmlLinearRingCoordinates Coordinates { get; set; }

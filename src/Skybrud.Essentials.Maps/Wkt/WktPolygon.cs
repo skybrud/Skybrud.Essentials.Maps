@@ -45,7 +45,7 @@ namespace Skybrud.Essentials.Maps.Wkt {
             Coordinates = new WktPoint[1][];
             Coordinates[0] = ArrayUtils.Empty<WktPoint>();
         }
-        
+
         /// <summary>
         /// Initializes a new from the specified <paramref name="polygon"/>.
         /// </summary>
@@ -53,7 +53,7 @@ namespace Skybrud.Essentials.Maps.Wkt {
             if (polygon == null) throw new ArgumentNullException(nameof(polygon));
             Coordinates = WktUtils.ToWktPoints(polygon);
         }
-        
+
         /// <summary>
         /// Initializes a new instance from the specified <paramref name="outer"/> coordinates.
         /// </summary>
@@ -155,7 +155,7 @@ namespace Skybrud.Essentials.Maps.Wkt {
         /// <returns>An instacne of <see cref="WktPolygon"/>.</returns>
         /// <exception cref="WktInvalidFormatException"><paramref name="input"/> is not in a known format.</exception>
         public static new WktPolygon Parse(string input) {
-            
+
             if (string.IsNullOrWhiteSpace(input)) throw new ArgumentNullException(nameof(input));
 
             input = input.Trim();

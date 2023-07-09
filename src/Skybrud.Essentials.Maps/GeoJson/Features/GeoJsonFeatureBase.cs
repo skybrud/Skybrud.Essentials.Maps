@@ -10,7 +10,7 @@ namespace Skybrud.Essentials.Maps.GeoJson.Features {
     public abstract class GeoJsonFeatureBase : GeoJsonObject, IGeoJsonFeature {
 
         #region Properties
-        
+
         /// <summary>
         /// Gets or sets the properties object of this feature.
         /// </summary>

@@ -14,7 +14,7 @@ namespace Skybrud.Essentials.Maps.GeoJson {
         /// Indicates that the object is a <strong>Feature</strong>.
         /// </summary>
         Feature,
-        
+
         /// <summary>
         /// Indicates that the object is a <strong>FeatureCollection</strong>.
         /// </summary>

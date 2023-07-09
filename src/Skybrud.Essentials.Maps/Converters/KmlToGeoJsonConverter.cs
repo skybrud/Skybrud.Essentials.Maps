@@ -14,7 +14,7 @@ using Skybrud.Essentials.Strings.Extensions;
 namespace Skybrud.Essentials.Maps.Converters {
 
     public class KmlToGeoJsonConverter {
-        
+
         public virtual GeoJsonFeatureCollection[] Convert(KmlFile kml) {
             if (kml.Feature == null) return ArrayUtils.Empty<GeoJsonFeatureCollection>();
             return kml.Feature switch {
@@ -142,7 +142,7 @@ namespace Skybrud.Essentials.Maps.Converters {
 
                 default:
                     throw new KmlException($"Unsupported feature {feature.GetType()}");
-                
+
             }
 
         }
@@ -152,7 +152,7 @@ namespace Skybrud.Essentials.Maps.Converters {
         }
 
         public virtual GeoJsonFeature ConvertPlacemark(KmlPlacemark placemark, IStyleProvider provider) {
-            
+
             // Initialize a new feature
             GeoJsonFeature feature = new();
 
@@ -251,7 +251,7 @@ namespace Skybrud.Essentials.Maps.Converters {
         public virtual GeoJsonPolygon Convert(KmlPolygon polygon) {
 
             double[][][] array = new double[polygon.InnerBoundaries.Count + 1][][];
-            
+
             array[0] = new double[polygon.OuterBoundaries.LinearRing.Coordinates.Count][];
 
             for (int i = 0; i < polygon.OuterBoundaries.LinearRing.Coordinates.Count; i++) {

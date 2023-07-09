@@ -2,7 +2,7 @@
 using Newtonsoft.Json.Linq;
 
 namespace Skybrud.Essentials.Maps.GeoJson.Exceptions {
-    
+
     public class GeoJsonParseException : GeoJsonException {
 
         public JObject JObject { get; }

@@ -1,5 +1,5 @@
 ﻿namespace Skybrud.Essentials.Maps.Geometry.Lines {
-    
+
     /// <summary>
     /// Interface representing a line from <see cref="A"/> to <see cref="B"/>.
     /// </summary>

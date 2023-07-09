@@ -8,7 +8,7 @@ using Skybrud.Essentials.Maps.GeoJson.Features;
 using Skybrud.Essentials.Maps.GeoJson.Geometry;
 
 namespace Skybrud.Essentials.Maps.GeoJson.Json {
-    
+
     /// <summary>
     /// JSON converter for serializing and deserializing <strong>GeoJSON</strong>.
     /// </summary>
@@ -16,7 +16,7 @@ namespace Skybrud.Essentials.Maps.GeoJson.Json {
 
         /// <inheritdoc />
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer) {
-            
+
             if (value == null) {
                 writer.WriteNull();
                 return;
@@ -75,13 +75,13 @@ namespace Skybrud.Essentials.Maps.GeoJson.Json {
                     return;
 
                 case GeoJsonProperties properties:
-                    
+
                     Dictionary<string, object> temp = new();
                     foreach (KeyValuePair<string, object> pair in properties.Properties) {
                         if (pair.Value == null) continue;
                         temp.Add(pair.Key, pair.Value);
                     }
-                    
+
                     JObject.FromObject(temp).WriteTo(writer);
                     return;
 

@@ -57,7 +57,7 @@ namespace Skybrud.Essentials.Maps.Geometry.Lines {
         public double GetLength() {
             return PointUtils.GetDistance(A, B);
         }
-        
+
         /// <summary>
         /// Returns a new point representing the center of this line.
         /// </summary>

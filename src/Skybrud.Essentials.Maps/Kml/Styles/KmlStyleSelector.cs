@@ -29,7 +29,7 @@ namespace Skybrud.Essentials.Maps.Kml.Styles {
         #region Member methods
 
         public override XElement ToXElement() {
-            
+
             XElement xml = base.ToXElement();
 
             if (Id.HasValue()) xml.Add(new XAttribute("id", Id));
@@ -41,7 +41,7 @@ namespace Skybrud.Essentials.Maps.Kml.Styles {
         #endregion
 
         #region Static methods
-        
+
         public static KmlStyleSelector Parse(XElement xml) {
             return Parse(xml, Namespaces);
         }

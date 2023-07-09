@@ -101,7 +101,7 @@ namespace Skybrud.Essentials.Maps.GeoJson.Geometry {
         /// </summary>
         /// <param name="json">An instance of <see cref="JObject"/> representing the <strong>Point</strong> geometry.</param>
         protected GeoJsonPoint(JObject json) : base(GeoJsonType.Point) {
-            
+
             if (json.GetValue("coordinates") is not JArray coordinates) throw new GeoJsonParseException("Unable to parse Point geometry. \"coordinates\" is not an instance of JArray.", json);
 
             try {
@@ -109,7 +109,7 @@ namespace Skybrud.Essentials.Maps.GeoJson.Geometry {
                 Coordinates = new GeoJsonCoordinates(coordinates.ToObject<double[]>());
 
             } catch (Exception ex)  {
-                
+
                 throw new GeoJsonParseException("Unable to parse \"coordinates\" of Point geometry.", json, ex);
 
             }

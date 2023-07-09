@@ -51,7 +51,7 @@ namespace Skybrud.Essentials.Maps.Kml.Styles {
         #endregion
 
         #region Static methods
-        
+
         public static KmlStyleMapPair Parse(XElement xml) {
             return xml == null ? null : new KmlStyleMapPair(xml, Namespaces);
         }

@@ -1,5 +1,5 @@
 ﻿namespace Skybrud.Essentials.Maps.Wkt.Exceptions {
-    
+
     /// <summary>
     /// Exception used for representing a an error when parsing a string into a <strong>Well Known Text</strong> object.
     /// </summary>

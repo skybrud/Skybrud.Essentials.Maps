@@ -20,7 +20,7 @@ namespace Skybrud.Essentials.Maps.Kml.Features {
         public KmlFeatureCollection(IEnumerable<KmlFeature> features) {
             AddRange(features);
         }
-        
+
         #region Operator overloading
 
         public static implicit operator KmlFeatureCollection(KmlFeature[] features) {
@@ -34,7 +34,7 @@ namespace Skybrud.Essentials.Maps.Kml.Features {
         #endregion
 
         public static KmlFeatureCollection GetFromChildren(XElement xml) {
-            
+
             List<KmlFeature> temp = new();
 
             foreach (XElement element in xml.Elements()) {

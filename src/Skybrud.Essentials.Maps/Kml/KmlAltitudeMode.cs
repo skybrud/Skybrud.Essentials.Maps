@@ -1,7 +1,7 @@
 ﻿namespace Skybrud.Essentials.Maps.Kml {
 
     /// <summary>
-    /// Specifies how altitude components in the &lt;coordinates&gt; element are interpreted. 
+    /// Specifies how altitude components in the &lt;coordinates&gt; element are interpreted.
     /// </summary>
     public enum KmlAltitudeMode {
 
@@ -19,7 +19,7 @@
         /// Sets the altitude of the element relative to the actual ground elevation of a particular location. For
         /// example, if the ground elevation of a location is exactly at sea level and the altitude for a point is set
         /// to 9 meters, then the elevation for the icon of a point placemark elevation is 9 meters with this mode.
-        /// 
+        ///
         /// However, if the same coordinate is set over a location where the ground elevation is 10 meters above sea
         /// level, then the elevation of the coordinate is 19 meters. A typical use of this mode is for placing
         /// telephone poles or a ski lift.

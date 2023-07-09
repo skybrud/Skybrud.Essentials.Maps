@@ -95,7 +95,7 @@ namespace Skybrud.Essentials.Maps.Kml {
             r = 0;
             g = 0;
             b = 0;
-            
+
             // Return "false" if the string is empty
             if (string.IsNullOrWhiteSpace(str)) return false;
 

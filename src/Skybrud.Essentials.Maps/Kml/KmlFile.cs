@@ -9,9 +9,9 @@ namespace Skybrud.Essentials.Maps.Kml {
 
     /// <summary>
     /// The root element of a KML file. This element is required. It follows the xml declaration at the beginning of the file.
-    /// 
+    ///
     /// The <c>&lt;kmlgt;</c> element may also include the namespace for any external XML schemas that are referenced within the file.
-    /// 
+    ///
     /// A basic <c>&lt;kmlgt;</c> element contains 0 or 1 <see cref="KmlFeature"/> and 0 or 1 <see cref="KmlNetworkLinkControl"/>.
     /// </summary>
     /// <see>
@@ -73,7 +73,7 @@ namespace Skybrud.Essentials.Maps.Kml {
                 ToXElement()
             );
         }
-        
+
         public void Save(string path) {
             ToXDocument().Save(path);
         }

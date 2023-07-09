@@ -5,7 +5,7 @@ using Skybrud.Essentials.Maps.Kml.Features;
 using Skybrud.Essentials.Xml.Extensions;
 
 namespace Skybrud.Essentials.Maps.Kml.Geometry {
-    
+
     /// <summary>
     /// References a KML file or KMZ archive on a local or remote network. Use the <see cref="KmlLink"/> element to
     /// specify the location of the KML file. Within that element, you can define the refresh options for updating the

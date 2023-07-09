@@ -4,7 +4,7 @@ using Skybrud.Essentials.Strings.Extensions;
 using Skybrud.Essentials.Xml.Extensions;
 
 namespace Skybrud.Essentials.Maps.Kml.Styles {
-    
+
     /// <summary>
     /// This is an abstract element and cannot be used directly in a KML file. It provides elements for specifying the color and color mode of extended style types.
     /// </summary>
@@ -32,7 +32,7 @@ namespace Skybrud.Essentials.Maps.Kml.Styles {
         /// Values for <see cref="ColorMode"/> are <see cref="KmlColorMode.Normal"/> (no effect) and
         /// <see cref="KmlColorMode.Random"/>. A value of <see cref="KmlColorMode.Random"/> applies a random linear
         /// scale to the base <see cref="Color"/> as follows:
-        /// 
+        ///
         /// - To achieve a truly random selection of colors, specify a base &lt;color&gt; of white (ffffffff).
         /// - If you specify a single color component (for example, a value of ff0000ff for red), random color values for that one component (red) will be selected. In this case, the values would range from 00 (black) to ff (full red).
         /// - If you specify values for two or for all three color components, a random linear scale is applied to each color component, with results ranging from black to the maximum values specified for each component.
@@ -57,9 +57,9 @@ namespace Skybrud.Essentials.Maps.Kml.Styles {
         }
 
         #endregion
-        
+
         #region Member methods
-        
+
         public override XElement ToXElement() {
 
             XElement xml = base.ToXElement();

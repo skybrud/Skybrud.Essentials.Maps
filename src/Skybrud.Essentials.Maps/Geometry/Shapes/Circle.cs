@@ -2,7 +2,7 @@
 using Skybrud.Essentials.Maps.Extensions;
 
 namespace Skybrud.Essentials.Maps.Geometry.Shapes {
-    
+
     /// <summary>
     /// Class representing a circle on a spheroid.
     /// </summary>

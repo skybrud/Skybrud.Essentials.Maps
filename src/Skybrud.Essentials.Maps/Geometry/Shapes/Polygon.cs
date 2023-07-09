@@ -56,7 +56,7 @@ namespace Skybrud.Essentials.Maps.Geometry.Shapes {
             _outer = points?.ToList() ?? throw new ArgumentNullException(nameof(points));
             _inner = new List<IPoint[]>();
         }
-        
+
         /// <summary>
         /// Initializes a new instance from the specified <paramref name="outer"/> and <paramref name="inner"/> coordinates.
         /// </summary>
@@ -66,7 +66,7 @@ namespace Skybrud.Essentials.Maps.Geometry.Shapes {
             _outer = outer?.ToList() ?? throw new ArgumentNullException(nameof(outer));
             _inner = inner?.Select(x => x.ToArray()).ToList() ?? new List<IPoint[]>();
         }
-        
+
         /// <summary>
         /// Initializes a new instance from the specified <paramref name="outer"/> and <paramref name="inner"/> coordinates.
         /// </summary>
@@ -93,7 +93,7 @@ namespace Skybrud.Essentials.Maps.Geometry.Shapes {
         public Polygon(IRectangle rectangle) {
 
             if (rectangle == null) throw new ArgumentNullException(nameof(rectangle));
-            
+
             // Convert "IRectangle" to "Rectangle"
             Rectangle bbox = rectangle as Rectangle ?? new Rectangle(rectangle.SouthWest, rectangle.SouthWest);
 
@@ -180,7 +180,7 @@ namespace Skybrud.Essentials.Maps.Geometry.Shapes {
         }
 
         /// <summary>
-        /// Returns the area of the polygon in square metres. 
+        /// Returns the area of the polygon in square metres.
         /// </summary>
         /// <returns>The area in square metres.</returns>
         public double GetArea() {
@@ -188,7 +188,7 @@ namespace Skybrud.Essentials.Maps.Geometry.Shapes {
         }
 
         /// <summary>
-        /// Returns the circumference of the polygon in metres. 
+        /// Returns the circumference of the polygon in metres.
         /// </summary>
         /// <returns>The circumference in metres.</returns>
         public double GetCircumference() {
@@ -223,7 +223,7 @@ namespace Skybrud.Essentials.Maps.Geometry.Shapes {
                 }
             );
         }
-        
+
         #endregion
 
     }

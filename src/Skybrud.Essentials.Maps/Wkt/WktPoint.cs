@@ -94,13 +94,13 @@ namespace Skybrud.Essentials.Maps.Wkt {
                 double y = double.Parse(m1.Groups[2].Value, CultureInfo.InvariantCulture);
                 return new WktPoint(x, y);
             }
-            
+
             if (m2.Success) {
                 double x = double.Parse(m2.Groups[1].Value, CultureInfo.InvariantCulture);
                 double y = double.Parse(m2.Groups[2].Value, CultureInfo.InvariantCulture);
                 return new WktPoint(x, y);
             }
-            
+
             throw new WktInvalidFormatException(input);
 
         }

@@ -9,7 +9,7 @@ using Skybrud.Essentials.Xml.Extensions;
 namespace Skybrud.Essentials.Maps.Kml {
 
     public abstract class KmlObject {
-        
+
         protected static XNamespace Namespace => Kml;
 
         protected static readonly XNamespace Kml = KmlConstants.DefaultNamespace;

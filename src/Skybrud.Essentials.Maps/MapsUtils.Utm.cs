@@ -5,7 +5,7 @@ using Skybrud.Essentials.Maps.Geometry;
 // ReSharper disable InconsistentNaming
 
 namespace Skybrud.Essentials.Maps {
-    
+
     public static partial class MapsUtils {
 
         /// <summary>

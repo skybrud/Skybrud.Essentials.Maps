@@ -2,7 +2,7 @@ using System.Xml;
 using System.Xml.Linq;
 
 namespace Skybrud.Essentials.Maps.Kml.Styles {
-    
+
     /// <summary>
     /// Specifies the drawing style for all polygons, including polygon extrusions (which look like the walls of buildings) and line extrusions (which look like solid fences).
     /// </summary>

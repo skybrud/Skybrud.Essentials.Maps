@@ -4,7 +4,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
 namespace Skybrud.Essentials.Maps.GeoJson.Json {
-    
+
     /// <summary>
     /// JSON contract resolver used for serializing objects within the <c>Skybrud.Essentials.Maps.GeoJson</c> namespace.
     /// </summary>
@@ -23,7 +23,7 @@ namespace Skybrud.Essentials.Maps.GeoJson.Json {
 
         /// <inheritdoc />
         protected override JsonProperty CreateProperty(MemberInfo member, MemberSerialization serialization) {
-            
+
             JsonProperty property = base.CreateProperty(member, serialization);
 
             property.ShouldSerialize = x => ShouldSerialize(member, x);

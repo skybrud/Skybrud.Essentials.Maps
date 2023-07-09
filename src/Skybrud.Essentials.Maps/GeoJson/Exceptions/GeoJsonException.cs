@@ -1,7 +1,7 @@
 ﻿using System;
 
 namespace Skybrud.Essentials.Maps.GeoJson.Exceptions {
-    
+
     /// <summary>
     /// Class representing an exception related to the <see cref="GeoJson"/> namespace.
     /// </summary>

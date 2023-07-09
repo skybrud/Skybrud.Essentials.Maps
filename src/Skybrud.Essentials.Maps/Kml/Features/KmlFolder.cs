@@ -9,7 +9,7 @@ namespace Skybrud.Essentials.Maps.Kml.Features {
     /// Class representing a KML <c>&lt;Folder&gt;</c> element.
     /// </summary>
     public class KmlFolder : KmlFeature {
-        
+
         #region Properties
 
         /// <summary>

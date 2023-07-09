@@ -57,13 +57,13 @@ namespace Skybrud.Essentials.Maps.GeoJson.Json {
                     return;
 
                 case GeoJsonProperties properties:
-                    
+
                     Dictionary<string, object> temp = new();
                     foreach (KeyValuePair<string, object> pair in properties.Properties) {
                         if (pair.Value == null) continue;
                         temp.Add(pair.Key, pair.Value);
                     }
-                    
+
                     JObject.FromObject(temp).WriteTo(writer);
                     return;
 

@@ -5,7 +5,7 @@ using Skybrud.Essentials.Strings.Extensions;
 using Skybrud.Essentials.Xml.Extensions;
 
 namespace Skybrud.Essentials.Maps.Kml {
-    
+
     /// <see>
     ///     <cref>https://developers.google.com/kml/documentation/kmlreference#link</cref>
     /// </see>

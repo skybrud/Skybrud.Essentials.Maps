@@ -65,7 +65,7 @@ namespace Skybrud.Essentials.Maps.Kml.Styles {
         }
 
         public override XElement ToXElement() {
-            
+
             XElement xml = base.ToXElement();
 
             foreach (KmlStyleMapPair pair in Pairs) {

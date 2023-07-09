@@ -10,7 +10,7 @@ namespace Skybrud.Essentials.Maps.Kml.Geometry {
     /// A geographic location defined by longitude, latitude, and (optional) altitude. When a <see cref="KmlPoint"/> is
     /// contained by a <see cref="KmlPlacemark"/>, the point itself determines the position of the
     /// <see cref="KmlPlacemark"/>'s name and icon.
-    /// 
+    ///
     /// When a <see cref="KmlPoint"/> is extruded, it is connected to the ground with a line. This "tether" uses the
     /// current <see cref="KmlLineStyle"/>..
     /// </summary>
@@ -33,7 +33,7 @@ namespace Skybrud.Essentials.Maps.Kml.Geometry {
         /// <summary>
         /// A single tuple consisting of floating point values for longitude, latitude, and altitude (in that order).
         /// Longitude and latitude values are in degrees, where:
-        /// 
+        ///
         /// - <em>longitude</em> &gt;= −180 and &lt;= 180
         /// - <em>latitude</em> &gt;= −90 and &lt;= 90
         /// - altitude values (optional) are in meters above sea level

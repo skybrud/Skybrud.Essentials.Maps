@@ -15,7 +15,7 @@ namespace Skybrud.Essentials.Maps.GeoJson.Geometry {
     /// </summary>
     [JsonConverter(typeof(GeoJsonConverter))]
     public class GeoJsonPolygon : GeoJsonGeometry {
-        
+
         #region Properties
 
         /// <summary>
@@ -38,7 +38,7 @@ namespace Skybrud.Essentials.Maps.GeoJson.Geometry {
                 List<double[][]> list = new() {
                     Outer.Select(x => x.ToArray()).ToArray()
                 };
-                
+
                 list.AddRange(Inner.Select(inner => inner.Select(x => x.ToArray()).ToArray()));
 
                 return list.ToArray();
@@ -66,7 +66,7 @@ namespace Skybrud.Essentials.Maps.GeoJson.Geometry {
         public GeoJsonPolygon(double[][] outer) : base(GeoJsonType.Polygon) {
 
             if (outer == null) throw new ArgumentNullException(nameof(outer));
-            
+
             Outer = outer
                 .Select(x => new GeoJsonCoordinates(x))
                 .ToList();
@@ -106,9 +106,9 @@ namespace Skybrud.Essentials.Maps.GeoJson.Geometry {
         /// </summary>
         /// <param name="outer">The outer coordinates.</param>
         public GeoJsonPolygon(IPoint[] outer) : base(GeoJsonType.Polygon) {
-            
+
             if (outer == null) throw new ArgumentNullException(nameof(outer));
-            
+
             Outer = outer
                 .Select(x => new GeoJsonCoordinates(x))
                 .ToList();
@@ -116,13 +116,13 @@ namespace Skybrud.Essentials.Maps.GeoJson.Geometry {
             Inner = new List<List<GeoJsonCoordinates>>();
 
         }
-        
+
         /// <summary>
         /// Initializes a new instance from the specified array of <see cref="IPoint"/> <paramref name="coordinates"/>.
         /// </summary>
         /// <param name="coordinates">The coordinates.</param>
         public GeoJsonPolygon(IPoint[][] coordinates) : base(GeoJsonType.Polygon) {
-            
+
             if (coordinates == null) throw new ArgumentNullException(nameof(coordinates));
 
             if (coordinates.Length == 0) {
@@ -162,7 +162,7 @@ namespace Skybrud.Essentials.Maps.GeoJson.Geometry {
             Outer = outer.ToList();
             Inner = new List<List<GeoJsonCoordinates>>();
         }
-        
+
         /// <summary>
         /// Initializes a new instance from the specified <paramref name="polygon"/>.
         /// </summary>
@@ -186,7 +186,7 @@ namespace Skybrud.Essentials.Maps.GeoJson.Geometry {
 
                 // Convert the JArray to a three dimensional array
                 double[][][] array = coordinates.ToObject<double[][][]>();
-                
+
                 if (array.Length == 0) {
                     Outer = new List<GeoJsonCoordinates>();
                     Inner = new List<List<GeoJsonCoordinates>>();
@@ -204,7 +204,7 @@ namespace Skybrud.Essentials.Maps.GeoJson.Geometry {
                     .ToList();
 
             } catch (Exception ex)  {
-                
+
                 throw new GeoJsonParseException("Unable to parse \"coordinates\" of MultiLineString.", json, ex);
 
             }

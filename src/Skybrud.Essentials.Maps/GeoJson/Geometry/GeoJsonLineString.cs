@@ -35,7 +35,7 @@ namespace Skybrud.Essentials.Maps.GeoJson.Geometry {
         #endregion
 
         #region Constructors
-        
+
         /// <summary>
         /// Initializes a new instance with no initial points.
         /// </summary>
@@ -139,7 +139,7 @@ namespace Skybrud.Essentials.Maps.GeoJson.Geometry {
         }
 
         /// <summary>
-        /// Adds the specified <paramref name="point"/>. 
+        /// Adds the specified <paramref name="point"/>.
         /// </summary>
         /// <param name="point">The point to be added. The array must have a minimum length of two describing both the <c>x</c> and <c>y</c> coordinates of the point, and may optionally specify the altitude as a third item in the array.</param>
         public void Add(double[] point) {
@@ -148,7 +148,7 @@ namespace Skybrud.Essentials.Maps.GeoJson.Geometry {
         }
 
         /// <summary>
-        /// Adds the specified <paramref name="point"/>. 
+        /// Adds the specified <paramref name="point"/>.
         /// </summary>
         /// <param name="point">The point to be added. Notice that <see cref="IPoint.Latitude"/> equals to <c>y</c> coordinate and <see cref="IPoint.Longitude"/> equals to <c>x</c> coordinate.</param>
         public void Add(IPoint point) {
@@ -157,7 +157,7 @@ namespace Skybrud.Essentials.Maps.GeoJson.Geometry {
         }
 
         /// <summary>
-        /// Adds the specified <paramref name="point"/>. 
+        /// Adds the specified <paramref name="point"/>.
         /// </summary>
         /// <param name="point">The point to be added.</param>
         public void Add(GeoJsonCoordinates point) {

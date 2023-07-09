@@ -52,7 +52,7 @@ namespace Skybrud.Essentials.Maps.GeoJson {
 
         /// <summary>
         /// Loads the JSON string at the specified <paramref name="path"/> and parses it into an instance of <typeparamref name="T"/>.
-        /// 
+        ///
         /// As the type is specified in the JSON, the returned instance for a GeoJSON <strong>Feature</strong> will be
         /// <see cref="GeoJsonFeature"/>, a <strong>Point</strong> will be <see cref="GeoJsonPoint"/> and so accordingly.
         ///
@@ -68,7 +68,7 @@ namespace Skybrud.Essentials.Maps.GeoJson {
 
         /// <summary>
         /// Loads the JSON string at the specified <paramref name="path"/> and parses it into an instance of <see cref="GeoJsonObject"/>.
-        /// 
+        ///
         /// As the type is specified in the JSON, the returned instance for a GeoJSON <strong>Feature</strong> will be
         /// <see cref="GeoJsonFeature"/>, a <strong>Point</strong> will be <see cref="GeoJsonPoint"/> and so accordingly.
         /// </summary>
@@ -177,7 +177,7 @@ namespace Skybrud.Essentials.Maps.GeoJson {
 
             if (collection == null) throw new ArgumentNullException(nameof(collection));
             if (collection.Features.Count == 0) throw new InvalidOperationException(nameof(collection));
-            
+
             List<IPoint> points = new();
 
             foreach (GeoJsonFeature feature in collection.Features) {
@@ -224,11 +224,11 @@ namespace Skybrud.Essentials.Maps.GeoJson {
 
                 case null:
                     return polygons;
-                
+
                 case GeoJsonPolygon polygon:
                     polygons.Add(polygon.ToPolygon());
                     break;
-                
+
                 case GeoJsonMultiPolygon m:
                     polygons.AddRange(m.ToMultiPolygon().Polygons);
                     break;

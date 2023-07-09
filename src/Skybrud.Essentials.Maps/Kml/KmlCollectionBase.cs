@@ -5,7 +5,7 @@ using System.Linq;
 namespace Skybrud.Essentials.Maps.Kml {
 
     public abstract class KmlCollectionBase<T> : IEnumerable<T> {
-        
+
         private readonly List<T> _children;
 
         protected KmlCollectionBase() {

@@ -123,7 +123,7 @@ namespace Skybrud.Essentials.Maps.Wkt {
                 sb.Append("EMPTY");
 
             } else {
-                
+
                 sb.Append("(" + string.Join(formatting == WktFormatting.Minified ? "," : ", ", from polygon in _polygons select ToString(polygon, formatting, 1)) + ")");
 
             }
@@ -144,7 +144,7 @@ namespace Skybrud.Essentials.Maps.Wkt {
         /// <exception cref="ArgumentNullException"><paramref name="input"/> is <c>null</c>.</exception>
         /// <exception cref="WktInvalidFormatException"><paramref name="input"/> is not in a known format.</exception>
         public static new WktMultiPolygon Parse(string input) {
-            
+
             if (string.IsNullOrWhiteSpace(input)) throw new ArgumentNullException(nameof(input));
 
             input = input.Trim();
@@ -177,7 +177,7 @@ namespace Skybrud.Essentials.Maps.Wkt {
                         temp = "";
                     }
                 } else if (chr == ',' && c == 0) {
-                    
+
                 } else {
                     temp += chr;
                 }
