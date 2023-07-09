@@ -50,7 +50,7 @@ namespace Skybrud.Essentials.Maps.Wkt {
 
             temp.Add(ToString(polygon.Outer, formatting, indentation));
 
-            foreach (WktPoint[] array in polygon.Inner) {
+            foreach (IReadOnlyList<WktPoint> array in polygon.Inner) {
                 temp.Add(ToString(array, formatting, indentation));
             }
 

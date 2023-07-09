@@ -47,17 +47,7 @@ namespace Skybrud.Essentials.Maps.Wkt {
         /// </summary>
         /// <param name="lines">The lines that should make up the multi line string.</param>
         /// <exception cref="ArgumentNullException"><paramref name="lines"/> is <c>null</c>.</exception>
-        public WktMultiLineString(WktLineString[] lines) {
-            if (lines == null) throw new ArgumentNullException(nameof(lines));
-            _lines = new List<WktLineString>(lines);
-        }
-
-        /// <summary>
-        /// Initializes a new multi line string based on the specified <paramref name="lines"/>.
-        /// </summary>
-        /// <param name="lines">The lines that should make up the multi line string.</param>
-        /// <exception cref="ArgumentNullException"><paramref name="lines"/> is <c>null</c>.</exception>
-        public WktMultiLineString(List<WktLineString> lines) {
+        public WktMultiLineString(IReadOnlyList<WktLineString> lines) {
             if (lines == null) throw new ArgumentNullException(nameof(lines));
             _lines = new List<WktLineString>(lines);
         }

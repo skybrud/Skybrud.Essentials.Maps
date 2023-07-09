@@ -46,7 +46,17 @@ namespace Skybrud.Essentials.Maps.Wkt {
         /// </summary>
         /// <param name="points">The points that should make up the line string.</param>
         /// <exception cref="ArgumentNullException"><paramref name="points"/> is <c>null</c>.</exception>
-        public WktLineString(WktPoint[] points) {
+        public WktLineString(IReadOnlyList<WktPoint> points) {
+            if (points == null) throw new ArgumentNullException(nameof(points));
+            _points = new List<WktPoint>(points);
+        }
+
+        /// <summary>
+        /// Initializes a new line string based on the specified <paramref name="points"/>.
+        /// </summary>
+        /// <param name="points">The points that should make up the line string.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="points"/> is <c>null</c>.</exception>
+        public WktLineString(IEnumerable<WktPoint> points) {
             if (points == null) throw new ArgumentNullException(nameof(points));
             _points = new List<WktPoint>(points);
         }
