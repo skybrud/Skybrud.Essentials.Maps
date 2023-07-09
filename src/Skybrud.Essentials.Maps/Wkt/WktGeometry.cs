@@ -30,7 +30,7 @@ namespace Skybrud.Essentials.Maps.Wkt {
         /// <param name="formatting">The formatting to be used.</param>
         /// <param name="indentation">The indendatation to be used.</param>
         /// <returns>The points formatted as a <strong>Well Known Text</strong> string.</returns>
-        protected string ToString(WktPoint[] points, WktFormatting formatting, int indentation) {
+        protected string ToString(IReadOnlyList<WktPoint> points, WktFormatting formatting, int indentation) {
             if (formatting == WktFormatting.Indented) throw new NotImplementedException("Indented formatting is currently not supported");
             return "(" + string.Join(formatting == WktFormatting.Minified ? "," : ", ", from point in points select string.Format(CultureInfo.InvariantCulture, "{0} {1}", point.X, point.Y)) + ")";
         }

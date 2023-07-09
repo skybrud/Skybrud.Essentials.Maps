@@ -15,9 +15,21 @@ namespace Skybrud.Essentials.Maps.Geometry.Shapes {
         #region Properties
 
         /// <summary>
+        /// Gets the number of <see cref="IPolygon"/> in this multi polygon.
+        /// </summary>
+        public int Count => _polygons.Count;
+
+        /// <summary>
+        /// Gets the <see cref="IPolygon"/> at the specified <paramref name="index"/>.
+        /// </summary>
+        /// <param name="index">The index.</param>
+        /// <returns>The <see cref="IPolygon"/> at the specified index.</returns>
+        public IPolygon this[int index] => throw new NotImplementedException();
+
+        /// <summary>
         /// Gets the array of polygons making up the shape.
         /// </summary>
-        public IPolygon[] Polygons => _polygons.ToArray();
+        public IReadOnlyList<IPolygon> Polygons => _polygons.ToArray();
 
         #endregion
 

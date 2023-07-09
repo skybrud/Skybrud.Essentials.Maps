@@ -16,10 +16,10 @@ namespace Skybrud.Essentials.Maps.Extensions {
         /// </summary>
         /// <param name="polygon">The polygon.</param>
         /// <returns>A two-dimensional array of <see cref="IPoint"/>.</returns>
-        public static IPoint[][] GetCoordinates(this IPolygon polygon) {
-            List<IPoint[]> temp = new() { polygon.Outer };
+        public static IReadOnlyList<IReadOnlyList<IPoint>> GetCoordinates(this IPolygon polygon) {
+            List<IReadOnlyList<IPoint>> temp = new() { polygon.Outer };
             temp.AddRange(polygon.Inner);
-            return temp.ToArray();
+            return temp;
         }
 
         /// <summary>
@@ -67,11 +67,11 @@ namespace Skybrud.Essentials.Maps.Extensions {
         /// <returns>A three-dimensional array with the <strong>y</strong> and <strong>x</strong> coordinates of <paramref name="polygon"/>.</returns>
         public static double[][][] ToYxArray(this IPolygon polygon) {
 
-            double[][][] result = new double[polygon.Inner.Length + 1][][];
+            double[][][] result = new double[polygon.Inner.Count + 1][][];
 
             result[0] = polygon.Outer.Select(x => x.ToYxArray()).ToArray();
 
-            for (int i = 0; i<polygon.Inner.Length; i++) {
+            for (int i = 0; i<polygon.Inner.Count; i++) {
                 result[i + 1] = polygon.Inner[i].Select(x => x.ToYxArray()).ToArray();
             }
 
@@ -86,11 +86,11 @@ namespace Skybrud.Essentials.Maps.Extensions {
         /// <returns>A three-dimensional array with the <strong>x</strong> and <strong>y</strong> coordinates of <paramref name="polygon"/>.</returns>
         public static double[][][] ToXyArray(this IPolygon polygon) {
 
-            double[][][] result = new double[polygon.Inner.Length + 1][][];
+            double[][][] result = new double[polygon.Inner.Count + 1][][];
 
             result[0] = polygon.Outer.Select(x => x.ToXyArray()).ToArray();
 
-            for (int i = 0; i<polygon.Inner.Length; i++) {
+            for (int i = 0; i<polygon.Inner.Count; i++) {
                 result[i + 1] = polygon.Inner[i].Select(x => x.ToXyArray()).ToArray();
             }
 

@@ -15,7 +15,7 @@ namespace Skybrud.Essentials.Maps.Wkt {
     /// <see>
     ///     <cref>https://en.wikipedia.org/wiki/Well-known_text_representation_of_geometry</cref>
     /// </see>
-    public class WktMultiPoint : WktGeometry, IEnumerable<WktPoint> {
+    public class WktMultiPoint : WktGeometry, IReadOnlyList<WktPoint> {
 
         private readonly List<WktPoint> _points;
 
@@ -31,7 +31,7 @@ namespace Skybrud.Essentials.Maps.Wkt {
         /// </summary>
         /// <param name="index">The zero-based index of the point to retrieve.</param>
         /// <returns>The <see cref="WktPoint"/> at the specified <paramref name="index"/>.</returns>
-        public WktPoint this[int index] => _points.ElementAt(index);
+        public WktPoint this[int index] => _points[index];
 
         #endregion
 

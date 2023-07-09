@@ -15,7 +15,7 @@ namespace Skybrud.Essentials.Maps.GeoJson.Geometry {
     /// Class representing a GeoJSON <strong>MultiPoint</strong> geometry.
     /// </summary>
     [JsonConverter(typeof(GeoJsonConverter))]
-    public class GeoJsonMultiPoint : GeoJsonGeometry, IEnumerable<GeoJsonCoordinates> {
+    public class GeoJsonMultiPoint : GeoJsonGeometry, IReadOnlyList<GeoJsonCoordinates> {
 
         private readonly List<GeoJsonCoordinates> _points;
 

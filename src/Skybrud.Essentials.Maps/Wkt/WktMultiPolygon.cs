@@ -13,7 +13,7 @@ namespace Skybrud.Essentials.Maps.Wkt {
     /// <see>
     ///     <cref>https://en.wikipedia.org/wiki/Well-known_text_representation_of_geometry</cref>
     /// </see>
-    public class WktMultiPolygon : WktGeometry, IEnumerable<WktPolygon> {
+    public class WktMultiPolygon : WktGeometry, IReadOnlyList<WktPolygon> {
 
         private readonly List<WktPolygon> _polygons;
 
@@ -23,6 +23,13 @@ namespace Skybrud.Essentials.Maps.Wkt {
         /// Gets the number of polygons in this multi polygon.
         /// </summary>
         public int Count => _polygons.Count;
+
+        /// <summary>
+        /// Gets the <see cref="WktPolygon"/> at the specified <paramref name="index"/>.
+        /// </summary>
+        /// <param name="index">The index.</param>
+        /// <returns>The <see cref="WktPolygon"/> at the specified index.</returns>
+        public WktPolygon this[int index] => _polygons[index];
 
         #endregion
 

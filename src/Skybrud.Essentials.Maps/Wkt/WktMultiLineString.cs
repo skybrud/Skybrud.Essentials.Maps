@@ -13,7 +13,7 @@ namespace Skybrud.Essentials.Maps.Wkt {
     /// <see>
     ///     <cref>https://en.wikipedia.org/wiki/Well-known_text_representation_of_geometry</cref>
     /// </see>
-    public class WktMultiLineString : WktGeometry, IEnumerable<WktLineString> {
+    public class WktMultiLineString : WktGeometry, IReadOnlyList<WktLineString> {
 
         private readonly List<WktLineString> _lines;
 
@@ -23,6 +23,13 @@ namespace Skybrud.Essentials.Maps.Wkt {
         /// Gets the number of line string in this multi line string.
         /// </summary>
         public int Count => _lines.Count;
+
+        /// <summary>
+        /// Gets the <see cref="WktLineString"/> at the specified <paramref name="index"/>.
+        /// </summary>
+        /// <param name="index">The index.</param>
+        /// <returns>The <see cref="WktLineString"/> at the specified index.</returns>
+        public WktLineString this[int index] => _lines[index];
 
         #endregion
 

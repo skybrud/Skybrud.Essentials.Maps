@@ -23,17 +23,17 @@ namespace Skybrud.Essentials.Maps.Wkt {
         /// <summary>
         /// Gets a array with the outer coordinates.
         /// </summary>
-        public WktPoint[] Outer => Coordinates[0];
+        public IReadOnlyList<WktPoint> Outer => Coordinates[0];
 
         /// <summary>
         /// Gets a array with the inner coordinates.
         /// </summary>
-        public WktPoint[][] Inner => Coordinates.Skip(1).ToArray();
+        public IReadOnlyList<IReadOnlyList<WktPoint>> Inner => Coordinates.Skip(1).ToArray();
 
         /// <summary>
         /// Gets a array with the coordinates of the polygon.
         /// </summary>
-        public WktPoint[][] Coordinates { get; }
+        public IReadOnlyList<IReadOnlyList<WktPoint>> Coordinates { get; }
 
         #endregion
 
@@ -43,8 +43,9 @@ namespace Skybrud.Essentials.Maps.Wkt {
         /// Initializes a new empty polygon.
         /// </summary>
         public WktPolygon() {
-            Coordinates = new WktPoint[1][];
-            Coordinates[0] = ArrayUtils.Empty<WktPoint>();
+            WktPoint[][] coordinates = new WktPoint[1][];
+            coordinates[0] = ArrayUtils.Empty<WktPoint>();
+            Coordinates = coordinates;
         }
 
         /// <summary>
@@ -80,12 +81,14 @@ namespace Skybrud.Essentials.Maps.Wkt {
         /// <param name="inner">The inner coordinates.</param>
         public WktPolygon(WktPoint[] outer, WktPoint[][] inner) {
 
-            Coordinates = new WktPoint[inner.Length + 1][];
-            Coordinates[0] = outer;
+            WktPoint[][] coordinates = new WktPoint[inner.Length + 1][];
+            coordinates[0] = outer;
 
             for (int i = 0; i < inner.Length; i++) {
-                Coordinates[i + 1] = inner[i];
+                coordinates[i + 1] = inner[i];
             }
+
+            Coordinates = coordinates;
 
         }
 
@@ -102,14 +105,20 @@ namespace Skybrud.Essentials.Maps.Wkt {
         /// </summary>
         /// <param name="coordinates">The coordinates.</param>
         public WktPolygon(IPoint[][] coordinates) {
+
             if (coordinates == null) throw new ArgumentNullException(nameof(coordinates));
-            Coordinates = new WktPoint[coordinates.Length][];
+
+            WktPoint[][] temp = new WktPoint[coordinates.Length][];
+
             for (int i = 0; i < coordinates.Length; i++) {
-                Coordinates[i] = new WktPoint[coordinates[i].Length];
-                for (int j = 0; j < Coordinates[i].Length; j++){
-                    Coordinates[i][j] = new WktPoint(coordinates[i][j]);
+                temp[i] = new WktPoint[coordinates[i].Length];
+                for (int j = 0; j < temp[i].Length; j++){
+                    temp[i][j] = new WktPoint(coordinates[i][j]);
                 }
             }
+
+            Coordinates = temp;
+
         }
 
         #endregion
@@ -135,11 +144,11 @@ namespace Skybrud.Essentials.Maps.Wkt {
 
             sb.Append("POLYGON");
 
-            if (formatting != WktFormatting.Minified || Outer.Length == 0) {
+            if (formatting != WktFormatting.Minified || Outer.Count == 0) {
                 sb.Append(" ");
             }
 
-            sb.Append(Outer.Length == 0 ? "EMPTY" : ToString(this, formatting, 0));
+            sb.Append(Outer.Count == 0 ? "EMPTY" : ToString(this, formatting, 0));
 
             return sb.ToString();
 

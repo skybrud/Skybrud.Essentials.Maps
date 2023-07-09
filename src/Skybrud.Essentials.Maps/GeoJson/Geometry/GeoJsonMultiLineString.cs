@@ -16,7 +16,7 @@ namespace Skybrud.Essentials.Maps.GeoJson.Geometry {
     /// Class representing a GeoJSON <strong>MultiLineString</strong> geometry.
     /// </summary>
     [JsonConverter(typeof(GeoJsonConverter))]
-    public class GeoJsonMultiLineString : GeoJsonGeometry, IGeoJsonLine, IEnumerable<GeoJsonLineString> {
+    public class GeoJsonMultiLineString : GeoJsonGeometry, IGeoJsonLine, IReadOnlyList<GeoJsonLineString> {
 
         private readonly List<GeoJsonLineString> _lineStrings;
 
@@ -32,7 +32,7 @@ namespace Skybrud.Essentials.Maps.GeoJson.Geometry {
         /// </summary>
         /// <param name="index">The zero-based index of the point to retrieve.</param>
         /// <returns>The <see cref="GeoJsonLineString"/> at the specified <paramref name="index"/>.</returns>
-        public GeoJsonLineString this[int index] => _lineStrings.ElementAt(index);
+        public GeoJsonLineString this[int index] => _lineStrings[index];
 
         #endregion
 

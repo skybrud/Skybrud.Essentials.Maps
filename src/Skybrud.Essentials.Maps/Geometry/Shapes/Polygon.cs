@@ -19,12 +19,12 @@ namespace Skybrud.Essentials.Maps.Geometry.Shapes {
         /// <summary>
         /// Gets the array of points making up the outer polygon.
         /// </summary>
-        public IPoint[] Outer => _outer.ToArray();
+        public IReadOnlyList<IPoint> Outer => _outer.ToArray();
 
         /// <summary>
         /// Gets the array of points making up any inner polygons.
         /// </summary>
-        public IPoint[][] Inner => _inner.ToArray();
+        public IReadOnlyList<IReadOnlyList<IPoint>> Inner => _inner.ToArray();
 
         #endregion
 
@@ -168,7 +168,7 @@ namespace Skybrud.Essentials.Maps.Geometry.Shapes {
         public bool Contains(IPoint point) {
             bool contains = MapsUtils.Contains(Outer, point);
             if (contains == false) return false;
-            return Inner.Length == 0 || Inner.Any(x => MapsUtils.Contains(x, point) == false);
+            return Inner.Count == 0 || Inner.Any(x => MapsUtils.Contains(x, point) == false);
         }
 
         /// <summary>

@@ -41,9 +41,9 @@
   </ItemGroup>
 
   <!-- Generate XML documentation -->
-  <PropertyGroup>
+  <!--<PropertyGroup>
     <DocumentationFile>bin\$(ConfigurationName)\$(TargetFramework)\Skybrud.Essentials.Maps.xml</DocumentationFile>
-  </PropertyGroup>
+  </PropertyGroup>-->
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent" Condition="'$(ConfigurationName)'=='Release' AND '$(BuildTools)'=='1' AND '$(TargetFramework)'=='net47'">
     <Exec Command="&quot;$(ProjectDir)..\build\Skybrud.BuildTools.Tasks.exe&quot; &quot;postBuild&quot; &quot;$(ConfigurationName)&quot; &quot;$(ProjectPath)&quot; &quot;$(TargetPath)&quot;" />

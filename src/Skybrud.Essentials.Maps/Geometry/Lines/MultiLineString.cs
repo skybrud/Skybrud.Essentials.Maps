@@ -13,6 +13,22 @@ namespace Skybrud.Essentials.Maps.Geometry.Lines {
 
         private readonly List<ILineString> _lineStrings;
 
+        #region Properties
+
+        /// <summary>
+        /// Gets the number of <see cref="ILineString"/> in this multi line string.
+        /// </summary>
+        public int Count => _lineStrings.Count;
+
+        /// <summary>
+        /// Gets the <see cref="ILineString"/> at the specified <paramref name="index"/>.
+        /// </summary>
+        /// <param name="index">The index.</param>
+        /// <returns>The <see cref="ILineString"/> at the specified index.</returns>
+        public ILineString this[int index] => _lineStrings[index];
+
+        #endregion
+
         #region Constructors
 
         /// <summary>

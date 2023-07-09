@@ -1,4 +1,6 @@
-﻿namespace Skybrud.Essentials.Maps.Geometry.Lines {
+﻿using System.Collections.Generic;
+
+namespace Skybrud.Essentials.Maps.Geometry.Lines {
 
     /// <summary>
     /// Interface representing a line string (also referred to as a polyline).
@@ -11,7 +13,7 @@
         /// <summary>
         /// Gets the array of points making up the line string.
         /// </summary>
-        IPoint[] Points { get; }
+        IReadOnlyList<IPoint> Points { get; }
 
     }
 

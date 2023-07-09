@@ -150,7 +150,7 @@ namespace Skybrud.Essentials.Maps {
         /// <param name="points">The points making up the line.</param>
         /// <returns>The length in metres.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="points"/> is <c>null</c>.</exception>
-        public static double GetLength(List<IPoint> points) {
+        public static double GetLength(IReadOnlyList<IPoint> points) {
 
             if (points == null) throw new ArgumentNullException(nameof(points));
 
@@ -320,7 +320,7 @@ namespace Skybrud.Essentials.Maps {
 
             double distance = GetLength(line.Points) / 2d;
 
-            for (int i = 1; i < line.Points.Length; i++) {
+            for (int i = 1; i < line.Points.Count; i++) {
 
                 IPoint a = line.Points[i - 1];
                 IPoint b = line.Points[i];
@@ -442,9 +442,9 @@ namespace Skybrud.Essentials.Maps {
         /// <param name="polygon">The polygon.</param>
         /// <returns>A two-dimensional array of <see cref="IPoint"/>.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="polygon"/> is <c>null</c>.</exception>
-        public static IPoint[][] GetCoordinates(IPolygon polygon) {
+        public static IReadOnlyList<IReadOnlyList<IPoint>> GetCoordinates(IPolygon polygon) {
             if (polygon == null) throw new ArgumentNullException(nameof(polygon));
-            List<IPoint[]> temp = new() { polygon.Outer };
+            List<IReadOnlyList<IPoint>> temp = new() { polygon.Outer };
             temp.AddRange(polygon.Inner);
             return temp.ToArray();
         }

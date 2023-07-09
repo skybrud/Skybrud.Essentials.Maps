@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json;
@@ -13,7 +14,7 @@ namespace Skybrud.Essentials.Maps.GeoJson {
     /// Class representing a list of properties of a <see cref="GeoJsonFeature"/>.
     /// </summary>
     [JsonConverter(typeof(GeoJsonReadConverter))]
-    public class GeoJsonProperties {
+    public class GeoJsonProperties : IEnumerable<KeyValuePair<string, object>> {
 
         #region Properties
 
@@ -129,6 +130,18 @@ namespace Skybrud.Essentials.Maps.GeoJson {
         /// <param name="json">The JSON object.</param>
         protected GeoJsonProperties(JObject json) {
             Properties = json?.ToObject<Dictionary<string, object>>() ?? new Dictionary<string, object>();
+        }
+
+        #endregion
+
+        #region Member methods
+
+        public IEnumerator<KeyValuePair<string, object>> GetEnumerator() {
+            return Properties.GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator() {
+            return GetEnumerator();
         }
 
         #endregion

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Skybrud.Essentials.Maps.Geometry;
 using Skybrud.Essentials.Maps.Geometry.Shapes;
@@ -50,14 +51,14 @@ namespace Skybrud.Essentials.Maps.Wkt {
         /// <param name="coordinates">The coordinates to be converted.</param>
         /// <returns>A two-dimensional array of <see cref="WktPoint"/>.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="coordinates"/> is <c>null</c>.</exception>
-        public static WktPoint[][] ToWkt(IPoint[][] coordinates) {
+        public static WktPoint[][] ToWkt(IReadOnlyList<IReadOnlyList<IPoint>> coordinates) {
 
             if (coordinates == null) throw new ArgumentNullException(nameof(coordinates));
 
-            WktPoint[][] temp = new WktPoint[coordinates.Length][];
+            WktPoint[][] temp = new WktPoint[coordinates.Count][];
 
-            for (int i = 0; i < coordinates.Length; i++) {
-                temp[i] = new WktPoint[coordinates[i].Length];
+            for (int i = 0; i < coordinates.Count; i++) {
+                temp[i] = new WktPoint[coordinates[i].Count];
                 for (int j = 0; j < temp[i].Length; j++) {
                     temp[i][j] = new WktPoint(coordinates[i][j]);
                 }
@@ -89,7 +90,7 @@ namespace Skybrud.Essentials.Maps.Wkt {
             double area = MapsUtils.GetArea(polygon.Outer.Select(x => new Point(x.Y, x.X)));
 
             // Substract the area of the inner points
-            foreach (WktPoint[] inner in polygon.Inner) {
+            foreach (IReadOnlyList<WktPoint> inner in polygon.Inner) {
                 area -= MapsUtils.GetArea(inner.Select(x => new Point(x.Y, x.X)));
             }
 

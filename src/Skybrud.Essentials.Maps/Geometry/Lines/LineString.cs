@@ -17,7 +17,7 @@ namespace Skybrud.Essentials.Maps.Geometry.Lines {
         /// <summary>
         /// Gets the array of points making up the line string.
         /// </summary>
-        public IPoint[] Points => _points.ToArray();
+        public IReadOnlyList<IPoint> Points => _points.ToArray();
 
         #endregion
 

@@ -15,7 +15,7 @@ namespace Skybrud.Essentials.Maps.GeoJson.Geometry {
     /// Class representing a GeoJSON <strong>MultiPolygon</strong> geometry.
     /// </summary>
     [JsonConverter(typeof(GeoJsonConverter))]
-    public class GeoJsonMultiPolygon : GeoJsonGeometry, IGeoJsonShape, IEnumerable<GeoJsonPolygon> {
+    public class GeoJsonMultiPolygon : GeoJsonGeometry, IGeoJsonShape, IReadOnlyList<GeoJsonPolygon> {
 
         private readonly List<GeoJsonPolygon> _polygons;
 
@@ -31,7 +31,7 @@ namespace Skybrud.Essentials.Maps.GeoJson.Geometry {
         /// </summary>
         /// <param name="index">The zero-based index of the point to retrieve.</param>
         /// <returns>The <see cref="GeoJsonLineString"/> at the specified <paramref name="index"/>.</returns>
-        public GeoJsonPolygon this[int index] => _polygons.ElementAt(index);
+        public GeoJsonPolygon this[int index] => _polygons[index];
 
         /// <summary>
         /// Returns a four-dimensional array representing the coordinates of the <strong>MultiPolygon</strong>.
