@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -12,9 +13,21 @@ namespace Skybrud.Essentials.Maps.GeoJson.Geometry {
     /// <summary>
     /// Class representing a collection of other GeoJSON geometries.
     /// </summary>
-    public class GeoJsonGeometryCollection : GeoJsonGeometry {
+    public class GeoJsonGeometryCollection : GeoJsonGeometry, IReadOnlyList<GeoJsonGeometry> {
 
         #region Properties
+
+        /// <summary>
+        /// Gets the number of geometries in this line string.
+        /// </summary>
+        public int Count => Geometries.Count;
+
+        /// <summary>
+        /// Gets the <see cref="GeoJsonGeometry"/> at the specified <paramref name="index"/>.
+        /// </summary>
+        /// <param name="index">The index.</param>
+        /// <returns>The <see cref="GeoJsonGeometry"/> at the specified index.</returns>
+        public GeoJsonGeometry this[int index] => Geometries[index];
 
         /// <summary>
         /// Gets or sets the list of geometries in this collection.
@@ -52,6 +65,14 @@ namespace Skybrud.Essentials.Maps.GeoJson.Geometry {
         #endregion
 
         #region Member methods
+
+        public IEnumerator<GeoJsonGeometry> GetEnumerator() {
+            return Geometries.GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator() {
+            return GetEnumerator();
+        }
 
         /// <inheritdoc />
         public override IGeometry ToGeometry() {
