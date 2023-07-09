@@ -1,3 +1,4 @@
+using System;
 using System.Xml;
 using System.Xml.Linq;
 
@@ -32,7 +33,7 @@ namespace Skybrud.Essentials.Maps.Kml.Styles {
             Outline = true;
         }
 
-        protected KmlPolyStyle(XElement xml, XmlNamespaceManager namespaces) : base(xml, namespaces) {
+        protected KmlPolyStyle(XElement xml, IXmlNamespaceResolver namespaces) : base(xml, namespaces) {
             Fill = GetBoolean(xml, "kml:fill", namespaces, true);
             Outline = GetBoolean(xml, "kml:outline", namespaces, true);
         }
@@ -52,8 +53,14 @@ namespace Skybrud.Essentials.Maps.Kml.Styles {
 
         #region Static methods
 
-        public static KmlPolyStyle Parse(XElement xml, XmlNamespaceManager namespaces) {
-            return xml == null ? null : new KmlPolyStyle(xml, namespaces);
+        public static KmlPolyStyle Parse(XElement xml) {
+            if (xml is null) throw new ArgumentNullException(nameof(xml));
+            return new KmlPolyStyle(xml, Namespaces);
+        }
+
+        public static KmlPolyStyle Parse(XElement xml, IXmlNamespaceResolver? namespaces) {
+            if (xml is null) throw new ArgumentNullException(nameof(xml));
+            return new KmlPolyStyle(xml, namespaces ?? Namespaces);
         }
 
         #endregion

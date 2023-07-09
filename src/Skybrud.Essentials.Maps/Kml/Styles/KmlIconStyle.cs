@@ -2,7 +2,6 @@
 using System.Globalization;
 using System.Xml;
 using System.Xml.Linq;
-using Skybrud.Essentials.Maps.Kml.Extensions;
 using Skybrud.Essentials.Maps.Kml.Features;
 using Skybrud.Essentials.Xml.Extensions;
 
@@ -31,7 +30,7 @@ namespace Skybrud.Essentials.Maps.Kml.Styles {
         /// <summary>
         /// Gets or sets a custom icon.
         /// </summary>
-        public KmlIcon Icon { get; set; }
+        public KmlIcon? Icon { get; set; } // TODO: Should this property be nullable?
 
         #endregion
 
@@ -41,9 +40,9 @@ namespace Skybrud.Essentials.Maps.Kml.Styles {
             Scale = 1;
         }
 
-        protected KmlIconStyle(XElement xml, XmlNamespaceManager namespaces) : base(xml, namespaces) {
+        protected KmlIconStyle(XElement xml, IXmlNamespaceResolver namespaces) : base(xml, namespaces) {
             Scale = GetFloat(xml, "kml:scale", namespaces, 1);
-            Icon = xml.GetElement("kml:Icon", namespaces, KmlIcon.Parse);
+            Icon = xml.GetElement("kml:Icon", namespaces, x => KmlIcon.Parse(x, namespaces));
         }
 
         #endregion
@@ -54,9 +53,9 @@ namespace Skybrud.Essentials.Maps.Kml.Styles {
 
             XElement xml = base.ToXElement();
 
-            if (Math.Abs(Scale) > Single.Epsilon) xml.Add(NewXElement("scale", Scale.ToString(CultureInfo.InvariantCulture)));
+            if (Math.Abs(Scale) > float.Epsilon) xml.Add(NewXElement("scale", Scale.ToString(CultureInfo.InvariantCulture)));
             if (Heading != 0) xml.Add(NewXElement("heading", Heading));
-            if (Icon.HasValue()) xml.Add(Icon.ToXElement());
+            if (Icon is not null) xml.Add(Icon.ToXElement());
 
             return xml;
 
@@ -66,8 +65,14 @@ namespace Skybrud.Essentials.Maps.Kml.Styles {
 
         #region Static methods
 
-        public static KmlIconStyle Parse(XElement xml, XmlNamespaceManager namespaces) {
-            return xml == null ? null : new KmlIconStyle(xml, namespaces);
+        public static KmlIconStyle Parse(XElement xml) {
+            if (xml is null) throw new ArgumentNullException(nameof(xml));
+            return new KmlIconStyle(xml, Namespaces);
+        }
+
+        public static KmlIconStyle Parse(XElement xml, IXmlNamespaceResolver? namespaces) {
+            if (xml is null) throw new ArgumentNullException(nameof(xml));
+            return new KmlIconStyle(xml, namespaces ?? Namespaces);
         }
 
         #endregion

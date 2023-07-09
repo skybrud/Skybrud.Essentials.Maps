@@ -15,9 +15,9 @@ namespace Skybrud.Essentials.Maps.Kml.Styles {
 
         public int Count => Pairs.Count;
 
-        public KmlStyleMapPair Normal => Pairs.FirstOrDefault(x => x.Key == "normal");
+        public KmlStyleMapPair? Normal => Pairs.FirstOrDefault(x => x.Key == "normal");
 
-        public KmlStyleMapPair Highlight => Pairs.FirstOrDefault(x => x.Key == "highlight");
+        public KmlStyleMapPair? Highlight => Pairs.FirstOrDefault(x => x.Key == "highlight");
 
         #endregion
 
@@ -33,7 +33,7 @@ namespace Skybrud.Essentials.Maps.Kml.Styles {
         /// </summary>
         /// <param name="pairs">An array of <see cref="KmlStyleMapPair"/>.</param>
         public KmlStyleMap(params KmlStyleMapPair[] pairs) {
-            Pairs = pairs?.ToList() ?? new List<KmlStyleMapPair>();
+            Pairs = pairs.ToList();
         }
 
         /// <summary>
@@ -41,10 +41,10 @@ namespace Skybrud.Essentials.Maps.Kml.Styles {
         /// </summary>
         /// <param name="pairs">A collection of <see cref="KmlStyleMapPair"/>.</param>
         public KmlStyleMap(IEnumerable<KmlStyleMapPair> pairs) {
-            Pairs = pairs?.ToList() ?? new List<KmlStyleMapPair>();
+            Pairs = pairs.ToList();
         }
 
-        protected KmlStyleMap(XElement xml, XmlNamespaceManager namespaces) : base(xml, namespaces) {
+        protected KmlStyleMap(XElement xml, IXmlNamespaceResolver namespaces) : base(xml, namespaces) {
             Pairs = xml.GetElements("kml:Pair", namespaces, KmlStyleMapPair.Parse).ToList();
         }
 
@@ -89,11 +89,11 @@ namespace Skybrud.Essentials.Maps.Kml.Styles {
         #region Static methods
 
         public static new KmlStyleMap Parse(XElement xml) {
-            return xml == null ? null : new KmlStyleMap(xml, Namespaces);
+            return new KmlStyleMap(xml, Namespaces);
         }
 
-        public static new KmlStyleMap Parse(XElement xml, XmlNamespaceManager namespaces) {
-            return xml == null ? null : new KmlStyleMap(xml, namespaces);
+        public static new KmlStyleMap Parse(XElement xml, IXmlNamespaceResolver? namespaces) {
+            return new KmlStyleMap(xml, namespaces ?? Namespaces);
         }
 
         #endregion

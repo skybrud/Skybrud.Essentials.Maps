@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Skybrud.Essentials.Collections;
+using Skybrud.Essentials.Common;
 using Skybrud.Essentials.Maps.GeoJson;
 using Skybrud.Essentials.Maps.GeoJson.Features;
 using Skybrud.Essentials.Maps.GeoJson.Geometry;
@@ -17,8 +17,8 @@ namespace Skybrud.Essentials.Maps.Converters {
     public class KmlToGeoJsonConverter {
 
         public virtual GeoJsonFeatureCollection[] Convert(KmlFile kml) {
-            if (kml.Feature == null) return ArrayUtils.Empty<GeoJsonFeatureCollection>();
             return kml.Feature switch {
+                null => throw new PropertyNotSetException(nameof(kml.Feature)),
                 KmlDocument document => ConvertDocument(document),
                 KmlPlacemark placemark => new[] { new GeoJsonFeatureCollection(ConvertPlacemark(placemark)), },
                 _ => throw new KmlException("Unsupported feature " + kml.Feature.GetType())
@@ -29,7 +29,7 @@ namespace Skybrud.Essentials.Maps.Converters {
             return ConvertDocument(document, default);
         }
 
-        protected virtual GeoJsonFeatureCollection[] ConvertDocument(KmlDocument document, IStyleProvider provider) {
+        protected virtual GeoJsonFeatureCollection[] ConvertDocument(KmlDocument document, IStyleProvider? provider) {
 
             // Use the style provider of the document if not explicitly specified
             provider ??= document.StyleSelectors;
@@ -39,7 +39,7 @@ namespace Skybrud.Essentials.Maps.Converters {
 
             if (document.Features.Any(x => x is KmlFolder)) {
 
-                GeoJsonFeatureCollection defaultCollection = null;
+                GeoJsonFeatureCollection? defaultCollection = null;
 
                 foreach (KmlFeature feature in document.Features) {
 
@@ -103,7 +103,7 @@ namespace Skybrud.Essentials.Maps.Converters {
             return ConvertFeature(feature, null);
         }
 
-        public virtual GeoJsonObject ConvertFeature(KmlFeature feature, IStyleProvider provider) {
+        public virtual GeoJsonObject ConvertFeature(KmlFeature feature, IStyleProvider? provider) {
             return feature switch {
                 KmlDocument => throw new NotImplementedException(),
                 //return ConvertDocument(document, provider ?? document.StyleSelectors);
@@ -113,7 +113,7 @@ namespace Skybrud.Essentials.Maps.Converters {
             };
         }
 
-        public virtual GeoJsonFeatureCollection ConvertFolder(KmlFolder folder, IStyleProvider provider) {
+        public virtual GeoJsonFeatureCollection ConvertFolder(KmlFolder folder, IStyleProvider? provider) {
 
             GeoJsonFeatureCollection collection = new();
 
@@ -125,7 +125,7 @@ namespace Skybrud.Essentials.Maps.Converters {
 
         }
 
-        protected virtual void ConvertFolder(KmlFolder folder, GeoJsonFeatureCollection collection, KmlFeature feature, IStyleProvider provider) {
+        protected virtual void ConvertFolder(KmlFolder folder, GeoJsonFeatureCollection collection, KmlFeature feature, IStyleProvider? provider) {
 
             switch (feature) {
 
@@ -152,29 +152,30 @@ namespace Skybrud.Essentials.Maps.Converters {
             return ConvertPlacemark(placemark, default);
         }
 
-        public virtual GeoJsonFeature ConvertPlacemark(KmlPlacemark placemark, IStyleProvider provider) {
+        public virtual GeoJsonFeature ConvertPlacemark(KmlPlacemark placemark, IStyleProvider? provider) {
+
+            // Initialize a new GeoJSON geometry from the corresponding KML geometry
+            GeoJsonGeometry geometry = placemark.Geometry switch {
+                KmlPoint point => Convert(point),
+                KmlLineString lineString => Convert(lineString),
+                KmlPolygon polygon => Convert(polygon),
+                _ => throw new KmlException($"Geometry type '{placemark.Geometry.GetType()}' not supported")
+            };
 
             // Initialize a new feature
-            GeoJsonFeature feature = new();
+            GeoJsonFeature feature = new(geometry);
 
             // Convert the name and description
             if (placemark.Name.HasValue()) feature.Properties.Name = placemark.Name;
             if (placemark.Description.HasValue()) feature.Properties.Description = placemark.Description;
 
-            feature.Geometry = placemark.Geometry switch {
-                KmlPoint point => Convert(point),
-                KmlLineString lineString => Convert(lineString),
-                KmlPolygon polygon => Convert(polygon),
-                _ => throw new KmlException($"Geometry type {placemark.Geometry.GetType()} not supported")
-            };
-
             if (string.IsNullOrWhiteSpace(placemark.StyleUrl) == false && provider != null) {
-                if (provider.TryGetStyleMapById(placemark.StyleUrl.Substring(1), out KmlStyleMap styleMap)) {
-                    if (styleMap.Normal != null && provider.TryGetStyleById(styleMap.Normal.StyleUrl.Substring(1), out KmlStyle style)) {
+                if (provider.TryGetStyleMapById(placemark.StyleUrl!.Substring(1), out KmlStyleMap? styleMap)) {
+                    if (styleMap.Normal != null && provider.TryGetStyleById(styleMap.Normal.StyleUrl.Substring(1), out KmlStyle? style)) {
                         ConvertProperties(style, feature.Properties);
                     }
                 } else {
-                    if (provider.TryGetStyleById(placemark.StyleUrl.Substring(1), out KmlStyle style)) {
+                    if (provider.TryGetStyleById(placemark.StyleUrl.Substring(1), out KmlStyle? style)) {
                         ConvertProperties(style, feature.Properties);
                     }
                 }
@@ -184,19 +185,19 @@ namespace Skybrud.Essentials.Maps.Converters {
 
         }
 
-        protected virtual void ConvertProperties(KmlStyle style, GeoJsonProperties properties) {
+        protected virtual void ConvertProperties(KmlStyle? style, GeoJsonProperties properties) {
             if (style == null) return;
             ConvertProperties(style.IconStyle, properties);
             ConvertProperties(style.LineStyle, properties);
             ConvertProperties(style.PolyStyle, properties);
         }
 
-        protected virtual void ConvertProperties(KmlIconStyle style, GeoJsonProperties properties) {
+        protected virtual void ConvertProperties(KmlIconStyle? style, GeoJsonProperties properties) {
 
             if (style == null) return;
 
             if (string.IsNullOrWhiteSpace(style.Icon?.Href) == false) {
-                properties.MarkerSymbol = style.Icon.Href;
+                properties.MarkerSymbol = style.Icon!.Href;
             }
 
             if (style.Scale > 0) properties.MarkerSize = style.Scale.ToString("N2");
@@ -205,11 +206,11 @@ namespace Skybrud.Essentials.Maps.Converters {
 
         }
 
-        protected virtual void ConvertProperties(KmlLineStyle style, GeoJsonProperties properties) {
+        protected virtual void ConvertProperties(KmlLineStyle? style, GeoJsonProperties properties) {
 
             if (style == null) return;
 
-            if (style.Color.HasValue() && KmlUtils.TryParseHexColor(style.Color, out byte r, out byte g, out byte b, out float a)) {
+            if (!string.IsNullOrWhiteSpace(style.Color) && KmlUtils.TryParseHexColor(style.Color!, out byte r, out byte g, out byte b, out float a)) {
                 properties.Stroke = "#" + KmlUtils.RgbToHex(r, g, b);
                 properties.StrokeOpacity = (float) Math.Round(a, 2);
             }
@@ -220,11 +221,11 @@ namespace Skybrud.Essentials.Maps.Converters {
 
         }
 
-        protected virtual void ConvertProperties(KmlPolyStyle style, GeoJsonProperties properties) {
+        protected virtual void ConvertProperties(KmlPolyStyle? style, GeoJsonProperties properties) {
 
             if (style == null) return;
 
-            if (style.Color.HasValue() && KmlUtils.TryParseHexColor(style.Color, out byte r, out byte g, out byte b, out float a)) {
+            if (!string.IsNullOrWhiteSpace(style.Color) && KmlUtils.TryParseHexColor(style.Color!, out byte r, out byte g, out byte b, out float a)) {
                 properties.Fill = "#" + KmlUtils.RgbToHex(r, g, b);
                 properties.FillOpacity = (float) Math.Round(a, 2);
             }
@@ -260,13 +261,11 @@ namespace Skybrud.Essentials.Maps.Converters {
                 array[0][i] = c.HasAltitude ? new [] { c.Longitude, c.Latitude, c.Altitude } : new [] { c.Longitude, c.Latitude };
             }
 
-            if (polygon.InnerBoundaries != null) {
-                for (int j = 0; j < polygon.InnerBoundaries.Count; j++) {
-                    array[j + 1] = new double[polygon.InnerBoundaries[j].LinearRing.Coordinates.Count][];
-                    for (int k = 0; k < polygon.InnerBoundaries[j].LinearRing.Coordinates.Count; k++) {
-                        KmlPointCoordinates c = polygon.InnerBoundaries[j].LinearRing.Coordinates[k];
-                        array[j + 1][k] = c.HasAltitude ? new[] { c.Longitude, c.Latitude, c.Altitude } : new[] { c.Longitude, c.Latitude };
-                    }
+            for (int j = 0; j < polygon.InnerBoundaries.Count; j++) {
+                array[j + 1] = new double[polygon.InnerBoundaries[j].LinearRing.Coordinates.Count][];
+                for (int k = 0; k < polygon.InnerBoundaries[j].LinearRing.Coordinates.Count; k++) {
+                    KmlPointCoordinates c = polygon.InnerBoundaries[j].LinearRing.Coordinates[k];
+                    array[j + 1][k] = c.HasAltitude ? new[] { c.Longitude, c.Latitude, c.Altitude } : new[] { c.Longitude, c.Latitude };
                 }
             }
 

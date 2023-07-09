@@ -1,6 +1,4 @@
-﻿using System.Xml;
-using System.Xml.Linq;
-using Skybrud.Essentials.Strings.Extensions;
+﻿using System.Xml.Linq;
 using Skybrud.Essentials.Xml.Extensions;
 
 namespace Skybrud.Essentials.Maps.Kml.Geometry {
@@ -15,7 +13,7 @@ namespace Skybrud.Essentials.Maps.Kml.Geometry {
         /// <summary>
         /// Get or sets the ID of the geometry.
         /// </summary>
-        public string Id { get; set; }
+        public string? Id { get; set; }
 
         #endregion
 
@@ -30,8 +28,7 @@ namespace Skybrud.Essentials.Maps.Kml.Geometry {
         /// Initializes a new KML <c>&lt;Geometry&gt;</c> element.
         /// </summary>
         /// <param name="xml">The XML element the document should be based on.</param>
-        /// <param name="namespaces">The XML namespace.</param>
-        protected KmlGeometry(XElement xml, XmlNamespaceManager namespaces) {
+        protected KmlGeometry(XElement xml) {
             Id = xml.GetAttributeValue("id");
         }
 
@@ -44,7 +41,7 @@ namespace Skybrud.Essentials.Maps.Kml.Geometry {
 
             XElement xml = base.ToXElement();
 
-            if (Id.HasValue()) xml.Add(new XAttribute("id", Id));
+            if (!string.IsNullOrWhiteSpace(Id)) xml.Add(new XAttribute("id", Id!));
 
             return xml;
 

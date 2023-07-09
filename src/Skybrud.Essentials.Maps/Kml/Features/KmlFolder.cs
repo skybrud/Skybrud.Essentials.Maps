@@ -42,7 +42,7 @@ namespace Skybrud.Essentials.Maps.Kml.Features {
         /// </summary>
         /// <param name="xml">The XML element the folder should be based on.</param>
         /// <param name="namespaces">The XML namespace.</param>
-        protected KmlFolder(XElement xml, XmlNamespaceManager namespaces) {
+        protected KmlFolder(XElement xml, IXmlNamespaceResolver namespaces) {
             Id = xml.GetAttributeValue("id");
             Name = xml.GetElementValue("kml:name", namespaces);
             Features = xml.GetElements("kml:Placemark", namespaces, KmlPlacemark.Parse);
@@ -72,8 +72,8 @@ namespace Skybrud.Essentials.Maps.Kml.Features {
 
         }
 
-        public static KmlFolder Parse(XElement xml, XmlNamespaceManager namespaces) {
-            return new KmlFolder(xml, namespaces);
+        public static KmlFolder Parse(XElement xml, IXmlNamespaceResolver? namespaces) {
+            return new KmlFolder(xml, namespaces ?? Namespaces);
         }
 
     }

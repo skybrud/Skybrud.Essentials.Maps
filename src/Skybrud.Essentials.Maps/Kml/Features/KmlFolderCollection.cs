@@ -37,9 +37,9 @@ namespace Skybrud.Essentials.Maps.Kml.Features {
         /// Initializes a new KML <c>&lt;FolderCollection&gt;</c> element containing the specified <paramref name="folders"/>.
         /// </summary>
         /// <param name="folders">An array of folders to add to the folder collection.</param>
-        public KmlFolderCollection(IEnumerable<KmlFolder> folders) {
+        public KmlFolderCollection(IEnumerable<KmlFolder>? folders) {
             _folders = folders?.ToList() ?? new List<KmlFolder>();
-            _lookup = _folders.Where(x => string.IsNullOrWhiteSpace(x.Id) == false).ToDictionary(x => x.Id);
+            _lookup = _folders.Where(x => string.IsNullOrWhiteSpace(x.Id) == false).ToDictionary(x => x.Id!);
         }
 
         #endregion
@@ -54,7 +54,7 @@ namespace Skybrud.Essentials.Maps.Kml.Features {
             if (folder == null) throw new ArgumentNullException(nameof(folder));
             _folders.Add(folder);
             if (string.IsNullOrWhiteSpace(folder.Id)) return;
-            _lookup[folder.Id] = folder;
+            _lookup[folder.Id!] = folder;
         }
 
         /// <summary>

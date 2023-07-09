@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Xml;
 using System.Xml.Linq;
-using Skybrud.Essentials.Maps.Kml.Extensions;
 using Skybrud.Essentials.Maps.Kml.Geometry;
 using Skybrud.Essentials.Maps.Kml.Styles;
 using Skybrud.Essentials.Xml.Extensions;
@@ -18,12 +18,13 @@ namespace Skybrud.Essentials.Maps.Kml.Features {
         /// <summary>
         /// Gets or sets the <c>&lt;NetworkLink&gt;</c> element of the document.
         /// </summary>
-        public KmlNetworkLink NetworkLink { get; set; }
+        public KmlNetworkLink? NetworkLink { get; set; }
 
         /// <summary>
         /// Gets whether the document has a <c>&lt;NetworkLink&gt;</c> element.
         /// </summary>
-        public bool HasNetworkLink => NetworkLink != null;
+        [MemberNotNullWhen(true, "NetworkLink")]
+        public bool HasNetworkLink => NetworkLink is not null;
 
         /// <summary>
         /// Gets the style collection of the document.
@@ -53,7 +54,7 @@ namespace Skybrud.Essentials.Maps.Kml.Features {
         /// <param name="features">An array of features to add to the document.</param>
         public KmlDocument(params KmlFeature[] features) {
             StyleSelectors = new KmlStyleSelectorCollection();
-            Features = features ?? new KmlFeatureCollection();
+            Features = features;
         }
 
         /// <summary>
@@ -61,9 +62,9 @@ namespace Skybrud.Essentials.Maps.Kml.Features {
         /// </summary>
         /// <param name="xml">The XML element the document should be based on.</param>
         /// <param name="namespaces">The XML namespace.</param>
-        protected KmlDocument(XElement xml, XmlNamespaceManager namespaces) : base(xml, namespaces) {
+        protected KmlDocument(XElement xml, IXmlNamespaceResolver namespaces) : base(xml, namespaces) {
 
-            NetworkLink = xml.GetElement("kml:NetworkLink", namespaces, KmlNetworkLink.Parse);
+            NetworkLink = xml.GetElement("kml:NetworkLink", namespaces, x => KmlNetworkLink.Parse(x, namespaces));
 
             List<KmlStyleSelector> selectors = new();
 
@@ -82,7 +83,7 @@ namespace Skybrud.Essentials.Maps.Kml.Features {
                         break;
 
                     case "Document":
-                        features.Add(KmlDocument.Parse(child, namespaces));
+                        features.Add(Parse(child, namespaces));
                         break;
 
                     case "Folder":
@@ -121,20 +122,16 @@ namespace Skybrud.Essentials.Maps.Kml.Features {
 
             XElement xml = base.ToXElement();
 
-            if (NetworkLink.HasValue()) {
+            if (NetworkLink is not null) {
                 xml.Add(NetworkLink.ToXElement());
             }
 
-            if (StyleSelectors != null) {
-                foreach (KmlStyleSelector selector in StyleSelectors) {
-                    xml.Add(selector.ToXElement());
-                }
+            foreach (KmlStyleSelector selector in StyleSelectors) {
+                xml.Add(selector.ToXElement());
             }
 
-            if (Features != null) {
-                foreach (KmlFeature feature in Features) {
-                    xml.Add(feature.ToXElement());
-                }
+            foreach (KmlFeature feature in Features) {
+                xml.Add(feature.ToXElement());
             }
 
             return xml;
@@ -160,8 +157,8 @@ namespace Skybrud.Essentials.Maps.Kml.Features {
         /// <param name="xml">The XML element representing the document.</param>
         /// <param name="namespaces">The XML namespace.</param>
         /// <returns>An instance of <see cref="KmlDocument"/>.</returns>
-        public static KmlDocument Parse(XElement xml, XmlNamespaceManager namespaces) {
-            return new KmlDocument(xml, namespaces);
+        public static KmlDocument Parse(XElement xml, IXmlNamespaceResolver? namespaces) {
+            return new KmlDocument(xml, namespaces ?? Namespaces);
         }
 
         #endregion

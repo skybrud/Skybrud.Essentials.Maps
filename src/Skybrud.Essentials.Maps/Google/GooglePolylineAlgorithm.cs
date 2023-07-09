@@ -163,7 +163,7 @@ namespace Skybrud.Essentials.Maps.Google {
 
                 case "Skybrud.Essentials.Maps.Geometry.IPoint":
                 case "Skybrud.Essentials.Maps.Geometry.Point":
-                    return (T) Decode(encodedPoints).FirstOrDefault();
+                    return (T) Decode(encodedPoints).First();
 
                 case "Skybrud.Essentials.Maps.Geometry.Lines.ILineString":
                 case "Skybrud.Essentials.Maps.Geometry.Lines.LineString":

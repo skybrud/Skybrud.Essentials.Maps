@@ -1,8 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Xml;
 using System.Xml.Linq;
 using Skybrud.Essentials.Common;
+using Skybrud.Essentials.Maps.Kml.Exceptions;
 using Skybrud.Essentials.Xml.Extensions;
 
 namespace Skybrud.Essentials.Maps.Kml.Geometry {
@@ -31,14 +33,20 @@ namespace Skybrud.Essentials.Maps.Kml.Geometry {
             InnerBoundaries = new List<KmlPolygonInnerBoundaries>();
         }
 
-        public KmlPolygon(KmlPolygonOuterBoundaries outer, KmlPolygonInnerBoundaries[] inner) {
+        public KmlPolygon(KmlPolygonOuterBoundaries outer) {
+            OuterBoundaries = outer;
+            InnerBoundaries = new List<KmlPolygonInnerBoundaries>();
+        }
+
+        public KmlPolygon(KmlPolygonOuterBoundaries outer, KmlPolygonInnerBoundaries[]? inner) {
             OuterBoundaries = outer;
             InnerBoundaries = inner?.ToList() ?? new List<KmlPolygonInnerBoundaries>();
         }
 
-        protected KmlPolygon(XElement xml, XmlNamespaceManager namespaces) : base(xml, namespaces) {
-            OuterBoundaries = xml.GetElement("kml:outerBoundaryIs", namespaces, KmlPolygonOuterBoundaries.Parse);
+        protected KmlPolygon(XElement xml, IXmlNamespaceResolver namespaces) : base(xml) {
+            OuterBoundaries = xml.GetElement("kml:outerBoundaryIs", namespaces, x => KmlPolygonOuterBoundaries.Parse(x, namespaces))!;
             InnerBoundaries = xml.GetElements("kml:innerBoundaryIs", namespaces, KmlPolygonInnerBoundaries.Parse).ToList();
+            if (OuterBoundaries is null) throw new KmlParseException($"Failed parsing 'kml:outerBoundaryIs' from '{xml.Name}'...");
         }
 
         public override XElement ToXElement() {
@@ -49,10 +57,8 @@ namespace Skybrud.Essentials.Maps.Kml.Geometry {
 
             xml.Add(OuterBoundaries.ToXElement());
 
-            if (InnerBoundaries != null) {
-                foreach (var inner in InnerBoundaries) {
-                    xml.Add(inner.ToXElement());
-                }
+            foreach (KmlPolygonInnerBoundaries inner in InnerBoundaries) {
+                xml.Add(inner.ToXElement());
             }
 
             return xml;
@@ -60,12 +66,13 @@ namespace Skybrud.Essentials.Maps.Kml.Geometry {
         }
 
         public static KmlPolygon Parse(XElement xml) {
-            return xml == null ? null : new KmlPolygon(xml, Namespaces);
-
+            if (xml is null) throw new ArgumentNullException(nameof(xml));
+            return new KmlPolygon(xml, Namespaces);
         }
 
-        public static KmlPolygon Parse(XElement xml, XmlNamespaceManager namespaces) {
-            return xml == null ? null : new KmlPolygon(xml, namespaces);
+        public static KmlPolygon Parse(XElement xml, IXmlNamespaceResolver? namespaces) {
+            if (xml is null) throw new ArgumentNullException(nameof(xml));
+            return new KmlPolygon(xml, namespaces ?? Namespaces);
         }
 
     }

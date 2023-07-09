@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Xml;
 using System.Xml.Linq;
+using Skybrud.Essentials.Maps.Kml.Exceptions;
 using Skybrud.Essentials.Xml.Extensions;
 
 namespace Skybrud.Essentials.Maps.Kml.Styles {
@@ -9,20 +11,33 @@ namespace Skybrud.Essentials.Maps.Kml.Styles {
 
         #region Properties
 
+#if NET7_0_OR_GREATER
+        public required string Href { get; set; }
+#else
         public string Href { get; set; }
+#endif
 
         #endregion
 
         #region Constructors
 
+#if NET7_0_OR_GREATER
         public KmlIcon() { }
+#endif
 
+#if NET7_0_OR_GREATER
+        [SetsRequiredMembers]
+#endif
         public KmlIcon(string href) {
             Href = href;
         }
 
-        protected KmlIcon(XElement xml, XmlNamespaceManager namespaces) {
+#if NET7_0_OR_GREATER
+        [SetsRequiredMembers]
+#endif
+        protected KmlIcon(XElement xml, IXmlNamespaceResolver namespaces) {
             Href = xml.GetElementValue("kml:href", namespaces);
+            if (string.IsNullOrWhiteSpace(Href)) throw new KmlException($"Failed parsing 'kml:href' value from '{xml.Name}'.");
         }
 
         #endregion
@@ -31,7 +46,7 @@ namespace Skybrud.Essentials.Maps.Kml.Styles {
 
         public override XElement ToXElement() {
             XElement xml = NewXElement("Icon");
-            xml.Add(NewXElement("href", Href ?? String.Empty));
+            xml.Add(NewXElement("href", Href));
             return xml;
         }
 
@@ -40,12 +55,14 @@ namespace Skybrud.Essentials.Maps.Kml.Styles {
         #region Static methods
 
         public static KmlIcon Parse(XElement xml) {
+            if (xml is null) throw new ArgumentNullException(nameof(xml));
             return new KmlIcon(xml, Namespaces);
 
         }
 
-        public static KmlIcon Parse(XElement xml, XmlNamespaceManager namespaces) {
-            return new KmlIcon(xml, namespaces);
+        public static KmlIcon Parse(XElement xml, IXmlNamespaceResolver? namespaces) {
+            if (xml is null) throw new ArgumentNullException(nameof(xml));
+            return new KmlIcon(xml, namespaces ?? Namespaces);
         }
 
         #endregion

@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json;
@@ -50,7 +51,7 @@ namespace Skybrud.Essentials.Maps.GeoJson.Geometry {
         /// Initializes a new instance with the specified <paramref name="geometries"/>.
         /// </summary>
         /// <param name="geometries">An array with the geometries the collection should initially be based on.</param>
-        public GeoJsonGeometryCollection(IEnumerable<GeoJsonGeometry> geometries) : base(GeoJsonType.GeometryCollection) {
+        public GeoJsonGeometryCollection(IEnumerable<GeoJsonGeometry>? geometries) : base(GeoJsonType.GeometryCollection) {
             Geometries = geometries?.ToList() ?? new List<GeoJsonGeometry>();
         }
 
@@ -60,6 +61,7 @@ namespace Skybrud.Essentials.Maps.GeoJson.Geometry {
         /// <param name="json">An instance of <see cref="JObject"/> representing the geometry collection.</param>
         protected GeoJsonGeometryCollection(JObject json) : base(GeoJsonType.GeometryCollection) {
             Geometries = json.GetArrayItems("geometries", GeoJsonGeometry.Parse).ToList();
+            if (Geometries is null) throw new GeoJsonParseException("Failed parsing GeoJSON geometries.", json);
         }
 
         #endregion
@@ -89,6 +91,7 @@ namespace Skybrud.Essentials.Maps.GeoJson.Geometry {
         /// <param name="json">The JSON string to be parsed.</param>
         /// <returns>An instance of <see cref="GeoJsonGeometryCollection"/>.</returns>
         public static new GeoJsonGeometryCollection Parse(string json) {
+            if (string.IsNullOrWhiteSpace(json)) throw new ArgumentNullException(nameof(json));
             return JsonUtils.ParseJsonObject(json, Parse);
         }
 
@@ -98,7 +101,8 @@ namespace Skybrud.Essentials.Maps.GeoJson.Geometry {
         /// <param name="json">The instance of <see cref="JObject"/> to be parsed.</param>
         /// <returns>An instance of <see cref="GeoJsonGeometryCollection"/>.</returns>
         public static new GeoJsonGeometryCollection Parse(JObject json) {
-            return json == null ? null : new GeoJsonGeometryCollection(json);
+            if (json is null) throw new ArgumentNullException(nameof(json));
+            return new GeoJsonGeometryCollection(json);
         }
 
         #endregion

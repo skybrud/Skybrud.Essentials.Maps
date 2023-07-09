@@ -1,6 +1,8 @@
-﻿using System.IO;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.IO;
 using System.Xml;
 using System.Xml.Linq;
+using Skybrud.Essentials.Maps.Kml.Exceptions;
 using Skybrud.Essentials.Maps.Kml.Extensions;
 using Skybrud.Essentials.Maps.Kml.Features;
 using Skybrud.Essentials.Xml.Extensions;
@@ -21,15 +23,19 @@ namespace Skybrud.Essentials.Maps.Kml {
 
         #region Properties
 
-        public KmlNetworkLinkControl NetworkLinkControl { get; set; }
+        public KmlNetworkLinkControl? NetworkLinkControl { get; set; }
 
+#if NET7_0_OR_GREATER
+        public required KmlFeature Feature { get; set; }
+# else
         public KmlFeature Feature { get; set; }
+#endif
 
         /// <summary>
         /// Alias of <see cref="Feature"/>, but with the type <see cref="KmlDocument"/>.
         /// </summary>
         public KmlDocument Document {
-            get => Feature as KmlDocument;
+            get => (KmlDocument) Feature;
             set => Feature = value;
         }
 
@@ -37,15 +43,24 @@ namespace Skybrud.Essentials.Maps.Kml {
 
         #region Constructors
 
+#if NET7_0_OR_GREATER
         public KmlFile() { }
+#endif
 
+#if NET7_0_OR_GREATER
+        [SetsRequiredMembers]
+#endif
         public KmlFile(KmlFeature feature) {
             Feature = feature;
         }
 
-        protected KmlFile(XElement xml, XmlNamespaceManager namespaces) {
-            NetworkLinkControl = xml.GetElement("kml:NetworkLinkControl", namespaces, KmlNetworkLinkControl.Parse);
-            Document = xml.GetElement("kml:Document", namespaces, KmlDocument.Parse);
+#if NET7_0_OR_GREATER
+        [SetsRequiredMembers]
+#endif
+        protected KmlFile(XElement xml, IXmlNamespaceResolver namespaces) {
+            NetworkLinkControl = xml.GetElement("kml:NetworkLinkControl", namespaces, x => KmlNetworkLinkControl.Parse(x, namespaces));
+            Feature = xml.GetElement("kml:Document", namespaces, x => KmlDocument.Parse(x, namespaces))!;
+            if (Feature is null) throw new KmlParseException($"Failed parsing 'kml:Document' from '{xml.Name}'...");
         }
 
         #endregion
@@ -56,13 +71,14 @@ namespace Skybrud.Essentials.Maps.Kml {
             ParseInternal(XElement.Parse(xml), Namespaces);
         }
 
-        protected void ParseInternal(XElement xml, XmlNamespaceManager namespaces) {
-            Document = xml.GetElement("kml:Document", namespaces, x => KmlDocument.Parse(x, namespaces));
+        protected void ParseInternal(XElement xml, IXmlNamespaceResolver namespaces) {
+            Document = xml.GetElement("kml:Document", namespaces, x => KmlDocument.Parse(x, namespaces))!;
+            if (Document is null) throw new KmlParseException($"Failed parsing 'kml:Document' from '{xml.Name}'...");
         }
 
         public override XElement ToXElement() {
             XElement xml = NewXElement("kml");
-            if (NetworkLinkControl.HasValue()) xml.Add(NetworkLinkControl.ToXElement());
+            if (NetworkLinkControl is not null) xml.Add(NetworkLinkControl.ToXElement());
             if (Feature.HasValue()) xml.Add(Feature.ToXElement());
             return xml;
         }
@@ -118,16 +134,18 @@ namespace Skybrud.Essentials.Maps.Kml {
             return new KmlFile(xml, Namespaces);
         }
 
-        public static KmlFile Parse(XElement xml, XmlNamespaceManager namespaces) {
-            return new KmlFile(xml, namespaces);
+        public static KmlFile Parse(XElement xml, IXmlNamespaceResolver? namespaces) {
+            return new KmlFile(xml, namespaces ?? Namespaces);
         }
 
         public static KmlFile Parse(XDocument xml) {
+            if (xml.Root is null) throw new KmlParseException("XDocument doesn't specify a root element.");
             return new KmlFile(xml.Root, Namespaces);
         }
 
-        public static KmlFile Parse(XDocument xml, XmlNamespaceManager namespaces) {
-            return new KmlFile(xml.Root, namespaces);
+        public static KmlFile Parse(XDocument xml, IXmlNamespaceResolver? namespaces) {
+            if (xml.Root is null) throw new KmlParseException("XDocument doesn't specify a root element.");
+            return new KmlFile(xml.Root, namespaces ?? Namespaces);
         }
 
         #endregion

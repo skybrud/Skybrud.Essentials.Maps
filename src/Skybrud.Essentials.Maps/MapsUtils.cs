@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Skybrud.Essentials.Collections;
 using Skybrud.Essentials.Maps.Geometry;
@@ -168,7 +169,6 @@ namespace Skybrud.Essentials.Maps {
 
         }
 
-
         /// <summary>
         /// Returns the point of intersections between the two lines defined by the points <paramref name="a1"/>,
         /// <paramref name="a2"/>, <paramref name="b1"/> and <paramref name="b2"/>.
@@ -180,7 +180,7 @@ namespace Skybrud.Essentials.Maps {
         /// <returns>An instance of <see cref="IPoint"/> representing the point of intersection, or <c>null</c> if the
         /// two lines don't intersect.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="a1"/>, <paramref name="a2"/>, <paramref name="b1"/> or <paramref name="b2"/> is <c>null</c>.</exception>
-        public static IPoint GetIntersection(IPoint a1, IPoint a2, IPoint b1, IPoint b2) {
+        public static IPoint? GetIntersection(IPoint a1, IPoint a2, IPoint b1, IPoint b2) {
             if (a1 == null) throw new ArgumentNullException(nameof(a1));
             if (a2 == null) throw new ArgumentNullException(nameof(a2));
             if (b1 == null) throw new ArgumentNullException(nameof(b1));
@@ -196,7 +196,7 @@ namespace Skybrud.Essentials.Maps {
         /// <returns>An instance of <see cref="IPoint"/> representing the point of intersection, or <c>null</c> if the
         /// two lines don't intersect.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="line1"/> or <paramref name="line2"/> is <c>null</c>.</exception>
-        public static IPoint GetIntersection(ILine line1, ILine line2) {
+        public static IPoint? GetIntersection(ILine line1, ILine line2) {
 
             if (line1 == null) throw new ArgumentNullException(nameof(line1));
             if (line2 == null) throw new ArgumentNullException(nameof(line2));
@@ -282,7 +282,7 @@ namespace Skybrud.Essentials.Maps {
         /// <c>null</c> if the two points don't intersect.</param>
         /// <returns><c>true</c> if the two lines intersect, otherwise <c>false</c>.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="a1"/>, <paramref name="a2"/>, <paramref name="b1"/> or <paramref name="b2"/> is <c>null</c>.</exception>
-        public static bool Intersects(IPoint a1, IPoint a2, IPoint b1, IPoint b2, out IPoint result) {
+        public static bool Intersects(IPoint a1, IPoint a2, IPoint b1, IPoint b2, [NotNullWhen(true)] out IPoint? result) {
             if (a1 == null) throw new ArgumentNullException(nameof(a1));
             if (a2 == null) throw new ArgumentNullException(nameof(a2));
             if (b1 == null) throw new ArgumentNullException(nameof(b1));
@@ -299,7 +299,7 @@ namespace Skybrud.Essentials.Maps {
         /// <c>null</c> if the two points don't intersect.</param>
         /// <returns><c>true</c> if the two lines intersect, otherwise <c>false</c>.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="line1"/> or <paramref name="line2"/> is <c>null</c>.</exception>
-        public static bool Intersects(ILine line1, ILine line2, out IPoint result) {
+        public static bool Intersects(ILine line1, ILine line2, [NotNullWhen(true)] out IPoint? result) {
             if (line1 == null) throw new ArgumentNullException(nameof(line1));
             if (line2 == null) throw new ArgumentNullException(nameof(line2));
             result = GetIntersection(line1, line2);

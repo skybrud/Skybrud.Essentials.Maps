@@ -18,23 +18,23 @@ namespace Skybrud.Essentials.Maps.Kml.Features {
         /// <summary>
         /// Gets or sets the ID of the feature.
         /// </summary>
-        public string Id { get; set; }
+        public string? Id { get; set; }
 
         /// <summary>
         /// User-defined text displayed in the 3D viewer as the label for the object (for example, for a <see cref="KmlPlacemark"/>, <see cref="KmlFolder"/>, or <see cref="KmlNetworkLinkControl"/>).
         /// </summary>
-        public string Name { get; set; }
+        public string? Name { get; set; }
 
         /// <summary>
         /// Gets or sets the description of the feature.
         /// </summary>
-        public string Description { get; set; }
+        public string? Description { get; set; }
 
         /// <summary>
         /// URL of a &lt;Style&gt; or &lt;StyleMap&gt; defined in a Document. If the style is in the same file, use a #
         /// reference. If the style is defined in an external file, use a full URL along with # referencing.
         /// </summary>
-        public string StyleUrl { get; set; }
+        public string? StyleUrl { get; set; }
 
         #endregion
 
@@ -50,7 +50,8 @@ namespace Skybrud.Essentials.Maps.Kml.Features {
         /// </summary>
         /// <param name="xml">The XML element the feature should be based on.</param>
         /// <param name="namespaces">The XML namespace.</param>
-        protected KmlFeature(XElement xml, XmlNamespaceManager namespaces) {
+        protected KmlFeature(XElement xml, IXmlNamespaceResolver namespaces) {
+            Id = xml.GetAttributeValue("id");
             Name = xml.GetElementValue("kml:name", namespaces);
             Description = xml.GetElementValue("kml:description", namespaces);
             StyleUrl = xml.GetElementValue("kml:styleUrl", namespaces);
@@ -65,11 +66,11 @@ namespace Skybrud.Essentials.Maps.Kml.Features {
 
             XElement xml = base.ToXElement();
 
-            if (Id.HasValue()) xml.Add(new XAttribute("id", Id));
+            if (Id.HasValue()) xml.Add(new XAttribute("id", Id!));
 
-            if (Name.HasValue()) xml.Add(NewXElement("name", Name));
-            if (Description.HasValue()) xml.Add(NewXElement("description", Description));
-            if (StyleUrl.HasValue()) xml.Add(NewXElement("styleUrl", StyleUrl));
+            if (!string.IsNullOrWhiteSpace(Name)) xml.Add(NewXElement("name", Name!));
+            if (!string.IsNullOrWhiteSpace(Description)) xml.Add(NewXElement("description", Description!));
+            if (!string.IsNullOrWhiteSpace(StyleUrl)) xml.Add(NewXElement("styleUrl", StyleUrl!));
 
             return xml;
 

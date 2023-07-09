@@ -17,13 +17,13 @@ namespace Skybrud.Essentials.Maps.Kml {
 
         public TimeSpan MaxSessionLength { get; set; }
 
-        public string Cookie { get; set; }
+        public string? Cookie { get; set; }
 
-        public string Message { get; set; }
+        public string? Message { get; set; }
 
-        public string LinkName { get; set; }
+        public string? LinkName { get; set; }
 
-        public string Expires { get; set; }
+        public string? Expires { get; set; }
 
         #endregion
 
@@ -33,7 +33,7 @@ namespace Skybrud.Essentials.Maps.Kml {
             MaxSessionLength = TimeSpan.FromSeconds(-1);
         }
 
-        protected KmlNetworkLinkControl(XElement xml, XmlNamespaceManager namespaces) {
+        protected KmlNetworkLinkControl(XElement xml, IXmlNamespaceResolver namespaces) {
             throw new NotImplementedException();
         }
 
@@ -48,10 +48,10 @@ namespace Skybrud.Essentials.Maps.Kml {
             if (MinRefreshPeriod.TotalSeconds > 0) xml.Add(NewXElement("minRefreshPeriod", MinRefreshPeriod.TotalSeconds));
             if (MaxSessionLength.TotalSeconds > -1) xml.Add(NewXElement("maxSessionLength", MaxSessionLength.TotalSeconds));
 
-            if (Cookie.HasValue()) xml.Add(NewXElement("cookie", Cookie));
-            if (Message.HasValue()) xml.Add(NewXElement("Message", Message));
-            if (LinkName.HasValue()) xml.Add(NewXElement("LinkName", LinkName));
-            if (Expires.HasValue()) xml.Add(NewXElement("expires", Expires));
+            if (Cookie.HasValue()) xml.Add(NewXElement("cookie", Cookie!));
+            if (Message.HasValue()) xml.Add(NewXElement("Message", Message!));
+            if (LinkName.HasValue()) xml.Add(NewXElement("LinkName", LinkName!));
+            if (Expires.HasValue()) xml.Add(NewXElement("expires", Expires!));
 
             return xml;
 
@@ -62,11 +62,13 @@ namespace Skybrud.Essentials.Maps.Kml {
         #region Static methods
 
         public static KmlNetworkLinkControl Parse(XElement xml) {
-            return xml == null ? null : new KmlNetworkLinkControl(xml, Namespaces);
+            if (xml is null) throw new ArgumentNullException(nameof(xml));
+            return new KmlNetworkLinkControl(xml, Namespaces);
         }
 
-        public static KmlNetworkLinkControl Parse(XElement xml, XmlNamespaceManager namespaces) {
-            return xml == null ? null : new KmlNetworkLinkControl(xml, namespaces);
+        public static KmlNetworkLinkControl Parse(XElement xml, IXmlNamespaceResolver? namespaces) {
+            if (xml is null) throw new ArgumentNullException(nameof(xml));
+            return new KmlNetworkLinkControl(xml, namespaces ?? Namespaces);
         }
 
         #endregion

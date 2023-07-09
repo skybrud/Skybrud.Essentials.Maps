@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -18,7 +19,7 @@ namespace Skybrud.Essentials.Maps.GeoJson.Features {
         /// Gets or sets the name of the feature collection.
         /// </summary>
         [JsonProperty("name", NullValueHandling = NullValueHandling.Ignore)]
-        public string Name { get; set; }
+        public string? Name { get; set; }
 
         /// <summary>
         /// Gets or sets a list of the features in this feature collection.
@@ -113,8 +114,9 @@ namespace Skybrud.Essentials.Maps.GeoJson.Features {
         /// </summary>
         /// <param name="json">The JSON string to be parsed.</param>
         /// <returns>An instance of <see cref="GeoJsonFeatureCollection"/>.</returns>
-        public static GeoJsonFeatureCollection Parse(string json) {
-            return ParseJsonObject(json, Parse);
+        [return: NotNullIfNotNull("json")]
+        public static GeoJsonFeatureCollection? Parse(string? json) {
+            return json is null ? null : ParseJsonObject(json, Parse);
         }
 
         /// <summary>
@@ -122,7 +124,8 @@ namespace Skybrud.Essentials.Maps.GeoJson.Features {
         /// </summary>
         /// <param name="json">The instance of <see cref="JObject"/> to be parsed.</param>
         /// <returns>An instance of <see cref="GeoJsonFeatureCollection"/>.</returns>
-        public static GeoJsonFeatureCollection Parse(JObject json) {
+        [return: NotNullIfNotNull("json")]
+        public static GeoJsonFeatureCollection? Parse(JObject? json) {
             return json == null ? null : new GeoJsonFeatureCollection(json);
         }
 
@@ -132,7 +135,7 @@ namespace Skybrud.Essentials.Maps.GeoJson.Features {
         /// <param name="path">The path to a file on disk.</param>
         /// <returns>An instance of <see cref="GeoJsonFeatureCollection"/>.</returns>
         public static GeoJsonFeatureCollection Load(string path) {
-            return LoadJsonObject(path, Parse);
+            return LoadJsonObject(path, Parse)!;
         }
 
         #endregion

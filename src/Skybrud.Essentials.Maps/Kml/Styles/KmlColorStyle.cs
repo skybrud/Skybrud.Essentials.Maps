@@ -1,4 +1,5 @@
-﻿using System.Xml;
+﻿using System;
+using System.Xml;
 using System.Xml.Linq;
 using Skybrud.Essentials.Strings.Extensions;
 using Skybrud.Essentials.Xml.Extensions;
@@ -15,7 +16,7 @@ namespace Skybrud.Essentials.Maps.Kml.Styles {
 
         #region Properties
 
-        public string Id { get; set; }
+        public string? Id { get; set; } // TODO: Should this property be nullable
 
         /// <summary>
         /// Color and opacity (alpha) values are expressed in hexadecimal notation. The range of values for any one
@@ -26,7 +27,7 @@ namespace Skybrud.Essentials.Maps.Kml.Styles {
         /// <c>&lt;color&gt;7fff0000&lt;/color&gt;</c>, where <em>alpha</em>=0x7f, <em>blue</em>=0xff,
         /// <em>green</em>=0x00, and <em>red</em>=0x00.
         /// </summary>
-        public string Color { get; set; }
+        public string? Color { get; set; } // TODO: Should this property be nullable
 
         /// <summary>
         /// Values for <see cref="ColorMode"/> are <see cref="KmlColorMode.Normal"/> (no effect) and
@@ -50,7 +51,9 @@ namespace Skybrud.Essentials.Maps.Kml.Styles {
             Color = color;
         }
 
-        protected KmlColorStyle(XElement xml, XmlNamespaceManager namespaces) {
+        protected KmlColorStyle(XElement xml, IXmlNamespaceResolver namespaces) {
+            if (xml is null) throw new ArgumentNullException(nameof(xml));
+            if (namespaces is null) throw new ArgumentNullException(nameof(namespaces));
             Id = xml.GetAttributeValue("id");
             Color = xml.GetElementValue("kml:color", namespaces);
             ColorMode = xml.GetElementValueAsEnum("kml:colorMode", namespaces, KmlColorMode.Normal);
@@ -64,9 +67,9 @@ namespace Skybrud.Essentials.Maps.Kml.Styles {
 
             XElement xml = base.ToXElement();
 
-            if (Id.HasValue()) xml.Add(new XAttribute("id", Id));
+            if (!string.IsNullOrWhiteSpace(Id)) xml.Add(new XAttribute("id", Id!));
 
-            if (Color.HasValue()) xml.Add(NewXElement("color", Color));
+            if (!string.IsNullOrWhiteSpace(Color)) xml.Add(NewXElement("color", Color!));
             if (ColorMode != KmlColorMode.Normal) xml.Add(NewXElement("colorMode", ColorMode.ToLower()));
 
             return xml;

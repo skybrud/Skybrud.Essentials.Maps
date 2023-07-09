@@ -1,8 +1,8 @@
-﻿using System;
-using System.Globalization;
+﻿using System.Globalization;
 using System.Xml;
 using System.Xml.Linq;
 using Skybrud.Essentials.Maps.Kml.Constants;
+using Skybrud.Essentials.Maps.Kml.Parsing;
 using Skybrud.Essentials.Strings;
 using Skybrud.Essentials.Xml.Extensions;
 
@@ -14,25 +14,7 @@ namespace Skybrud.Essentials.Maps.Kml {
 
         protected static readonly XNamespace Kml = KmlConstants.DefaultNamespace;
 
-        private static XmlNamespaceManager _namespaces;
-
-        protected static XmlNamespaceManager Namespaces {
-
-            get {
-
-                if (_namespaces == null) {
-
-                    XmlNameTable table = new NameTable();
-                    _namespaces = new XmlNamespaceManager(table);
-                    _namespaces.AddNamespace("kml", KmlConstants.DefaultNamespace);
-
-                }
-
-                return _namespaces;
-
-            }
-
-        }
+        protected static IXmlNamespaceResolver Namespaces => KmlNamespaceResolver.Instance;
 
         public virtual XElement ToXElement() {
             return NewXElement();
@@ -51,7 +33,7 @@ namespace Skybrud.Essentials.Maps.Kml {
         }
 
         protected XElement NewXElement(string name, object value) {
-            return new XElement(Kml + name, String.Format(CultureInfo.InvariantCulture, "{0}", value));
+            return new XElement(Kml + name, string.Format(CultureInfo.InvariantCulture, "{0}", value));
         }
 
         protected XElement NewXElement(string name, XCData value) {
@@ -66,18 +48,18 @@ namespace Skybrud.Essentials.Maps.Kml {
             return new XElement(Kml + name, child);
         }
 
-        protected int GetInt32(XElement element, string name, XmlNamespaceManager namespaces, int fallback) {
-            XElement child = element.GetElement(name, namespaces);
+        protected int GetInt32(XElement element, string name, IXmlNamespaceResolver namespaces, int fallback) {
+            XElement? child = element.GetElement(name, namespaces);
             return StringUtils.ParseInt32(child?.Value, fallback);
         }
 
-        protected float GetFloat(XElement element, string name, XmlNamespaceManager namespaces, float fallback) {
-            XElement child = element.GetElement(name, namespaces);
+        protected float GetFloat(XElement element, string name, IXmlNamespaceResolver namespaces, float fallback) {
+            XElement? child = element.GetElement(name, namespaces);
             return StringUtils.ParseFloat(child?.Value, fallback);
         }
 
-        protected bool GetBoolean(XElement element, string name, XmlNamespaceManager namespaces, bool fallback) {
-            XElement child = element.GetElement(name, namespaces);
+        protected bool GetBoolean(XElement element, string name, IXmlNamespaceResolver namespaces, bool fallback) {
+            XElement? child = element.GetElement(name, namespaces);
             return StringUtils.ParseBoolean(child?.Value, fallback);
         }
 

@@ -41,6 +41,7 @@ namespace Skybrud.Essentials.Maps.Kml.Geometry {
         /// </summary>
         /// <param name="coordinates">An array of coordinates that make up the element.</param>
         public KmlLinearRingCoordinates(double[][] coordinates) {
+            if (coordinates is null) throw new ArgumentNullException(nameof(coordinates));
             _list = new List<KmlPointCoordinates>();
             foreach (double[] item in coordinates) {
                 _list.Add(new KmlPointCoordinates(item));
@@ -52,7 +53,8 @@ namespace Skybrud.Essentials.Maps.Kml.Geometry {
         /// </summary>
         /// <param name="coordinates">An array of coordinates that make up the element.</param>
         public KmlLinearRingCoordinates(params KmlPointCoordinates[] coordinates) {
-            _list = coordinates?.ToList() ?? new List<KmlPointCoordinates>();
+            if (coordinates is null) throw new ArgumentNullException(nameof(coordinates));
+            _list = new List<KmlPointCoordinates>();
         }
 
         /// <summary>
@@ -60,7 +62,8 @@ namespace Skybrud.Essentials.Maps.Kml.Geometry {
         /// </summary>
         /// <param name="coordinates">An array of coordinates that make up the element.</param>
         public KmlLinearRingCoordinates(IEnumerable<KmlPointCoordinates> coordinates) {
-            _list = coordinates?.ToList() ?? new List<KmlPointCoordinates>();
+            if (coordinates is null) throw new ArgumentNullException(nameof(coordinates));
+            _list = new List<KmlPointCoordinates>();
         }
 
         /// <summary>
@@ -68,6 +71,7 @@ namespace Skybrud.Essentials.Maps.Kml.Geometry {
         /// </summary>
         /// <param name="xml">The XML element the document should be based on.</param>
         public KmlLinearRingCoordinates(XElement xml) {
+            if (xml is null) throw new ArgumentNullException(nameof(xml));
             string[] value = xml.Value.Split(new []{ " ", "\n", "\r", "\t" }, StringSplitOptions.RemoveEmptyEntries);
             _list = value.Select(x => new KmlPointCoordinates(StringUtils.ParseDoubleArray(x))).ToList();
         }
@@ -109,7 +113,8 @@ namespace Skybrud.Essentials.Maps.Kml.Geometry {
         /// <param name="xml">The XML element representing the document.</param>
         /// <returns>An instance of <see cref="KmlLinearRingCoordinates"/>.</returns>
         public static KmlLinearRingCoordinates Parse(XElement xml) {
-            return xml == null ? null : new KmlLinearRingCoordinates(xml);
+            if (xml == null) throw new ArgumentNullException(nameof(xml));
+            return new KmlLinearRingCoordinates(xml);
         }
 
         #endregion

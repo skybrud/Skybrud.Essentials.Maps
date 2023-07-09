@@ -1,3 +1,4 @@
+using System;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Skybrud.Essentials.Json.Extensions;
@@ -38,6 +39,7 @@ namespace Skybrud.Essentials.Maps.GeoJson.Geometry {
         /// <param name="json">The raw JSON string.</param>
         /// <returns>An instance of <see cref="GeoJsonGeometry"/>.</returns>
         public static GeoJsonGeometry Parse(string json) {
+            if (string.IsNullOrWhiteSpace(json)) throw new ArgumentNullException(nameof(json));
             return ParseJsonObject(json, Parse);
         }
 
@@ -47,8 +49,8 @@ namespace Skybrud.Essentials.Maps.GeoJson.Geometry {
         /// <param name="json">The JSON object.</param>
         /// <returns>An instance of <see cref="GeoJsonGeometry"/>.</returns>
         public static GeoJsonGeometry Parse(JObject json) {
-            if (json == null) return null;
-            string type = json.GetString("type");
+            if (json is null) throw new ArgumentNullException(nameof(json));
+            string? type = json.GetString("type");
             return type?.ToLower() switch {
                 "point" => GeoJsonPoint.Parse(json),
                 "linestring" => GeoJsonLineString.Parse(json),

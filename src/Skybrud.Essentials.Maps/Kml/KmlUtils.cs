@@ -13,7 +13,7 @@ namespace Skybrud.Essentials.Maps.Kml {
     /// </summary>
     public static class KmlUtils {
 
-        public static KmlGeometry[] ParseGeometryChildren(XElement xml, XmlNamespaceManager namespaces) {
+        public static KmlGeometry[] ParseGeometryChildren(XElement xml, IXmlNamespaceResolver namespaces) {
 
             List<KmlGeometry> temp = new();
 

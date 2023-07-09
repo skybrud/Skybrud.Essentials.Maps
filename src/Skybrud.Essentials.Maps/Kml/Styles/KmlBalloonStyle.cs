@@ -1,6 +1,6 @@
-﻿using System.Xml;
+﻿using System;
+using System.Xml;
 using System.Xml.Linq;
-using Skybrud.Essentials.Maps.Kml.Extensions;
 using Skybrud.Essentials.Xml.Extensions;
 
 namespace Skybrud.Essentials.Maps.Kml.Styles {
@@ -16,12 +16,12 @@ namespace Skybrud.Essentials.Maps.Kml.Styles {
         /// Gets or sets the background color of the balloon (optional). Color and opacity (alpha) values are expressed
         /// in hexadecimal notation.
         /// </summary>
-        public string BackgroundColor { get; set; }
+        public string? BackgroundColor { get; set; }
 
         /// <summary>
         /// Gets or sets the foreground color for text. The default is black (<code>ff000000</code>).
         /// </summary>
-        public string TextColor { get; set; }
+        public string? TextColor { get; set; }
 
         /// <summary>
         /// Gets or sets the text displayed in the balloon. If no text is specified, Google Earth draws the default
@@ -29,7 +29,7 @@ namespace Skybrud.Essentials.Maps.Kml.Styles {
         /// for driving directions, a white background, and a tail that is attached to the point coordinates of the
         /// Feature, if specified).
         /// </summary>
-        public string Text { get; set; }
+        public string? Text { get; set; }
 
         /// <summary>
         /// If set to is <c>default</c>, Google Earth uses the information supplied in <see cref="Text"/> to create a
@@ -37,7 +37,7 @@ namespace Skybrud.Essentials.Maps.Kml.Styles {
         /// List View icon for a Placemark whose balloon's <see cref="DisplayMode"/> is <c>hide</c> causes Google Earth
         /// to fly to the Placemark.
         /// </summary>
-        public string DisplayMode { get; set; }
+        public string? DisplayMode { get; set; }
 
         #endregion
 
@@ -45,7 +45,9 @@ namespace Skybrud.Essentials.Maps.Kml.Styles {
 
         public KmlBalloonStyle() { }
 
-        protected KmlBalloonStyle(XElement xml, XmlNamespaceManager namespaces) : base(xml, namespaces) {
+        protected KmlBalloonStyle(XElement xml, IXmlNamespaceResolver namespaces) : base(xml, namespaces) {
+            if (xml is null) throw new ArgumentNullException(nameof(xml));
+            if (namespaces is null) throw new ArgumentNullException(nameof(namespaces));
             BackgroundColor = xml.GetElementValue("kml:bgColor", namespaces);
             TextColor = xml.GetElementValue("kml:textColor", namespaces);
             Text = xml.GetElementValue("kml:text", namespaces);
@@ -60,10 +62,10 @@ namespace Skybrud.Essentials.Maps.Kml.Styles {
 
             XElement xml = base.ToXElement();
 
-            if (BackgroundColor.HasValue()) xml.Add(NewXElement("bgColor", BackgroundColor));
-            if (TextColor.HasValue()) xml.Add(NewXElement("textColor", TextColor));
-            if (Text.HasValue()) xml.Add(NewXElement("text", new XCData(Text)));
-            if (DisplayMode.HasValue()) xml.Add(NewXElement("displayMode", DisplayMode));
+            if (!string.IsNullOrWhiteSpace(BackgroundColor)) xml.Add(NewXElement("bgColor", BackgroundColor!));
+            if (!string.IsNullOrWhiteSpace(TextColor)) xml.Add(NewXElement("textColor", TextColor!));
+            if (!string.IsNullOrWhiteSpace(Text)) xml.Add(NewXElement("text", new XCData(Text!)));
+            if (!string.IsNullOrWhiteSpace(DisplayMode)) xml.Add(NewXElement("displayMode", DisplayMode!));
 
             return xml;
 
@@ -73,8 +75,14 @@ namespace Skybrud.Essentials.Maps.Kml.Styles {
 
         #region Static methods
 
-        public static KmlBalloonStyle Parse(XElement xml, XmlNamespaceManager namespaces) {
-            return xml == null ? null : new KmlBalloonStyle(xml, namespaces);
+        public static KmlBalloonStyle Parse(XElement xml) {
+            if (xml is null) throw new ArgumentNullException(nameof(xml));
+            return new KmlBalloonStyle(xml, Namespaces);
+        }
+
+        public static KmlBalloonStyle Parse(XElement xml, IXmlNamespaceResolver? namespaces) {
+            if (xml is null) throw new ArgumentNullException(nameof(xml));
+            return new KmlBalloonStyle(xml, namespaces ?? Namespaces);
         }
 
         #endregion

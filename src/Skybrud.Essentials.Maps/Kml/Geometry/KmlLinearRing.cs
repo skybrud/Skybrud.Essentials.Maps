@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Xml;
 using System.Xml.Linq;
 using Skybrud.Essentials.Common;
@@ -88,7 +89,7 @@ namespace Skybrud.Essentials.Maps.Kml.Geometry {
         /// </summary>
         /// <param name="xml">The XML element the document should be based on.</param>
         /// <param name="namespaces">The XML namespace.</param>
-        protected KmlLinearRing(XElement xml, XmlNamespaceManager namespaces) {
+        protected KmlLinearRing(XElement xml, IXmlNamespaceResolver namespaces) {
             Extrude = xml.GetElementValueAsBoolean("kml:extrude", namespaces);
             Tesselate = xml.GetElementValueAsBoolean("kml:tesselate", namespaces);
             Coordinates = xml.GetElement("kml:coordinates", namespaces, KmlLinearRingCoordinates.Parse) ?? new KmlLinearRingCoordinates();
@@ -125,8 +126,8 @@ namespace Skybrud.Essentials.Maps.Kml.Geometry {
         /// <param name="xml">The XML element representing the document.</param>
         /// <returns>An instance of <see cref="KmlLinearRing"/>.</returns>
         public static KmlLinearRing Parse(XElement xml) {
-            return xml == null ? null : new KmlLinearRing(xml, Namespaces);
-
+            if (xml is null) throw new ArgumentNullException(nameof(xml));
+            return new KmlLinearRing(xml, Namespaces);
         }
 
         /// <summary>
@@ -135,8 +136,9 @@ namespace Skybrud.Essentials.Maps.Kml.Geometry {
         /// <param name="xml">The XML element representing the document.</param>
         /// <param name="namespaces">The XML namespace.</param>
         /// <returns>An instance of <see cref="KmlLinearRing"/>.</returns>
-        public static KmlLinearRing Parse(XElement xml, XmlNamespaceManager namespaces) {
-            return xml == null ? null : new KmlLinearRing(xml, namespaces);
+        public static KmlLinearRing Parse(XElement xml, IXmlNamespaceResolver? namespaces) {
+            if (xml is null) throw new ArgumentNullException(nameof(xml));
+            return new KmlLinearRing(xml, namespaces ?? Namespaces);
         }
 
         #endregion

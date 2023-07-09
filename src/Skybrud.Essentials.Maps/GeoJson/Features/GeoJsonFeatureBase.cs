@@ -35,7 +35,7 @@ namespace Skybrud.Essentials.Maps.GeoJson.Features {
         /// <param name="type">The type of the feature.</param>
         /// <param name="json">An instance of <see cref="JObject"/> representing the feature.</param>
         protected GeoJsonFeatureBase(GeoJsonType type, JObject json) : base(type) {
-            Properties = json.GetObject<GeoJsonProperties>("properties");
+            Properties = json.GetObject<GeoJsonProperties>("properties") ?? new GeoJsonProperties();
         }
 
         #endregion

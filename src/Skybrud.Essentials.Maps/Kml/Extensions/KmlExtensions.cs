@@ -1,8 +1,10 @@
-﻿namespace Skybrud.Essentials.Maps.Kml.Extensions {
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace Skybrud.Essentials.Maps.Kml.Extensions {
 
     internal static class KmlExtensions {
 
-        internal static bool HasValue(this object obj) {
+        internal static bool HasValue([NotNullWhen(true)] this object? obj) {
             return obj switch {
                 string str => string.IsNullOrWhiteSpace(str) == false,
                 _ => obj != null

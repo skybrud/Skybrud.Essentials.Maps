@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Xml;
 using System.Xml.Linq;
+using Skybrud.Essentials.Maps.Kml.Exceptions;
 using Skybrud.Essentials.Xml.Extensions;
 
 namespace Skybrud.Essentials.Maps.Kml.Geometry {
@@ -31,8 +32,9 @@ namespace Skybrud.Essentials.Maps.Kml.Geometry {
             LinearRing = new KmlLinearRing(array);
         }
 
-        protected KmlPolygonBoundaries(XElement xml, XmlNamespaceManager namespaces) {
-            LinearRing = xml.GetElement("kml:LinearRing", namespaces, KmlLinearRing.Parse);
+        protected KmlPolygonBoundaries(XElement xml, IXmlNamespaceResolver namespaces) {
+            LinearRing = xml.GetElement("kml:LinearRing", namespaces, x => KmlLinearRing.Parse(x, namespaces))!;
+            if (LinearRing is null) throw new KmlParseException($"Failed parsing 'kml:LinearRing' from '{xml.Name}'...");
         }
 
         #endregion

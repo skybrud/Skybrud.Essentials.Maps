@@ -40,7 +40,7 @@ namespace Skybrud.Essentials.Maps.Wkt.Exceptions {
         /// </summary>
         /// <param name="type">The type of the geometry that resulted in this exception.</param>
         public WktUnsupportedTypeException(Type type) : base($"Unsupported type: {type.FullName}") {
-            Type = type.FullName;
+            Type = type.FullName ?? type.Name;
         }
 
         /// <summary>
@@ -49,7 +49,7 @@ namespace Skybrud.Essentials.Maps.Wkt.Exceptions {
         /// <param name="type">The type of the geometry that resulted in this exception.</param>
         /// <param name="message">The message of the exception.</param>
         public WktUnsupportedTypeException(Type type, string message) : base(message) {
-            Type = type.FullName;
+            Type = type.FullName ?? type.Name;
         }
 
         #endregion

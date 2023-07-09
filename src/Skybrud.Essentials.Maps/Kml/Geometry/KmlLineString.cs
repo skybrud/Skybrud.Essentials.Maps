@@ -45,7 +45,7 @@ namespace Skybrud.Essentials.Maps.Kml.Geometry {
         /// Initializes a new KML <c>&lt;LineString&gt;</c> element based on the specified <paramref name="coordinates"/>.
         /// </summary>
         /// <param name="coordinates">An array of coordinates that make up the element.</param>
-        public KmlLineString(IEnumerable<KmlPointCoordinates> coordinates) {
+        public KmlLineString(IEnumerable<KmlPointCoordinates>? coordinates) {
             _list = coordinates?.ToList() ?? new List<KmlPointCoordinates>();
         }
 
@@ -53,7 +53,7 @@ namespace Skybrud.Essentials.Maps.Kml.Geometry {
         /// Initializes a new KML <c>&lt;LineString&gt;</c> element based on the specified <paramref name="coordinates"/>.
         /// </summary>
         /// <param name="coordinates">An array of coordinates that make up the element.</param>
-        public KmlLineString(params KmlPointCoordinates[] coordinates) {
+        public KmlLineString(params KmlPointCoordinates[]? coordinates) {
             _list = coordinates?.ToList() ?? new List<KmlPointCoordinates>();
         }
 
@@ -62,7 +62,7 @@ namespace Skybrud.Essentials.Maps.Kml.Geometry {
         /// </summary>
         /// <param name="xml">The XML element the document should be based on.</param>
         /// <param name="namespaces">The XML namespace.</param>
-        protected KmlLineString(XElement xml, XmlNamespaceManager namespaces) : base(xml, namespaces) {
+        protected KmlLineString(XElement xml, IXmlNamespaceResolver namespaces) : base(xml) {
             string[] coordinates = xml.GetElementValue("kml:coordinates", namespaces).Split(new[] { " ", "\n", "\r", "\t" }, StringSplitOptions.RemoveEmptyEntries);
             _list = coordinates.Select(x => new KmlPointCoordinates(StringUtils.ParseDoubleArray(x))).ToList();
         }
@@ -129,7 +129,8 @@ namespace Skybrud.Essentials.Maps.Kml.Geometry {
         /// <param name="xml">The XML element representing the document.</param>
         /// <returns>An instance of <see cref="KmlLineString"/>.</returns>
         public static KmlLineString Parse(XElement xml) {
-            return xml == null ? null : new KmlLineString(xml, Namespaces);
+            if (xml is null) throw new ArgumentNullException(nameof(xml));
+            return new KmlLineString(xml, Namespaces);
 
         }
 
@@ -139,8 +140,9 @@ namespace Skybrud.Essentials.Maps.Kml.Geometry {
         /// <param name="xml">The XML element representing the document.</param>
         /// <param name="namespaces">The XML namespace.</param>
         /// <returns>An instance of <see cref="KmlLineString"/>.</returns>
-        public static KmlLineString Parse(XElement xml, XmlNamespaceManager namespaces) {
-            return xml == null ? null : new KmlLineString(xml, namespaces);
+        public static KmlLineString Parse(XElement xml, IXmlNamespaceResolver? namespaces) {
+            if (xml is null) throw new ArgumentNullException(nameof(xml));
+            return new KmlLineString(xml, namespaces ?? Namespaces);
         }
 
         #endregion

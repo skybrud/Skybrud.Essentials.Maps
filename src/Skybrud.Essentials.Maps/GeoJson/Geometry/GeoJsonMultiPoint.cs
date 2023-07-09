@@ -194,6 +194,7 @@ namespace Skybrud.Essentials.Maps.GeoJson.Geometry {
         /// <param name="json">The raw JSON string.</param>
         /// <returns>An instance of <see cref="GeoJsonMultiPoint"/>.</returns>
         public static new GeoJsonMultiPoint Parse(string json) {
+            if (string.IsNullOrWhiteSpace(json)) throw new ArgumentNullException(nameof(json));
             return ParseJsonObject(json, Parse);
         }
 
@@ -203,7 +204,8 @@ namespace Skybrud.Essentials.Maps.GeoJson.Geometry {
         /// <param name="json">The JSON object.</param>
         /// <returns>An instance of <see cref="GeoJsonPolygon"/>.</returns>
         public static new GeoJsonMultiPoint Parse(JObject json) {
-            return json == null ? null : new GeoJsonMultiPoint(json);
+            if (json is null) throw new ArgumentNullException(nameof(json));
+            return new GeoJsonMultiPoint(json);
         }
 
         /// <summary>
@@ -212,6 +214,7 @@ namespace Skybrud.Essentials.Maps.GeoJson.Geometry {
         /// <param name="path">The path to a file on disk.</param>
         /// <returns>An instance of <see cref="GeoJsonMultiPoint"/>.</returns>
         public static new GeoJsonMultiPoint Load(string path) {
+            if (string.IsNullOrWhiteSpace(path)) throw new ArgumentNullException(nameof(path));
             return LoadJsonObject(path, Parse);
         }
 

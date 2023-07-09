@@ -194,7 +194,7 @@ namespace Skybrud.Essentials.Maps.Wkt {
             return geometry switch {
                 WktPolygon polygon => ToPolygon(polygon),
                 WktMultiPolygon multi => ToMultiPolygon(multi),
-                _ => throw new WktUnsupportedTypeException(geometry.GetType().FullName)
+                _ => throw new WktUnsupportedTypeException(geometry.GetType().FullName!)
             };
         }
 

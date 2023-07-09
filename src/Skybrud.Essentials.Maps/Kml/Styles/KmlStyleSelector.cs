@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Xml;
 using System.Xml.Linq;
 using Skybrud.Essentials.Strings.Extensions;
@@ -10,8 +11,9 @@ namespace Skybrud.Essentials.Maps.Kml.Styles {
 
         #region Properties
 
-        public string Id { get; set; }
+        public string? Id { get; set; }
 
+        [MemberNotNullWhen(true, "Id")]
         public bool HasId => Id.HasValue();
 
         #endregion
@@ -20,7 +22,7 @@ namespace Skybrud.Essentials.Maps.Kml.Styles {
 
         protected KmlStyleSelector() { }
 
-        protected KmlStyleSelector(XElement xml, XmlNamespaceManager namespaces) {
+        protected KmlStyleSelector(XElement xml, IXmlNamespaceResolver namespaces) {
             Id = xml.GetAttributeValue("id", namespaces);
         }
 
@@ -32,7 +34,7 @@ namespace Skybrud.Essentials.Maps.Kml.Styles {
 
             XElement xml = base.ToXElement();
 
-            if (Id.HasValue()) xml.Add(new XAttribute("id", Id));
+            if (!string.IsNullOrWhiteSpace(Id)) xml.Add(new XAttribute("id", Id!));
 
             return xml;
 
@@ -43,11 +45,13 @@ namespace Skybrud.Essentials.Maps.Kml.Styles {
         #region Static methods
 
         public static KmlStyleSelector Parse(XElement xml) {
+            if (xml is null) throw new ArgumentNullException(nameof(xml));
             return Parse(xml, Namespaces);
         }
 
-        public static KmlStyleSelector Parse(XElement xml, XmlNamespaceManager namespaces) {
-            if (xml == null) return null;
+        public static KmlStyleSelector Parse(XElement xml, IXmlNamespaceResolver? namespaces) {
+            if (xml is null) throw new ArgumentNullException(nameof(xml));
+            namespaces ??= Namespaces;
             return xml.Name.LocalName switch {
                 "Style" => KmlStyle.Parse(xml, namespaces),
                 "StyleMap" => KmlStyleMap.Parse(xml, namespaces),

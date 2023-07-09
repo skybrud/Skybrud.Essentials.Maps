@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using Newtonsoft.Json.Linq;
 using Skybrud.Essentials.Enums;
 using Skybrud.Essentials.Json.Newtonsoft;
@@ -34,7 +35,7 @@ namespace Skybrud.Essentials.Maps.GeoJson {
         /// <param name="json">The JSON string to be parsed.</param>
         /// <returns>An instance of <typeparamref name="T"/>.</returns>
         public static T Parse<T>(string json) where T : GeoJsonObject {
-            return Parse(json) as T;
+            return (T) Parse(json);
         }
 
         /// <summary>
@@ -47,7 +48,7 @@ namespace Skybrud.Essentials.Maps.GeoJson {
         /// <returns>An instance of <see cref="GeoJsonObject"/>.</returns>
         public static GeoJsonObject Parse(string json) {
             if (string.IsNullOrWhiteSpace(json)) throw new ArgumentNullException(nameof(json));
-            return JsonUtils.ParseJsonObject(json, Parse);
+            return JsonUtils.ParseJsonObject(json, Parse)!;
         }
 
         /// <summary>
@@ -63,7 +64,7 @@ namespace Skybrud.Essentials.Maps.GeoJson {
         /// <returns>An instance of <typeparamref name="T"/>.</returns>
         public static T Load<T>(string path) where T : GeoJsonObject {
             if (string.IsNullOrWhiteSpace(path)) throw new ArgumentNullException(nameof(path));
-            return Load(path) as T;
+            return (T) Load(path);
         }
 
         /// <summary>
@@ -76,7 +77,7 @@ namespace Skybrud.Essentials.Maps.GeoJson {
         /// <returns>An instance of <see cref="GeoJsonObject"/>.</returns>
         public static GeoJsonObject Load(string path) {
             if (string.IsNullOrWhiteSpace(path)) throw new ArgumentNullException(nameof(path));
-            return JsonUtils.LoadJsonObject(path, Parse);
+            return JsonUtils.LoadJsonObject(path, Parse)!;
         }
 
         /// <summary>
@@ -86,12 +87,13 @@ namespace Skybrud.Essentials.Maps.GeoJson {
         /// </summary>
         /// <param name="json">The JSON object.</param>
         /// <returns>An instance that derives from <see cref="GeoJsonObject"/>.</returns>
-        private static GeoJsonObject Parse(JObject json) {
+        [return: NotNullIfNotNull("json")]
+        private static GeoJsonObject? Parse(JObject? json) {
 
             if (json == null) return null;
 
             // Get the value of the "type" property
-            string type = json.GetString("type");
+            string? type = json.GetString("type");
             if (string.IsNullOrWhiteSpace(type)) throw new GeoJsonParseException("The JSON object doesn't specify a type", json);
 
             // Parse the type into an enum
@@ -140,7 +142,7 @@ namespace Skybrud.Essentials.Maps.GeoJson {
         /// <returns>An instance of <see cref="IRectangle"/>.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="collections"/> is <c>null</c>.</exception>
         /// <exception cref="InvalidOperationException"><paramref name="collections"/> is empty.</exception>
-        public static IRectangle GetBoundingBox(GeoJsonFeatureCollection[] collections) {
+        public static IRectangle? GetBoundingBox(GeoJsonFeatureCollection[] collections) {
 
             if (collections == null) throw new ArgumentNullException(nameof(collections));
             if (collections.Length == 0) throw new InvalidOperationException(nameof(collections));
@@ -173,7 +175,7 @@ namespace Skybrud.Essentials.Maps.GeoJson {
         /// <returns>An instance of <see cref="IRectangle"/>.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="collection"/> is <c>null</c>.</exception>
         /// <exception cref="InvalidOperationException"><paramref name="collection"/> is empty.</exception>
-        public static IRectangle GetBoundingBox(GeoJsonFeatureCollection collection) {
+        public static IRectangle? GetBoundingBox(GeoJsonFeatureCollection collection) {
 
             if (collection == null) throw new ArgumentNullException(nameof(collection));
             if (collection.Features.Count == 0) throw new InvalidOperationException(nameof(collection));

@@ -80,6 +80,8 @@ namespace Skybrud.Essentials.Maps.Kml.Geometry {
         /// <param name="xml">The XML element the document should be based on.</param>
         protected KmlPointCoordinates(XElement xml) {
 
+            if (xml is null) throw new ArgumentNullException(nameof(xml));
+
             double[] array = StringUtils.ParseDoubleArray(xml.Value);
 
             Latitude = array[1];
@@ -118,7 +120,8 @@ namespace Skybrud.Essentials.Maps.Kml.Geometry {
         /// <param name="xml">The XML element representing the document.</param>
         /// <returns>An instance of <see cref="KmlPointCoordinates"/>.</returns>
         public static KmlPointCoordinates Parse(XElement xml) {
-            return xml == null ? null : new KmlPointCoordinates(xml);
+            if (xml == null) throw new ArgumentNullException(nameof(xml));
+            return new KmlPointCoordinates(xml);
         }
 
         #endregion

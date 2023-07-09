@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Xml;
 using System.Xml.Linq;
 using Skybrud.Essentials.Maps.Kml.Geometry;
@@ -16,21 +17,16 @@ namespace Skybrud.Essentials.Maps.Kml.Features {
         /// <summary>
         /// Gets or sets the extended data of the placemark.
         /// </summary>
-        public KmlExtendedData ExtendedData { get; set; }
+        public KmlExtendedData? ExtendedData { get; set; }
 
         /// <summary>
         /// Gets or sets the geometry of the placemark.
         /// </summary>
-        public KmlGeometry Geometry { get; set; }
+        public KmlGeometry Geometry { get; set; } // TODO: Should this be nullable?
 
         #endregion
 
         #region Constructors
-
-        /// <summary>
-        /// Initializes a new empty KML <c>&lt;Placemark&gt;</c> element.
-        /// </summary>
-        public KmlPlacemark() { }
 
         /// <summary>
         /// Initializes a new KML <c>&lt;Placemark&gt;</c> element containing the specified <paramref name="geometry"/>..
@@ -51,9 +47,9 @@ namespace Skybrud.Essentials.Maps.Kml.Features {
         /// </summary>
         /// <param name="xml">The XML element the document should be based on.</param>
         /// <param name="namespaces">The XML namespace.</param>
-        protected KmlPlacemark(XElement xml, XmlNamespaceManager namespaces) : base(xml, namespaces) {
+        protected KmlPlacemark(XElement xml, IXmlNamespaceResolver namespaces) : base(xml, namespaces) {
             ExtendedData = xml.GetElement("kml:ExtendedData", namespaces, KmlExtendedData.Parse);
-            Geometry = KmlUtils.ParseGeometryChildren(xml, namespaces).FirstOrDefault();
+            Geometry = KmlUtils.ParseGeometryChildren(xml, namespaces).Single();
         }
 
         #endregion
@@ -63,9 +59,11 @@ namespace Skybrud.Essentials.Maps.Kml.Features {
         /// <inheritdoc />
         public override XElement ToXElement() {
 
+            if (Geometry is null) throw new ArgumentNullException(nameof(Geometry));
+
             XElement xml = base.ToXElement();
 
-            if (Geometry != null) xml.Add(Geometry.ToXElement());
+            xml.Add(Geometry.ToXElement());
 
             return xml;
 
@@ -81,7 +79,8 @@ namespace Skybrud.Essentials.Maps.Kml.Features {
         /// <param name="xml">The XML element representing the placemark.</param>
         /// <returns>An instance of <see cref="KmlPlacemark"/>.</returns>
         public static KmlPlacemark Parse(XElement xml) {
-            return xml == null ? null : new KmlPlacemark(xml, Namespaces);
+            if (xml is null) throw new ArgumentNullException(nameof(xml));
+            return new KmlPlacemark(xml, Namespaces);
         }
 
         /// <summary>
@@ -90,8 +89,9 @@ namespace Skybrud.Essentials.Maps.Kml.Features {
         /// <param name="xml">The XML element representing the placemark.</param>
         /// <param name="namespaces">The XML namespace.</param>
         /// <returns>An instance of <see cref="KmlPlacemark"/>.</returns>
-        public static KmlPlacemark Parse(XElement xml, XmlNamespaceManager namespaces) {
-            return xml == null ? null : new KmlPlacemark(xml, namespaces);
+        public static KmlPlacemark Parse(XElement xml, IXmlNamespaceResolver? namespaces) {
+            if (xml is null) throw new ArgumentNullException(nameof(xml));
+            return new KmlPlacemark(xml, namespaces ?? Namespaces);
         }
 
         #endregion

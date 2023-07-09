@@ -8,7 +8,7 @@ namespace Skybrud.Essentials.Maps.Geometry.Shapes {
     /// </summary>
     public class Circle : ICircle {
 
-        private IPolygon _polygon;
+        private IPolygon? _polygon;
 
         private IPoint _center;
         private double _radius;
@@ -20,7 +20,7 @@ namespace Skybrud.Essentials.Maps.Geometry.Shapes {
         /// </summary>
         public IPoint Center {
             get => _center;
-            set { _polygon = null; _center = value ?? new Point(0, 0); }
+            set { _polygon = null; _center = value; }
         }
 
         /// <summary>
@@ -41,8 +41,8 @@ namespace Skybrud.Essentials.Maps.Geometry.Shapes {
         /// <param name="center">The center point.</param>
         /// <param name="radius">The radius in metres.</param>
         public Circle(IPoint center, double radius) {
-            Center = center ?? new Point(0, 0);
-            Radius = radius;
+            _center = center;
+            _radius = radius;
         }
 
         #endregion
@@ -62,12 +62,12 @@ namespace Skybrud.Essentials.Maps.Geometry.Shapes {
 
         /// <inheritdoc />
         public double GetArea() {
-            return (_polygon = _polygon ?? this.ToPolygon()).GetArea();
+            return (_polygon ??= this.ToPolygon()).GetArea();
         }
 
         /// <inheritdoc />
         public virtual double GetCircumference() {
-            return (_polygon = _polygon ?? this.ToPolygon()).GetCircumference();
+            return (_polygon ??= this.ToPolygon()).GetCircumference();
         }
 
         /// <inheritdoc />

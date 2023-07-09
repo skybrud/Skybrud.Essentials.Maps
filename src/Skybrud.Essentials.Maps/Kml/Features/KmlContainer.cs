@@ -20,7 +20,7 @@ namespace Skybrud.Essentials.Maps.Kml.Features {
         /// </summary>
         /// <param name="xml">The XML element the container should be based on.</param>
         /// <param name="namespaces">The XML namespace.</param>
-        protected KmlContainer(XElement xml, XmlNamespaceManager namespaces) : base(xml, namespaces) { }
+        protected KmlContainer(XElement xml, IXmlNamespaceResolver namespaces) : base(xml, namespaces) { }
 
     }
 

@@ -1,4 +1,5 @@
-﻿using System.Xml;
+﻿using System;
+using System.Xml;
 using System.Xml.Linq;
 
 namespace Skybrud.Essentials.Maps.Kml.Styles {
@@ -27,7 +28,9 @@ namespace Skybrud.Essentials.Maps.Kml.Styles {
             Width = 1;
         }
 
-        protected KmlLineStyle(XElement xml, XmlNamespaceManager namespaces) : base(xml, namespaces) {
+        protected KmlLineStyle(XElement xml, IXmlNamespaceResolver namespaces) : base(xml, namespaces) {
+            if (xml is null) throw new ArgumentNullException(nameof(xml));
+            if (namespaces is null) throw new ArgumentNullException(nameof(namespaces));
             Width = GetFloat(xml, "kml:width", namespaces, 1);
         }
 
@@ -45,8 +48,14 @@ namespace Skybrud.Essentials.Maps.Kml.Styles {
 
         #region Static methods
 
-        public static KmlLineStyle Parse(XElement xml, XmlNamespaceManager namespaces) {
-            return xml == null ? null : new KmlLineStyle(xml, namespaces);
+        public static KmlLineStyle Parse(XElement xml) {
+            if (xml is null) throw new ArgumentNullException(nameof(xml));
+            return new KmlLineStyle(xml, Namespaces);
+        }
+
+        public static KmlLineStyle Parse(XElement xml, IXmlNamespaceResolver? namespaces) {
+            if (xml is null) throw new ArgumentNullException(nameof(xml));
+            return new KmlLineStyle(xml, namespaces ?? Namespaces);
         }
 
         #endregion

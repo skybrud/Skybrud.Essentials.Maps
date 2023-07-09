@@ -1,4 +1,5 @@
-﻿using System.Xml;
+﻿using System;
+using System.Xml;
 using System.Xml.Linq;
 using Skybrud.Essentials.Maps.Kml.Features;
 using Skybrud.Essentials.Maps.Kml.Styles;
@@ -75,7 +76,7 @@ namespace Skybrud.Essentials.Maps.Kml.Geometry {
         /// </summary>
         /// <param name="xml">The XML element the document should be based on.</param>
         /// <param name="namespaces">The XML namespace.</param>
-        protected KmlPoint(XElement xml, XmlNamespaceManager namespaces) : base(xml, namespaces) {
+        protected KmlPoint(XElement xml, IXmlNamespaceResolver namespaces) : base(xml) {
             Coordinates = xml.GetElement("kml:coordinates", namespaces, KmlPointCoordinates.Parse) ?? new KmlPointCoordinates();
         }
 
@@ -86,7 +87,7 @@ namespace Skybrud.Essentials.Maps.Kml.Geometry {
         /// <inheritdoc />
         public override XElement ToXElement() {
             XElement xml = base.ToXElement();
-            xml.Add((Coordinates ?? new KmlPointCoordinates()).ToXElement());
+            xml.Add(Coordinates.ToXElement());
             return xml;
         }
 
@@ -100,6 +101,7 @@ namespace Skybrud.Essentials.Maps.Kml.Geometry {
         /// <param name="xml">The XML element representing the document.</param>
         /// <returns>An instance of <see cref="KmlPoint"/>.</returns>
         public static KmlPoint Parse(XElement xml) {
+            if (xml is null) throw new ArgumentNullException(nameof(xml));
             return new KmlPoint(xml, Namespaces);
         }
 
@@ -109,8 +111,9 @@ namespace Skybrud.Essentials.Maps.Kml.Geometry {
         /// <param name="xml">The XML element representing the document.</param>
         /// <param name="namespaces">The XML namespace.</param>
         /// <returns>An instance of <see cref="KmlPoint"/>.</returns>
-        public static KmlPoint Parse(XElement xml, XmlNamespaceManager namespaces) {
-            return new KmlPoint(xml, namespaces);
+        public static KmlPoint Parse(XElement xml, IXmlNamespaceResolver? namespaces) {
+            if (xml is null) throw new ArgumentNullException(nameof(xml));
+            return new KmlPoint(xml, namespaces ?? Namespaces);
         }
 
         #endregion

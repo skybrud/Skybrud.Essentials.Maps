@@ -27,7 +27,7 @@ namespace Skybrud.Essentials.Maps.Kml.Styles {
 
         public KmlLabelStyle() { }
 
-        protected KmlLabelStyle(XElement xml, XmlNamespaceManager namespaces) : base(xml, namespaces) {
+        protected KmlLabelStyle(XElement xml, IXmlNamespaceResolver namespaces) : base(xml, namespaces) {
             Scale = GetFloat(xml, "kml:scale", namespaces, 1);
         }
 
@@ -37,7 +37,7 @@ namespace Skybrud.Essentials.Maps.Kml.Styles {
 
         public override XElement ToXElement() {
             XElement xml = base.ToXElement();
-            if (Math.Abs(Scale - 1) > Single.Epsilon) xml.Add(NewXElement("scale", Scale.ToString(CultureInfo.InvariantCulture)));
+            if (Math.Abs(Scale - 1) > float.Epsilon) xml.Add(NewXElement("scale", Scale.ToString(CultureInfo.InvariantCulture)));
             return xml;
         }
 
@@ -45,8 +45,9 @@ namespace Skybrud.Essentials.Maps.Kml.Styles {
 
         #region Static methods
 
-        public static KmlLabelStyle Parse(XElement xml, XmlNamespaceManager namespaces) {
-            return xml == null ? null : new KmlLabelStyle(xml, namespaces);
+        public static KmlLabelStyle Parse(XElement xml, IXmlNamespaceResolver? namespaces) {
+            if (xml is null) throw new ArgumentNullException(nameof(xml));
+            return new KmlLabelStyle(xml, namespaces ?? Namespaces);
         }
 
         #endregion

@@ -1,6 +1,5 @@
 ﻿using System.Xml;
 using System.Xml.Linq;
-using Skybrud.Essentials.Maps.Kml.Extensions;
 using Skybrud.Essentials.Xml.Extensions;
 
 namespace Skybrud.Essentials.Maps.Kml.Styles {
@@ -9,15 +8,15 @@ namespace Skybrud.Essentials.Maps.Kml.Styles {
 
         #region Properties
 
-        public KmlIconStyle IconStyle { get; set; }
+        public KmlIconStyle? IconStyle { get; set; }
 
-        public KmlLabelStyle LabelStyle { get; set; }
+        public KmlLabelStyle? LabelStyle { get; set; }
 
-        public KmlLineStyle LineStyle { get; set; }
+        public KmlLineStyle? LineStyle { get; set; }
 
-        public KmlPolyStyle PolyStyle { get; set; }
+        public KmlPolyStyle? PolyStyle { get; set; }
 
-        public KmlBalloonStyle BalloonStyle { get; set; }
+        public KmlBalloonStyle? BalloonStyle { get; set; }
 
         #endregion
 
@@ -25,7 +24,7 @@ namespace Skybrud.Essentials.Maps.Kml.Styles {
 
         public KmlStyle() { }
 
-        protected KmlStyle(XElement xml, XmlNamespaceManager namespaces) : base(xml, namespaces) {
+        protected KmlStyle(XElement xml, IXmlNamespaceResolver namespaces) : base(xml, namespaces) {
             IconStyle = xml.GetElement("kml:IconStyle", namespaces, x => KmlIconStyle.Parse(x, namespaces));
             LabelStyle = xml.GetElement("kml:LabelStyle", namespaces, x => KmlLabelStyle.Parse(x, namespaces));
             LineStyle = xml.GetElement("kml:LineStyle", namespaces, x => KmlLineStyle.Parse(x, namespaces));
@@ -41,11 +40,11 @@ namespace Skybrud.Essentials.Maps.Kml.Styles {
 
             XElement xml = base.ToXElement();
 
-            if (IconStyle.HasValue()) xml.Add(IconStyle.ToXElement());
-            if (LabelStyle.HasValue()) xml.Add(LabelStyle.ToXElement());
-            if (LineStyle.HasValue()) xml.Add(LineStyle.ToXElement());
-            if (PolyStyle.HasValue()) xml.Add(PolyStyle.ToXElement());
-            if (BalloonStyle.HasValue()) xml.Add(BalloonStyle.ToXElement());
+            if (IconStyle is not null) xml.Add(IconStyle.ToXElement());
+            if (LabelStyle is not null) xml.Add(LabelStyle.ToXElement());
+            if (LineStyle is not null) xml.Add(LineStyle.ToXElement());
+            if (PolyStyle is not null) xml.Add(PolyStyle.ToXElement());
+            if (BalloonStyle is not null) xml.Add(BalloonStyle.ToXElement());
 
             return xml;
 
@@ -59,8 +58,8 @@ namespace Skybrud.Essentials.Maps.Kml.Styles {
             return new KmlStyle(xml, Namespaces);
         }
 
-        public static new KmlStyle Parse(XElement xml, XmlNamespaceManager namespaces) {
-            return new KmlStyle(xml, namespaces);
+        public static new KmlStyle Parse(XElement xml, IXmlNamespaceResolver? namespaces) {
+            return new KmlStyle(xml, namespaces ?? Namespaces);
         }
 
         #endregion

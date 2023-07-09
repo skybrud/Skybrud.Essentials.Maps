@@ -1,4 +1,5 @@
-﻿using System.Xml;
+﻿using System;
+using System.Xml;
 using System.Xml.Linq;
 using Skybrud.Essentials.Common;
 
@@ -14,7 +15,7 @@ namespace Skybrud.Essentials.Maps.Kml.Geometry {
 
         public KmlPolygonInnerBoundaries(double[][] array) : base(array) { }
 
-        protected KmlPolygonInnerBoundaries(XElement xml, XmlNamespaceManager manager) : base(xml, manager) { }
+        protected KmlPolygonInnerBoundaries(XElement xml, IXmlNamespaceResolver namespaces) : base(xml, namespaces) { }
 
         #endregion
 
@@ -30,11 +31,13 @@ namespace Skybrud.Essentials.Maps.Kml.Geometry {
         #region Static methods
 
         public static KmlPolygonInnerBoundaries Parse(XElement xml) {
+            if (xml is null) throw new ArgumentNullException(nameof(xml));
             return new KmlPolygonInnerBoundaries(xml, Namespaces);
         }
 
-        public static KmlPolygonInnerBoundaries Parse(XElement xml, XmlNamespaceManager manager) {
-            return new KmlPolygonInnerBoundaries(xml, manager);
+        public static KmlPolygonInnerBoundaries Parse(XElement xml, IXmlNamespaceResolver? namespaces) {
+            if (xml is null) throw new ArgumentNullException(nameof(xml));
+            return new KmlPolygonInnerBoundaries(xml, namespaces ?? Namespaces);
         }
 
         #endregion

@@ -52,13 +52,13 @@ namespace Skybrud.Essentials.Maps.Kmz {
 
         /// <inheritdoc />
         public void Dispose() {
-            Stream?.Dispose();
-            Archive?.Dispose();
+            Stream.Dispose();
+            Archive.Dispose();
         }
 
         private KmlFile LoadKmlFile() {
-            ZipArchiveEntry entry = Archive.GetEntry("doc.kml");
-            if (entry == null) throw new KmzException("KMZ file is missing doc.kml entry");
+            ZipArchiveEntry? entry = Archive.GetEntry("doc.kml");
+            if (entry == null) throw new KmzException("KMZ file is missing 'doc.kml' entry");
             using Stream stream = entry.Open();
             using StreamReader reader = new(stream);
             return KmlFile.Parse(reader.ReadToEnd());

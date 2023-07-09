@@ -179,7 +179,7 @@ namespace Skybrud.Essentials.Maps.GeoJson.Geometry {
         /// <param name="json">The JSON object.</param>
         public GeoJsonPolygon(JObject json) : base(GeoJsonType.Polygon) {
 
-            JArray coordinates = json.GetValue("coordinates") as JArray;
+            JArray? coordinates = json.GetValue("coordinates") as JArray;
             if (coordinates == null) throw new GeoJsonParseException("Unable to parse Polygon. \"coordinates\" is not an instance of JArray.", json);
 
             try {
@@ -243,6 +243,7 @@ namespace Skybrud.Essentials.Maps.GeoJson.Geometry {
         /// <param name="json">The raw JSON string.</param>
         /// <returns>An instance of <see cref="GeoJsonPolygon"/>.</returns>
         public static new GeoJsonPolygon Parse(string json) {
+            if (string.IsNullOrWhiteSpace(json)) throw new ArgumentNullException(nameof(json));
             return ParseJsonObject(json, Parse);
         }
 
@@ -252,7 +253,8 @@ namespace Skybrud.Essentials.Maps.GeoJson.Geometry {
         /// <param name="json">The JSON object.</param>
         /// <returns>An instance of <see cref="GeoJsonPolygon"/>.</returns>
         public static new GeoJsonPolygon Parse(JObject json) {
-            return json == null ? null : new GeoJsonPolygon(json);
+            if (json is null) throw new ArgumentNullException(nameof(json));
+            return new GeoJsonPolygon(json);
         }
 
         /// <summary>
@@ -261,6 +263,7 @@ namespace Skybrud.Essentials.Maps.GeoJson.Geometry {
         /// <param name="path">The path to a file on disk.</param>
         /// <returns>An instance of <see cref="GeoJsonPolygon"/>.</returns>
         public static new GeoJsonPolygon Load(string path) {
+            if (string.IsNullOrWhiteSpace(path)) throw new ArgumentNullException(nameof(path));
             return LoadJsonObject(path, Parse);
         }
 
