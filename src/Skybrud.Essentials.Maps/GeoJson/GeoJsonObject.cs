@@ -2,7 +2,7 @@
 using System.Text;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using Skybrud.Essentials.Json;
+using Skybrud.Essentials.Json.Newtonsoft;
 using Skybrud.Essentials.Maps.GeoJson.Json;
 
 namespace Skybrud.Essentials.Maps.GeoJson {

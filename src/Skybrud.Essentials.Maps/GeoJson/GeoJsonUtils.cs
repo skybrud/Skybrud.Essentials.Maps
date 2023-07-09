@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using Newtonsoft.Json.Linq;
 using Skybrud.Essentials.Enums;
-using Skybrud.Essentials.Json;
-using Skybrud.Essentials.Json.Extensions;
+using Skybrud.Essentials.Json.Newtonsoft;
+using Skybrud.Essentials.Json.Newtonsoft.Extensions;
 using Skybrud.Essentials.Maps.GeoJson.Exceptions;
 using Skybrud.Essentials.Maps.GeoJson.Features;
 using Skybrud.Essentials.Maps.GeoJson.Geometry;
