@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using Skybrud.Essentials.Collections;
 using Skybrud.Essentials.Maps.Geometry;
 using Skybrud.Essentials.Maps.Geometry.Shapes;
 using Skybrud.Essentials.Maps.Wkt.Exceptions;

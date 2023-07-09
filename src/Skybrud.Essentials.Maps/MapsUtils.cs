@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Skybrud.Essentials.Collections;
 using Skybrud.Essentials.Maps.Geometry;
 using Skybrud.Essentials.Maps.Geometry.Lines;
 using Skybrud.Essentials.Maps.Geometry.Shapes;

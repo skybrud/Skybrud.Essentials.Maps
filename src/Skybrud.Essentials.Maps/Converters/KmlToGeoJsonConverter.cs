@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Skybrud.Essentials.Collections;
 using Skybrud.Essentials.Maps.GeoJson;
 using Skybrud.Essentials.Maps.GeoJson.Features;
 using Skybrud.Essentials.Maps.GeoJson.Geometry;
