@@ -30,8 +30,8 @@
 
   <!-- Include NuGet dependencies -->
   <ItemGroup>
-    <PackageReference Include="Skybrud.Essentials" Version="1.1.41" />
-    <PackageReference Include="Skybrud.Essentials.Http" Version="1.1.0" />
+    <PackageReference Include="Skybrud.Essentials" Version="1.1.49" />
+    <PackageReference Include="Skybrud.Essentials.Http" Version="1.1.4" />
     <PackageReference Include="System.IO.Compression" Version="4.3.0" />
   </ItemGroup>
 
