@@ -35,7 +35,8 @@ public class Polygon : IPolygon {
     /// </summary>
     /// <param name="points">The points the polyline should be based on.</param>
     public Polygon(params IPoint[] points) {
-        _outer = points?.ToList() ?? throw new ArgumentNullException(nameof(points));
+        if (points is null) throw new ArgumentNullException(nameof(points));
+        _outer = points.ToList();
         _inner = new List<IPoint[]>();
     }
 
@@ -44,7 +45,8 @@ public class Polygon : IPolygon {
     /// </summary>
     /// <param name="points">The points the polyline should be based on.</param>
     public Polygon(params Point[] points) {
-        _outer = points?.Cast<IPoint>().ToList() ?? throw new ArgumentNullException(nameof(points));
+        if (points is null) throw new ArgumentNullException(nameof(points));
+        _outer = points.Cast<IPoint>().ToList();
         _inner = new List<IPoint[]>();
     }
 
@@ -53,7 +55,8 @@ public class Polygon : IPolygon {
     /// </summary>
     /// <param name="points">The points the polyline should be based on.</param>
     public Polygon(IEnumerable<IPoint> points) {
-        _outer = points?.ToList() ?? throw new ArgumentNullException(nameof(points));
+        if (points is null) throw new ArgumentNullException(nameof(points));
+        _outer = points.ToList();
         _inner = new List<IPoint[]>();
     }
 
@@ -63,8 +66,10 @@ public class Polygon : IPolygon {
     /// <param name="outer">The outer coordinates.</param>
     /// <param name="inner">The inner coordinates.</param>
     public Polygon(IEnumerable<IPoint> outer, params IEnumerable<IPoint>[] inner) {
-        _outer = outer?.ToList() ?? throw new ArgumentNullException(nameof(outer));
-        _inner = inner?.Select(x => x.ToArray()).ToList() ?? new List<IPoint[]>();
+        if (outer is null) throw new ArgumentNullException(nameof(outer));
+        if (inner is null) throw new ArgumentNullException(nameof(inner));
+        _outer = outer.ToList();
+        _inner = inner.Select(x => x.ToArray()).ToList();
     }
 
     /// <summary>
@@ -73,8 +78,10 @@ public class Polygon : IPolygon {
     /// <param name="outer">The outer coordinates.</param>
     /// <param name="inner">The inner coordinates.</param>
     public Polygon(IEnumerable<IPoint> outer, IEnumerable<IEnumerable<IPoint>> inner) {
-        _outer = outer?.ToList() ?? throw new ArgumentNullException(nameof(outer));
-        _inner = inner?.Select(x => x.ToArray()).ToList() ?? new List<IPoint[]>();
+        if (outer is null) throw new ArgumentNullException(nameof(outer));
+        if (inner is null) throw new ArgumentNullException(nameof(inner));
+        _outer = outer.ToList();
+        _inner = inner.Select(x => x.ToArray()).ToList();
     }
 
     /// <summary>

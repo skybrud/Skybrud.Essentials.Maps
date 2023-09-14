@@ -24,7 +24,7 @@ public class MultiPolygon : IMultiPolygon {
     /// </summary>
     /// <param name="index">The index.</param>
     /// <returns>The <see cref="IPolygon"/> at the specified index.</returns>
-    public IPolygon this[int index] => throw new NotImplementedException();
+    public IPolygon this[int index] => _polygons[index];
 
     /// <summary>
     /// Gets the array of polygons making up the shape.
@@ -40,7 +40,8 @@ public class MultiPolygon : IMultiPolygon {
     /// </summary>
     /// <param name="polygons">The array of polygons.</param>
     public MultiPolygon(params IPolygon[] polygons) {
-        _polygons = polygons?.ToList() ?? throw new ArgumentNullException(nameof(polygons));
+        if (polygons is null) throw new ArgumentNullException(nameof(polygons));
+        _polygons = polygons.ToList();
     }
 
     /// <summary>
@@ -48,7 +49,8 @@ public class MultiPolygon : IMultiPolygon {
     /// </summary>
     /// <param name="polygons">The collection of polygons.</param>
     public MultiPolygon(IEnumerable<IPolygon> polygons) {
-        _polygons = polygons?.ToList() ?? throw new ArgumentNullException(nameof(polygons));
+        if (polygons is null) throw new ArgumentNullException(nameof(polygons));
+        _polygons = polygons.ToList();
     }
 
     #endregion

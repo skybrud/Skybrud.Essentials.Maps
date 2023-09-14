@@ -127,10 +127,10 @@ public class Rectangle : IRectangle {
     /// <returns>The area in square metres.</returns>
     public double GetArea() {
 
-        Point southWest = new Point(SouthWest.Latitude, SouthWest.Longitude);
-        Point northEast = new Point(NorthEast.Latitude, NorthEast.Longitude);
-        Point southEast = new Point(SouthWest.Latitude, NorthEast.Longitude);
-        Point northWest = new Point(NorthEast.Latitude, SouthWest.Longitude);
+        Point southWest = new(SouthWest.Latitude, SouthWest.Longitude);
+        Point northEast = new(NorthEast.Latitude, NorthEast.Longitude);
+        Point southEast = new(SouthWest.Latitude, NorthEast.Longitude);
+        Point northWest = new(NorthEast.Latitude, SouthWest.Longitude);
 
         return MapsUtils.GetArea(new IPoint[] {northEast, northWest, southWest, southEast});
 
@@ -143,10 +143,10 @@ public class Rectangle : IRectangle {
     /// <returns>The area in square metres.</returns>
     public double GetArea(double radius) {
 
-        Point southWest = new Point(SouthWest.Latitude, SouthWest.Longitude);
-        Point northEast = new Point(NorthEast.Latitude, NorthEast.Longitude);
-        Point southEast = new Point(SouthWest.Latitude, NorthEast.Longitude);
-        Point northWest = new Point(NorthEast.Latitude, SouthWest.Longitude);
+        Point southWest = new(SouthWest.Latitude, SouthWest.Longitude);
+        Point northEast = new(NorthEast.Latitude, NorthEast.Longitude);
+        Point southEast = new(SouthWest.Latitude, NorthEast.Longitude);
+        Point northWest = new(NorthEast.Latitude, SouthWest.Longitude);
 
         return MapsUtils.GetArea(new IPoint[] {northEast, northWest, southWest, southEast}, radius);
 

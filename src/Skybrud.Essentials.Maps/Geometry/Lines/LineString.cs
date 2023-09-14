@@ -28,7 +28,8 @@ public class LineString : ILineString {
     /// </summary>
     /// <param name="points">The points the line string should be based on.</param>
     public LineString(params IPoint[] points) {
-        _points = points?.ToList() ?? throw new ArgumentNullException(nameof(points));
+        if (points is null) throw new ArgumentNullException(nameof(points));
+        _points = points.ToList();
     }
 
     /// <summary>
@@ -36,7 +37,8 @@ public class LineString : ILineString {
     /// </summary>
     /// <param name="points">The points the line string should be based on.</param>
     public LineString(IEnumerable<IPoint> points) {
-        _points = points?.ToList() ?? throw new ArgumentNullException(nameof(points));
+        if (points is null) throw new ArgumentNullException(nameof(points));
+        _points = points.ToList();
     }
 
     #endregion
