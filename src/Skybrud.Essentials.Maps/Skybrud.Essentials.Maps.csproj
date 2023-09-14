@@ -22,9 +22,9 @@
   <!-- Information for the NuGet package -->
   <PropertyGroup>
     <PackageId>Skybrud.Essentials.Maps</PackageId>
-    <PackageTags>Skybrud, Essentials, Maps, Kml, GeoJson, Wkt</PackageTags>
+    <PackageTags>Skybrud, Limbo, Essentials, Maps, Kml, GeoJson, Wkt, WellKnownText</PackageTags>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <PackageProjectUrl>https://github.com/skybrud/Skybrud.Essentials.Maps</PackageProjectUrl>
+    <PackageProjectUrl>https://packages.skybrud.dk/skybrud.essentials.maps/</PackageProjectUrl>
     <PackageIcon>Limbo.png</PackageIcon>
     <RepositoryType>git</RepositoryType>
     <RepositoryUrl>https://github.com/skybrud/Skybrud.Essentials.Maps</RepositoryUrl>
