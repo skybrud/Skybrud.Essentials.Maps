@@ -1,20 +1,18 @@
-﻿namespace Skybrud.Essentials.Maps.Geometry.Shapes {
+﻿namespace Skybrud.Essentials.Maps.Geometry.Shapes;
+
+/// <summary>
+/// Interface describing a circle on a spheroid.
+/// </summary>
+public interface ICircle : IShape {
 
     /// <summary>
-    /// Interface describing a circle on a spheroid.
+    /// Gets the center of the circle.
     /// </summary>
-    public interface ICircle : IShape {
+    IPoint Center { get; }
 
-        /// <summary>
-        /// Gets the center of the circle.
-        /// </summary>
-        IPoint Center { get; }
-
-        /// <summary>
-        /// Gets the radius of the circle.
-        /// </summary>
-        double Radius { get; }
-
-    }
+    /// <summary>
+    /// Gets the radius of the circle.
+    /// </summary>
+    double Radius { get; }
 
 }

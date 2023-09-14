@@ -1,27 +1,25 @@
 ﻿using System.Xml;
 using System.Xml.Linq;
 
-namespace Skybrud.Essentials.Maps.Kml.Features {
+namespace Skybrud.Essentials.Maps.Kml.Features;
+
+/// <summary>
+/// Class representing a KML container type.
+/// </summary>
+public abstract class KmlContainer : KmlFeature {
+
+    // https://developers.google.com/kml/documentation/kmlreference#container
 
     /// <summary>
-    /// Class representing a KML container type.
+    /// Initializes a new empty KML container.
     /// </summary>
-    public abstract class KmlContainer : KmlFeature {
+    protected KmlContainer() { }
 
-        // https://developers.google.com/kml/documentation/kmlreference#container
-
-        /// <summary>
-        /// Initializes a new empty KML container.
-        /// </summary>
-        protected KmlContainer() { }
-
-        /// <summary>
-        /// Initializes a new KML container.
-        /// </summary>
-        /// <param name="xml">The XML element the container should be based on.</param>
-        /// <param name="namespaces">The XML namespace.</param>
-        protected KmlContainer(XElement xml, IXmlNamespaceResolver namespaces) : base(xml, namespaces) { }
-
-    }
+    /// <summary>
+    /// Initializes a new KML container.
+    /// </summary>
+    /// <param name="xml">The XML element the container should be based on.</param>
+    /// <param name="namespaces">The XML namespace.</param>
+    protected KmlContainer(XElement xml, IXmlNamespaceResolver namespaces) : base(xml, namespaces) { }
 
 }

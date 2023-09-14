@@ -1,54 +1,52 @@
 ﻿using System.Xml.Linq;
 using Skybrud.Essentials.Xml.Extensions;
 
-namespace Skybrud.Essentials.Maps.Kml.Geometry {
+namespace Skybrud.Essentials.Maps.Kml.Geometry;
+
+/// <summary>
+/// Class representing a KML <c>&lt;Geometry&gt;</c> element.
+/// </summary>
+public abstract class KmlGeometry : KmlObject {
+
+    #region Properties
 
     /// <summary>
-    /// Class representing a KML <c>&lt;Geometry&gt;</c> element.
+    /// Get or sets the ID of the geometry.
     /// </summary>
-    public abstract class KmlGeometry : KmlObject {
+    public string? Id { get; set; }
 
-        #region Properties
+    #endregion
 
-        /// <summary>
-        /// Get or sets the ID of the geometry.
-        /// </summary>
-        public string? Id { get; set; }
+    #region Constructors
 
-        #endregion
+    /// <summary>
+    /// Initializes a new empty KML <c>&lt;Geometry&gt;</c> element.
+    /// </summary>
+    protected KmlGeometry() { }
 
-        #region Constructors
+    /// <summary>
+    /// Initializes a new KML <c>&lt;Geometry&gt;</c> element.
+    /// </summary>
+    /// <param name="xml">The XML element the document should be based on.</param>
+    protected KmlGeometry(XElement xml) {
+        Id = xml.GetAttributeValue("id");
+    }
 
-        /// <summary>
-        /// Initializes a new empty KML <c>&lt;Geometry&gt;</c> element.
-        /// </summary>
-        protected KmlGeometry() { }
+    #endregion
 
-        /// <summary>
-        /// Initializes a new KML <c>&lt;Geometry&gt;</c> element.
-        /// </summary>
-        /// <param name="xml">The XML element the document should be based on.</param>
-        protected KmlGeometry(XElement xml) {
-            Id = xml.GetAttributeValue("id");
-        }
+    #region Member methods
 
-        #endregion
+    /// <inheritdoc />
+    public override XElement ToXElement() {
 
-        #region Member methods
+        XElement xml = base.ToXElement();
 
-        /// <inheritdoc />
-        public override XElement ToXElement() {
+        if (!string.IsNullOrWhiteSpace(Id)) xml.Add(new XAttribute("id", Id!));
 
-            XElement xml = base.ToXElement();
-
-            if (!string.IsNullOrWhiteSpace(Id)) xml.Add(new XAttribute("id", Id!));
-
-            return xml;
-
-        }
-
-        #endregion
+        return xml;
 
     }
+
+    #endregion
 
 }

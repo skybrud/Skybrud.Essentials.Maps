@@ -5,62 +5,60 @@ using System.Xml.Linq;
 using Skybrud.Essentials.Strings.Extensions;
 using Skybrud.Essentials.Xml.Extensions;
 
-namespace Skybrud.Essentials.Maps.Kml.Styles {
+namespace Skybrud.Essentials.Maps.Kml.Styles;
 
-    public abstract class KmlStyleSelector : KmlObject {
+public abstract class KmlStyleSelector : KmlObject {
 
-        #region Properties
+    #region Properties
 
-        public string? Id { get; set; }
+    public string? Id { get; set; }
 
-        [MemberNotNullWhen(true, "Id")]
-        public bool HasId => Id.HasValue();
+    [MemberNotNullWhen(true, "Id")]
+    public bool HasId => Id.HasValue();
 
-        #endregion
+    #endregion
 
-        #region Constructors
+    #region Constructors
 
-        protected KmlStyleSelector() { }
+    protected KmlStyleSelector() { }
 
-        protected KmlStyleSelector(XElement xml, IXmlNamespaceResolver namespaces) {
-            Id = xml.GetAttributeValue("id", namespaces);
-        }
+    protected KmlStyleSelector(XElement xml, IXmlNamespaceResolver namespaces) {
+        Id = xml.GetAttributeValue("id", namespaces);
+    }
 
-        #endregion
+    #endregion
 
-        #region Member methods
+    #region Member methods
 
-        public override XElement ToXElement() {
+    public override XElement ToXElement() {
 
-            XElement xml = base.ToXElement();
+        XElement xml = base.ToXElement();
 
-            if (!string.IsNullOrWhiteSpace(Id)) xml.Add(new XAttribute("id", Id!));
+        if (!string.IsNullOrWhiteSpace(Id)) xml.Add(new XAttribute("id", Id!));
 
-            return xml;
-
-        }
-
-        #endregion
-
-        #region Static methods
-
-        public static KmlStyleSelector Parse(XElement xml) {
-            if (xml is null) throw new ArgumentNullException(nameof(xml));
-            return Parse(xml, Namespaces);
-        }
-
-        public static KmlStyleSelector Parse(XElement xml, IXmlNamespaceResolver? namespaces) {
-            if (xml is null) throw new ArgumentNullException(nameof(xml));
-            namespaces ??= Namespaces;
-            return xml.Name.LocalName switch {
-                "Style" => KmlStyle.Parse(xml, namespaces),
-                "StyleMap" => KmlStyleMap.Parse(xml, namespaces),
-                _ => throw new Exception("Unknown style selector " + xml.Name.LocalName)
-            };
-        }
-
-        #endregion
+        return xml;
 
     }
+
+    #endregion
+
+    #region Static methods
+
+    public static KmlStyleSelector Parse(XElement xml) {
+        if (xml is null) throw new ArgumentNullException(nameof(xml));
+        return Parse(xml, Namespaces);
+    }
+
+    public static KmlStyleSelector Parse(XElement xml, IXmlNamespaceResolver? namespaces) {
+        if (xml is null) throw new ArgumentNullException(nameof(xml));
+        namespaces ??= Namespaces;
+        return xml.Name.LocalName switch {
+            "Style" => KmlStyle.Parse(xml, namespaces),
+            "StyleMap" => KmlStyleMap.Parse(xml, namespaces),
+            _ => throw new Exception("Unknown style selector " + xml.Name.LocalName)
+        };
+    }
+
+    #endregion
 
 }

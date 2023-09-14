@@ -3,81 +3,79 @@ using System.Xml.Linq;
 using Skybrud.Essentials.Strings.Extensions;
 using Skybrud.Essentials.Xml.Extensions;
 
-namespace Skybrud.Essentials.Maps.Kml.Features {
+namespace Skybrud.Essentials.Maps.Kml.Features;
+
+/// <summary>
+/// This is an abstract element and cannot be used directly in a KML file.
+/// </summary>
+/// <see>
+///     <cref>https://developers.google.com/kml/documentation/kmlreference#feature</cref>
+/// </see>
+public abstract class KmlFeature : KmlObject {
+
+    #region Properties
 
     /// <summary>
-    /// This is an abstract element and cannot be used directly in a KML file.
+    /// Gets or sets the ID of the feature.
     /// </summary>
-    /// <see>
-    ///     <cref>https://developers.google.com/kml/documentation/kmlreference#feature</cref>
-    /// </see>
-    public abstract class KmlFeature : KmlObject {
+    public string? Id { get; set; }
 
-        #region Properties
+    /// <summary>
+    /// User-defined text displayed in the 3D viewer as the label for the object (for example, for a <see cref="KmlPlacemark"/>, <see cref="KmlFolder"/>, or <see cref="KmlNetworkLinkControl"/>).
+    /// </summary>
+    public string? Name { get; set; }
 
-        /// <summary>
-        /// Gets or sets the ID of the feature.
-        /// </summary>
-        public string? Id { get; set; }
+    /// <summary>
+    /// Gets or sets the description of the feature.
+    /// </summary>
+    public string? Description { get; set; }
 
-        /// <summary>
-        /// User-defined text displayed in the 3D viewer as the label for the object (for example, for a <see cref="KmlPlacemark"/>, <see cref="KmlFolder"/>, or <see cref="KmlNetworkLinkControl"/>).
-        /// </summary>
-        public string? Name { get; set; }
+    /// <summary>
+    /// URL of a &lt;Style&gt; or &lt;StyleMap&gt; defined in a Document. If the style is in the same file, use a #
+    /// reference. If the style is defined in an external file, use a full URL along with # referencing.
+    /// </summary>
+    public string? StyleUrl { get; set; }
 
-        /// <summary>
-        /// Gets or sets the description of the feature.
-        /// </summary>
-        public string? Description { get; set; }
+    #endregion
 
-        /// <summary>
-        /// URL of a &lt;Style&gt; or &lt;StyleMap&gt; defined in a Document. If the style is in the same file, use a #
-        /// reference. If the style is defined in an external file, use a full URL along with # referencing.
-        /// </summary>
-        public string? StyleUrl { get; set; }
+    #region Constructors
 
-        #endregion
+    /// <summary>
+    /// Initializes a new KML feature.
+    /// </summary>
+    protected KmlFeature() { }
 
-        #region Constructors
+    /// <summary>
+    /// Initializes a new KML feature.
+    /// </summary>
+    /// <param name="xml">The XML element the feature should be based on.</param>
+    /// <param name="namespaces">The XML namespace.</param>
+    protected KmlFeature(XElement xml, IXmlNamespaceResolver namespaces) {
+        Id = xml.GetAttributeValue("id");
+        Name = xml.GetElementValue("kml:name", namespaces);
+        Description = xml.GetElementValue("kml:description", namespaces);
+        StyleUrl = xml.GetElementValue("kml:styleUrl", namespaces);
+    }
 
-        /// <summary>
-        /// Initializes a new KML feature.
-        /// </summary>
-        protected KmlFeature() { }
+    #endregion
 
-        /// <summary>
-        /// Initializes a new KML feature.
-        /// </summary>
-        /// <param name="xml">The XML element the feature should be based on.</param>
-        /// <param name="namespaces">The XML namespace.</param>
-        protected KmlFeature(XElement xml, IXmlNamespaceResolver namespaces) {
-            Id = xml.GetAttributeValue("id");
-            Name = xml.GetElementValue("kml:name", namespaces);
-            Description = xml.GetElementValue("kml:description", namespaces);
-            StyleUrl = xml.GetElementValue("kml:styleUrl", namespaces);
-        }
+    #region Member methods
 
-        #endregion
+    /// <inheritdoc />
+    public override XElement ToXElement() {
 
-        #region Member methods
+        XElement xml = base.ToXElement();
 
-        /// <inheritdoc />
-        public override XElement ToXElement() {
+        if (Id.HasValue()) xml.Add(new XAttribute("id", Id!));
 
-            XElement xml = base.ToXElement();
+        if (!string.IsNullOrWhiteSpace(Name)) xml.Add(NewXElement("name", Name!));
+        if (!string.IsNullOrWhiteSpace(Description)) xml.Add(NewXElement("description", Description!));
+        if (!string.IsNullOrWhiteSpace(StyleUrl)) xml.Add(NewXElement("styleUrl", StyleUrl!));
 
-            if (Id.HasValue()) xml.Add(new XAttribute("id", Id!));
-
-            if (!string.IsNullOrWhiteSpace(Name)) xml.Add(NewXElement("name", Name!));
-            if (!string.IsNullOrWhiteSpace(Description)) xml.Add(NewXElement("description", Description!));
-            if (!string.IsNullOrWhiteSpace(StyleUrl)) xml.Add(NewXElement("styleUrl", StyleUrl!));
-
-            return xml;
-
-        }
-
-        #endregion
+        return xml;
 
     }
+
+    #endregion
 
 }

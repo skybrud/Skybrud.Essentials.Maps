@@ -1,20 +1,18 @@
 ﻿using System.Xml;
 using Skybrud.Essentials.Maps.Kml.Constants;
 
-namespace Skybrud.Essentials.Maps.Kml.Parsing {
+namespace Skybrud.Essentials.Maps.Kml.Parsing;
 
-    public class KmlNamespaceResolver {
+public class KmlNamespaceResolver {
 
-        public static readonly IXmlNamespaceResolver Instance;
+    public static readonly IXmlNamespaceResolver Instance;
 
-        static KmlNamespaceResolver() {
+    static KmlNamespaceResolver() {
 
-            XmlNameTable table = new NameTable();
-            XmlNamespaceManager manager = new(table);
-            manager.AddNamespace("kml", KmlConstants.DefaultNamespace);
-            Instance = manager;
-
-        }
+        XmlNameTable table = new NameTable();
+        XmlNamespaceManager manager = new(table);
+        manager.AddNamespace("kml", KmlConstants.DefaultNamespace);
+        Instance = manager;
 
     }
 

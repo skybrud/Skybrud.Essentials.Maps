@@ -1,23 +1,21 @@
-﻿namespace Skybrud.Essentials.Maps.Geometry.Shapes {
+﻿namespace Skybrud.Essentials.Maps.Geometry.Shapes;
+
+/// <summary>
+/// Interface representing a rectangle.
+/// </summary>
+/// <see>
+///     <cref>https://en.wikipedia.org/wiki/Rectangle</cref>
+/// </see>
+public interface IRectangle : IShape {
 
     /// <summary>
-    /// Interface representing a rectangle.
+    /// Gets the south west point.
     /// </summary>
-    /// <see>
-    ///     <cref>https://en.wikipedia.org/wiki/Rectangle</cref>
-    /// </see>
-    public interface IRectangle : IShape {
+    IPoint SouthWest { get; }
 
-        /// <summary>
-        /// Gets the south west point.
-        /// </summary>
-        IPoint SouthWest { get; }
-
-        /// <summary>
-        /// Gets or the north east point.
-        /// </summary>
-        IPoint NorthEast { get; }
-
-    }
+    /// <summary>
+    /// Gets or the north east point.
+    /// </summary>
+    IPoint NorthEast { get; }
 
 }

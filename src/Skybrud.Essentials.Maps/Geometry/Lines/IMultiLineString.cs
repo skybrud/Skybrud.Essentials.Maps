@@ -1,10 +1,8 @@
 ﻿using System.Collections.Generic;
 
-namespace Skybrud.Essentials.Maps.Geometry.Lines {
+namespace Skybrud.Essentials.Maps.Geometry.Lines;
 
-    /// <summary>
-    /// Interface representing a collection of line strings.
-    /// </summary>
-    public interface IMultiLineString : ILineBase, IReadOnlyList<ILineString> { }
-
-}
+/// <summary>
+/// Interface representing a collection of line strings.
+/// </summary>
+public interface IMultiLineString : ILineBase, IReadOnlyList<ILineString> { }

@@ -1,23 +1,21 @@
-﻿namespace Skybrud.Essentials.Maps.Geometry.Lines {
+﻿namespace Skybrud.Essentials.Maps.Geometry.Lines;
+
+/// <summary>
+/// Interface representing a line from <see cref="A"/> to <see cref="B"/>.
+/// </summary>
+/// <see>
+///     <cref>https://en.wikipedia.org/wiki/Line_(geometry)</cref>
+/// </see>
+public interface ILine : ILineBase {
 
     /// <summary>
-    /// Interface representing a line from <see cref="A"/> to <see cref="B"/>.
+    /// Gets the starting point of the line.
     /// </summary>
-    /// <see>
-    ///     <cref>https://en.wikipedia.org/wiki/Line_(geometry)</cref>
-    /// </see>
-    public interface ILine : ILineBase {
+    IPoint A { get; }
 
-        /// <summary>
-        /// Gets the starting point of the line.
-        /// </summary>
-        IPoint A { get; }
-
-        /// <summary>
-        /// Gets the ending point of the line.
-        /// </summary>
-        IPoint B { get; }
-
-    }
+    /// <summary>
+    /// Gets the ending point of the line.
+    /// </summary>
+    IPoint B { get; }
 
 }

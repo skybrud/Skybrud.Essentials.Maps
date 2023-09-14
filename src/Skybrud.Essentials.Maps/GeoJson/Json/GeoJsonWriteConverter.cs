@@ -5,91 +5,89 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Skybrud.Essentials.Maps.GeoJson.Geometry;
 
-namespace Skybrud.Essentials.Maps.GeoJson.Json {
+namespace Skybrud.Essentials.Maps.GeoJson.Json;
 
-    /// <summary>
-    /// JSON converter class for deserializing and deserializing objects within the <c>Skybrud.Essentials.Maps.GeoJson</c> namespace.
-    /// </summary>
-    public class GeoJsonWriteConverter : JsonConverter {
+/// <summary>
+/// JSON converter class for deserializing and deserializing objects within the <c>Skybrud.Essentials.Maps.GeoJson</c> namespace.
+/// </summary>
+public class GeoJsonWriteConverter : JsonConverter {
 
-        #region Properties
+    #region Properties
 
-        /// <inheritdoc />
-        public override bool CanWrite => true;
+    /// <inheritdoc />
+    public override bool CanWrite => true;
 
-        /// <inheritdoc />
-        public override bool CanRead => false;
+    /// <inheritdoc />
+    public override bool CanRead => false;
 
-        #endregion
+    #endregion
 
-        #region Member methods
+    #region Member methods
 
-        /// <inheritdoc />
-        public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer) {
+    /// <inheritdoc />
+    public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer) {
 
-            if (value == null) {
+        if (value == null) {
+            writer.WriteNull();
+            return;
+        }
+
+        switch (value) {
+
+            case GeoJsonCoordinates coordinates:
+                JArray.FromObject(coordinates.ToArray()).WriteTo(writer);
+                return;
+
+            case List<GeoJsonCoordinates> list:
+                JArray.FromObject(list.Select(x => x.ToArray())).WriteTo(writer);
+                return;
+
+            case GeoJsonMultiPoint multiPoint:
+                new JObject {
+                    {"type", multiPoint.Type.ToString() },
+                    {"coordinates", JArray.FromObject(multiPoint.ToList(), serializer)}
+                }.WriteTo(writer);
+                return;
+
+            case GeoJsonLineString lineString:
+                new JObject {
+                    {"type", lineString.Type.ToString() },
+                    {"coordinates", JArray.FromObject(lineString.ToList(), serializer)}
+                }.WriteTo(writer);
+                return;
+
+            case GeoJsonProperties properties:
+
+                Dictionary<string, object> temp = new();
+                foreach (KeyValuePair<string, object> pair in properties.Properties) {
+                    if (pair.Value == null) continue;
+                    temp.Add(pair.Key, pair.Value);
+                }
+
+                JObject.FromObject(temp).WriteTo(writer);
+                return;
+
+            default:
                 writer.WriteNull();
                 return;
-            }
-
-            switch (value) {
-
-                case GeoJsonCoordinates coordinates:
-                    JArray.FromObject(coordinates.ToArray()).WriteTo(writer);
-                    return;
-
-                case List<GeoJsonCoordinates> list:
-                    JArray.FromObject(list.Select(x => x.ToArray())).WriteTo(writer);
-                    return;
-
-                case GeoJsonMultiPoint multiPoint:
-                    new JObject {
-                        {"type", multiPoint.Type.ToString() },
-                        {"coordinates", JArray.FromObject(multiPoint.ToList(), serializer)}
-                    }.WriteTo(writer);
-                    return;
-
-                case GeoJsonLineString lineString:
-                    new JObject {
-                        {"type", lineString.Type.ToString() },
-                        {"coordinates", JArray.FromObject(lineString.ToList(), serializer)}
-                    }.WriteTo(writer);
-                    return;
-
-                case GeoJsonProperties properties:
-
-                    Dictionary<string, object> temp = new();
-                    foreach (KeyValuePair<string, object> pair in properties.Properties) {
-                        if (pair.Value == null) continue;
-                        temp.Add(pair.Key, pair.Value);
-                    }
-
-                    JObject.FromObject(temp).WriteTo(writer);
-                    return;
-
-                default:
-                    writer.WriteNull();
-                    return;
-
-            }
-
-
 
         }
 
-        /// <inheritdoc />
-        public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer) {
-            throw new NotImplementedException();
 
-        }
-
-        /// <inheritdoc />
-        public override bool CanConvert(Type objectType) {
-            return objectType == typeof(GeoJsonCoordinates) || objectType == typeof(List<GeoJsonCoordinates>);
-        }
-
-        #endregion
 
     }
+
+    /// <inheritdoc />
+    public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer) {
+        throw new NotImplementedException();
+
+    }
+
+    /// <inheritdoc />
+    public override bool CanConvert(Type objectType) {
+        return objectType == typeof(GeoJsonCoordinates) || objectType == typeof(List<GeoJsonCoordinates>);
+    }
+
+    #endregion
 
 }

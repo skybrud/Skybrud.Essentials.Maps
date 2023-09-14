@@ -1,8 +1,6 @@
-﻿namespace Skybrud.Essentials.Maps.Kml.Styles {
+﻿namespace Skybrud.Essentials.Maps.Kml.Styles;
 
-    public enum KmlColorMode {
-        Normal,
-        Random
-    }
-
+public enum KmlColorMode {
+    Normal,
+    Random
 }
