@@ -10,7 +10,8 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <Version>1.0.0-beta005</Version>
+    <VersionPrefix>1.0.0-beta006</VersionPrefix>
+    <VersionSuffix Condition="'$(Configuration)'=='Debug'">build$([System.DateTime]::UtcNow.ToString(`yyyyMMddHHmm`))</VersionSuffix>
     <Company>Limbo</Company>
     <Product>Skybrud.Essentials</Product>
     <Authors>Anders Bjerner</Authors>
@@ -46,9 +47,5 @@
   <!--<PropertyGroup>
     <DocumentationFile>bin\$(ConfigurationName)\$(TargetFramework)\Skybrud.Essentials.Maps.xml</DocumentationFile>
   </PropertyGroup>-->
-
-  <Target Name="PostBuild" AfterTargets="PostBuildEvent" Condition="'$(ConfigurationName)'=='Release' AND '$(BuildTools)'=='1' AND '$(TargetFramework)'=='net47'">
-    <Exec Command="&quot;$(ProjectDir)..\build\Skybrud.BuildTools.Tasks.exe&quot; &quot;postBuild&quot; &quot;$(ConfigurationName)&quot; &quot;$(ProjectPath)&quot; &quot;$(TargetPath)&quot;" />
-  </Target>
 
 </Project>
