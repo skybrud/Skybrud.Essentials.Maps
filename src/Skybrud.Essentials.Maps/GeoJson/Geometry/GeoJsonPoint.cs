@@ -20,7 +20,7 @@ namespace Skybrud.Essentials.Maps.GeoJson.Geometry {
         /// </summary>
         public double X {
             get => Coordinates?.X ?? 0;
-            set => (Coordinates ??= new GeoJsonCoordinates()).X = value;
+            set => Coordinates.X = value;
         }
 
         /// <summary>
@@ -29,7 +29,7 @@ namespace Skybrud.Essentials.Maps.GeoJson.Geometry {
         [JsonIgnore]
         public double Y {
             get => Coordinates?.Y ?? 0;
-            set => (Coordinates ??= new GeoJsonCoordinates()).Y = value;
+            set => Coordinates.Y = value;
         }
 
         /// <summary>
@@ -38,7 +38,7 @@ namespace Skybrud.Essentials.Maps.GeoJson.Geometry {
         [JsonIgnore]
         public double Altitude {
             get => Coordinates?.Altitude ?? 0;
-            set => (Coordinates ??= new GeoJsonCoordinates()).Altitude = value;
+            set => Coordinates.Altitude = value;
         }
 
         /// <summary>

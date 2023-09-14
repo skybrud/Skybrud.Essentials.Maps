@@ -23,7 +23,7 @@ namespace Skybrud.Essentials.Maps.GeoJson {
         /// <summary>
         /// Gets or sets the altitude.
         /// </summary>
-        public double Altitude { get; set; }
+        public double? Altitude { get; set; }
 
         #endregion
 
@@ -50,7 +50,7 @@ namespace Skybrud.Essentials.Maps.GeoJson {
         /// <param name="x">The coordinate on the X-axis (longitude).</param>
         /// <param name="y">The coordinate on the Y-axis (latitude).</param>
         /// <param name="altitude">The altitude.</param>
-        public GeoJsonCoordinates(double x, double y, double altitude) {
+        public GeoJsonCoordinates(double x, double y, double? altitude) {
             X = x;
             Y = y;
             Altitude = altitude;
@@ -88,7 +88,7 @@ namespace Skybrud.Essentials.Maps.GeoJson {
         /// </summary>
         /// <returns>An array of <see cref="double"/>.</returns>
         public double[] ToArray() {
-            return Math.Abs(Altitude) < double.Epsilon ? new[] { X, Y } : new[] { X, Y, Altitude };
+            return Altitude is null ? new[] { X, Y } : new[] { X, Y, Altitude.Value };
         }
 
         /// <summary>
@@ -104,7 +104,7 @@ namespace Skybrud.Essentials.Maps.GeoJson {
         /// </summary>
         /// <returns>An array of <see cref="double"/>.</returns>
         public double[] ToXyzArray() {
-            return new[] { X, Y, Altitude };
+            return new[] { X, Y, Altitude ?? 0 };
         }
 
         /// <summary>
@@ -120,7 +120,7 @@ namespace Skybrud.Essentials.Maps.GeoJson {
         /// </summary>
         /// <returns>An array of <see cref="double"/>.</returns>
         public double[] ToYxzArray() {
-            return new[] { Y, X, Altitude };
+            return new[] { Y, X, Altitude ?? 0 };
         }
 
         /// <summary>

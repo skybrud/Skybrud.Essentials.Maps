@@ -15,7 +15,7 @@ namespace Skybrud.Essentials.Maps.GeoJson.Json {
     public class GeoJsonConverter : JsonConverter {
 
         /// <inheritdoc />
-        public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer) {
+        public override void WriteJson(JsonWriter writer, object? value, JsonSerializer serializer) {
 
             if (value == null) {
                 writer.WriteNull();
@@ -35,7 +35,7 @@ namespace Skybrud.Essentials.Maps.GeoJson.Json {
                 case GeoJsonPoint point:
                     new JObject {
                         {"type", point.Type.ToString() },
-                        {"coordinates", JArray.FromObject(point.Coordinates, serializer)}
+                        {"coordinates", JToken.FromObject(point.Coordinates.ToArray(), serializer)}
                     }.WriteTo(writer);
                     return;
 
