@@ -9,15 +9,15 @@ GeoJSON is a popular JSON based format that consists of various features and geo
 
 ## Features
 
-- [Feature](./Features.md#feature)
-- [FeatureCollection](./Features.md#feature-collection)
+- [Feature](./features.md#feature)
+- [FeatureCollection](./features.md#feature-collection)
 
 ## Geometry
 
-- [Point](./Geometry/Point.md)
-- [LineString](./Geometry/LineString.md)
-- [Polygon](./Geometry/Polygon.md)
-- [MultiPoint](./Geometry/MultiPoint.md)
-- [MultiLineString](./Geometry/MultiLineString.md)
-- [MultiPolygon](./Geometry/MultiPolygon.md)
-- [GeometryCollection](./Geometry/Collections.md)
+- [Point](./geometry/point.md)
+- [LineString](./geometry/linestring.md)
+- [Polygon](./geometry/polygon.md)
+- [MultiPoint](./geometry/multipoint.md)
+- [MultiLineString](./geometry/multilinestring.md)
+- [MultiPolygon](./geometry/multipolygon.md)
+- [GeometryCollection](./geometry/collections.md)
